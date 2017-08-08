@@ -5,6 +5,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Time from './Time';
 import Radio from './Radio';
 import News from './News';
+import ToDo from './ToDo';
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
@@ -25,7 +26,7 @@ class WidgetContainer extends React.Component {
 	console.log("ACTIVE", this.props.isActive, this.props.widget);
     return(
       <div className="outerDiv" id="q">
-		
+
 			{this.props.isActive ? <h1> Active </h1> : <div></div>}
 			{this.props.widget === 'news' ? <News /> : <div></div>}
 		    {this.props.widget === 'radio' ? <Radio /> : <div></div>}
