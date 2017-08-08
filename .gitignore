@@ -1,6 +1,6 @@
 env.sh
 
-/build
+build/
 # Logs
 logs
 *.log
