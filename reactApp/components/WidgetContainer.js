@@ -3,7 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
 import Time from './Time';
-//import Radio from './Radio';
+import Radio from './Radio';
 import News from './News';
 import Response from './responseDiv';
 
@@ -28,7 +28,7 @@ class WidgetContainer extends React.Component {
 		
 			{this.props.isActive ? <h1> Active </h1> : <div></div>}
 			{this.props.widget === 'news' ? <News /> : <div></div>}
-		
+		    {this.props.widget === 'radio' ? <Radio /> : <div></div>}
            <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
              <ReactCSSTransitionGroup transitionName = "example"
                transitionAppear = {true} transitionAppearTimeout = {2000}
