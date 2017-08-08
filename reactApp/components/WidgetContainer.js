@@ -56,30 +56,28 @@ class WidgetContainer extends React.Component {
 	  console.log("ACTIVE", this.props.isActive, this.props.widget);
     return(
       <div className="outerDiv" id="q">
+         <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
+           <ReactCSSTransitionGroup transitionName = "example"
+             transitionAppear = {true} transitionAppearTimeout = {2000}
+             transitionEnter = {false} transitionLeave = {false}>
+             <Time timeState={this.props.isActive}/>
+             {/* <Weather weatherState={this.props.isActive}/> */}
+           </ReactCSSTransitionGroup>
+        </div>
+        <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
+            { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
+        </div>
+        <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+            <ReactCSSTransitionGroup transitionName = "example"
+              transitionAppear = {true} transitionAppearTimeout = {2000}
+              transitionEnter = {false} transitionLeave = {false}>
 
-			{this.props.isActive ? <h1> Active </h1> : <div></div>}
-			{/* {this.props.widget === 'news' ? <News /> : <div></div>} */}
+              {this.props.widget === 'news' ? <News socket={this.state.socket} /> : <div></div>}
 
-           <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
-             <ReactCSSTransitionGroup transitionName = "example"
-               transitionAppear = {true} transitionAppearTimeout = {2000}
-               transitionEnter = {false} transitionLeave = {false}>
-               <Time timeState={this.props.isActive}/>
-               {/* <Weather weatherState={this.props.isActive}/> */}
-             </ReactCSSTransitionGroup>
-          </div>
-          <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-              { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
-          </div>
-          <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-              <ReactCSSTransitionGroup transitionName = "example"
-                transitionAppear = {true} transitionAppearTimeout = {2000}
-                transitionEnter = {false} transitionLeave = {false}>
+            </ReactCSSTransitionGroup>
+        </div>
+        {this.props.isActive ? <h1> Active </h1> : <div></div>}
 
-                {this.props.widget === 'news' ? <News socket={this.state.socket} /> : <div></div>}
-
-              </ReactCSSTransitionGroup>
-          </div>
 	 </div>
     );
   }

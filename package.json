@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/yashnevatia/Mirror#readme",
   "dependencies": {
+    "@google-cloud/speech": "^0.10.2",
     "axios": "^0.16.2",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
@@ -28,6 +29,7 @@
     "body-parser": "^1.17.2",
     "concurrently": "^3.5.0",
     "express": "^4.15.4",
+    "node-record-lpcm16": "^0.3.0",
     "nodemon": "^1.11.0",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
