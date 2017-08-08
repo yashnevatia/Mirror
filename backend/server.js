@@ -13,8 +13,8 @@ app.get('/', function(req, res) {
 });
 
 /* the following will change for different computers. */
-const myFilePath = '/Users/yashvardhannevatia/horizons/';
-const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo.py';
+const myFilePath = '/home/pi/Public/';
+const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
 const py = spawn('python', ['-u', fp1],{
@@ -41,7 +41,7 @@ io.on('connection', function(socket){
       console.log("wakeup");
       socket.emit('wakeup');
     }
-    if(hotword === 'sleep'){
+    else if(hotword === 'sleep'){
 	  console.log("sleep");
 	  socket.emit('sleep');
 	  }

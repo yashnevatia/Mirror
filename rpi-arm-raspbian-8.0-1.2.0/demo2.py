@@ -1,6 +1,7 @@
 import snowboydecoder
 import sys
 import signal
+print("corey")
 
 # Demo code for listening two hotwords at the same time
 
@@ -16,20 +17,25 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-if len(sys.argv) != 3:
-    print("Error: need to specify 2 model names")
-    print("Usage: python demo.py 1st.model 2nd.model")
-    sys.exit(-1)
+def wakeup():
+    print("wakeup")
 
-models = sys.argv[1:]
+def sleep():
+    print("sleep")
+
+def news():
+    print("news")
+
+models = ["/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/wakeup.pmdl",
+             "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/sleep.pmdl",
+          "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/news.pmdl"]
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
-callbacks = [lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DING),
-             lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DONG)]
+callbacks = [wakeup, sleep, news]
 print('Listening... Press Ctrl+C to exit')
 
 # main loop

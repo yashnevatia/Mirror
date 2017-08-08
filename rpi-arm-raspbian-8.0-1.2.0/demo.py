@@ -14,12 +14,10 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-if len(sys.argv) == 1:
-    print("Error: need to specify model name")
-    print("Usage: python demo.py your.model")
-    sys.exit(-1)
+def mirror():
+	print("snowboy")
 
-model = sys.argv[1]
+model = "/home/pi/Public/web-smart-mirror/rpi-arm-raspbian-8.0-1.2.0/resources/snowboy.umdl"
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
@@ -28,7 +26,7 @@ detector = snowboydecoder.HotwordDetector(model, sensitivity=0.5)
 print('Listening... Press Ctrl+C to exit')
 
 # main loop
-detector.start(detected_callback=snowboydecoder.play_audio_file,
+detector.start(detected_callback=mirror,
                interrupt_check=interrupt_callback,
                sleep_time=0.03)
 

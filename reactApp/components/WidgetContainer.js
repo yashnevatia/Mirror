@@ -22,10 +22,13 @@ class WidgetContainer extends React.Component {
   render () {
      // in future, only show three components,
      // for now, test out widgets here!
-	console.log("ACTIVE", this.props.isActive);
+	console.log("ACTIVE", this.props.isActive, this.props.widget);
     return(
       <div className="outerDiv" id="q">
+		
 			{this.props.isActive ? <h1> Active </h1> : <div></div>}
+			{this.props.widget === 'news' ? <News /> : <div></div>}
+		
            <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
              <ReactCSSTransitionGroup transitionName = "example"
                transitionAppear = {true} transitionAppearTimeout = {2000}

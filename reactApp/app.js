@@ -45,7 +45,8 @@ class Container extends React.Component {
       })
     });
 
-    socket.on('widget', function(howtword){
+    socket.on('widget', function(hotword){
+	  console.log("widget",hotword);
       self.setState({
         widget:hotword
       })
