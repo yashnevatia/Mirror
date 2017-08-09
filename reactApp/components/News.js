@@ -42,7 +42,7 @@ class News extends React.Component {
       self.state.socket.emit('join', 'NEWS');
 
       // next line for testing purposes only:
-      self.state.socket.emit('stt', 'NEWS');
+      // self.state.socket.emit('stt', 'NEWS');
 
       self.state.socket.on('stt_finished', respObj => {
         console.log('received stt finished', respObj);
