@@ -6,6 +6,8 @@ import Time from './Time';
 import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
+import Uber from './Uber';
+import Todo from './Todo';
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
