@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 // stt & uber routes
 const routes = require('./routes');
 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 // Example route
 app.use(express.static(path.join(__dirname, '../public')));
@@ -22,7 +25,7 @@ socketConfig(io);
 // END SOCKET SERVER STUFF
 
 
-// STT & UBER Routes
+// WIDGET Routes
 app.use('/', routes);
 
 

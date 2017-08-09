@@ -1,4 +1,5 @@
 // FILE WITH CODE FOR SOCKETS
+
 const spawn = require('child_process').spawn;
 const { localGetCommand } = require('./processHuman');
 
@@ -65,27 +66,39 @@ module.exports = function (io) {
   	  console.log("sleep");
   	  socket.emit('sleep');
   	  }
-      else {
+      else if(hotword === 'radio'){
         console.log("widget was heard");
-        socket.emit('widget', hotword);
+        socket.emit('radio');
+      }
+      else if(hotword === 'news'){
+        console.log("widget was heard");
+        socket.emit('news');
+      }
+      else {
+        console.log("unknown hotword");
       }
     });
 
     // socket listeners for STT
     socket.room = 'DEFAULT';
     socket.on('join', widgetName => {
-      console.log('in join', widgetName);
+      console.log('SERVER in join', widgetName);
       socket.room = widgetName;
 
       socket.join(socket.room, () => {
-        console.log('joined ', socket.room);
+        console.log('SERVER joined ', socket.room);
       });
     });
 
     socket.on('stt', widgetName => {
-      console.log('in stt', widgetName);
+      console.log('SERVER in stt', widgetName);
       getCommand(socket.room, socket, io);
     });
+
+    socket.on('invalid_request', () => {
+      console.log('SERVER in invalid request');
+      io.to('W_CONTAINER').emit('invalid_request');
+    })
 
   });
 }

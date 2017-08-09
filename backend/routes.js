@@ -2,7 +2,15 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const { localGetCommand } = require('./processHuman');
+// todo imports
 const Reminder = require('./models/models').Reminder;
+// twilio imports
+const accountSid = process.env.TWILIO_SID; // Account SID from www.twilio.com/console
+const authToken = process.env.TWILIO_AUTH_TOKEN; // Auth Token from www.twilio.com/console
+const twilio = require('twilio');
+const client = new twilio(accountSid, authToken);
+const FROM_NUMBER = process.env.MY_TWILIO_NUMBER; // custom Twilio number
+const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; format: +1234567890
 
 //------------------- ToDo Routes -----------------------
 
@@ -43,45 +51,21 @@ router.post('/deltodo', (req, res) => {
     })
     //create new Reminder form model and store it in DB
      // return the Reminder in response and push it into array
-})
+});
 
-// router.post('/stt', (req, res) => {
-//   console.log('in stt post');
-//   getCommand('testwidget').then(respObj => {
-//     console.log('finished get command');
-//     console.log('got this info:', respObj);
-//   })
-//   .then(() => {
-//     res.redirect('/');
-//   })
-//   .catch( err => {
-//     console.log('ERROR on server side :/', err);
-//     res.redirect('/');
-//   })
-// });
-//
-// // Local Helper Function
-// function getCommand (widgetName) {
-//   console.log('reached {A}')
-//   return localGetCommand(widgetName)
-//     .then( respObj => {
-//       console.log('reached {B}')
-//
-//       if (respObj.notFinished) {
-//         console.log('reached {C}', respObj)
-//         //change text question response
-//         this.setState({currentResponse: respObj.response});
-//
-//         return getCommand(widgetName)
-//         // return setTimeout(() => {return getCommand(widgetName)}, 1000);
-//       } else {
-//         console.log('reached {D}')
-//         return respObj;
-//       }
-//     })
-//     .catch( err => {
-//       console.log('encountered error :(', err);
-//     });
-// }
+// INSERT UBER ROUTES
+
+// NEWS TWILIO ROUTE
+router.post('/sendArticle', (req, res) => {
+  client.messages.create({
+    body: req.body.link,
+    to: TO_NUMBER,  // Text this number
+    from: FROM_NUMBER // From a valid Twilio number
+  })
+  .then( msg => {
+    console.log('SERVER sent msg:', msg);
+  });
+
+})
 
 module.exports = router;

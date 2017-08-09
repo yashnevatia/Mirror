@@ -31,7 +31,7 @@ class Weather extends React.Component {
   }
   render() {
     const icon = weatherIcon(this.state.icon);
-    console.log('ICON', icon);
+    // console.log('ICON', icon);
     return (
       <div className={this.props.weatherState ? 'isActiveWeather' : 'isStandbyWeather'}>
         <img src={icon} height="75" width="75"></img>
