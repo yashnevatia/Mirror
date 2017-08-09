@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-
+import Weather from './Weather';
 import Time from './Time';
 import Radio from './Radio';
 import News from './News';
@@ -26,25 +26,24 @@ class WidgetContainer extends React.Component {
     return(
       <div className="outerDiv" id="q">
 		
-			{this.props.isActive ? <h1> Active </h1> : <div></div>}
-			{this.props.widget === 'news' ? <News /> : <div></div>}
-		    	{this.props.widget === 'radio' ? <Radio /> : <div></div>}
+
+		    	
            <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
              <ReactCSSTransitionGroup transitionName = "example"
                transitionAppear = {true} transitionAppearTimeout = {2000}
                transitionEnter = {false} transitionLeave = {false}>
                <Time timeState={this.props.isActive}/>
-               {/*<Weather weatherState={this.props.isActive}/>*/}
+               <Weather weatherState={this.props.isActive}/>
              </ReactCSSTransitionGroup>
           </div>
-          {/*<div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
+          <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
               { this.state.hasResponse && <div className="rDiv"><Response /></div> }
-          </div>*/}
+          </div>
           <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
               <ReactCSSTransitionGroup transitionName = "example"
                 transitionAppear = {true} transitionAppearTimeout = {2000}
                 transitionEnter = {false} transitionLeave = {false}>
-
+				{this.props.widget === 'radio' ? <Radio /> : <div></div>}
                 {this.props.widget === 'news' ? <News /> : <div></div>}
 
               </ReactCSSTransitionGroup>

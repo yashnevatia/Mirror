@@ -45,12 +45,19 @@ class Container extends React.Component {
       })
     });
 
-    socket.on('widget', function(hotword){
-	  console.log("widget",hotword);
+    socket.on('radio', function(){
+	  console.log("widget");
       self.setState({
-        widget:hotword
+        widget:"radio"
       })
     })
+    
+    socket.on('news', function(){
+	  console.log("widget");
+      self.setState({
+        widget:"news"
+      })
+	})
 
   }
 

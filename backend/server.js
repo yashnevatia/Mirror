@@ -45,9 +45,13 @@ io.on('connection', function(socket){
 	  console.log("sleep");
 	  socket.emit('sleep');
 	  }
-    else {
+    else if(hotword === 'radio'){
       console.log("widget was heard");
-      socket.emit('widget', hotword);
+      socket.emit('radio');
+    }
+    else if(hotword === 'news'){
+      console.log("widget was heard");
+      socket.emit('news');
     }
 
   });
