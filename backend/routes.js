@@ -2,7 +2,23 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const { localGetCommand } = require('./processHuman');
+const Reminder = require('./models/models')
 
+//------------------- ToDo Routes -----------------------
+
+router.get('/todo', (req, res) => {
+    //get all the ToDo's from data base and return them when pushed into an array --> set this.setState with it
+})
+
+router.post('/todo', (req, res) => {
+    //create new Reminder form model and store it in DB
+     // return the Reminder in response and push it into array
+})
+
+router.post('/deltodo', (req, res) => {
+    //create new Reminder form model and store it in DB
+     // return the Reminder in response and push it into array
+})
 
 // router.post('/stt', (req, res) => {
 //   console.log('in stt post');

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';x
 
 class ToDo extends React.Component {
 
@@ -11,6 +12,8 @@ class ToDo extends React.Component {
 
   componentDidMount () {
     // get request to retrive all existing todos
+    axios.get('http://localhost:3000/todo')
+        .then((resp) => this.setState({toDo: resp}))
   }
 
   //funciton to add todo
@@ -29,7 +32,7 @@ class ToDo extends React.Component {
     // loop through articles for current source and list out article heaadlines
     return (
       <div >
-
+          {this.state.toDo.map((toDo)=> {<li>{toDo.task}</li>})}
       </div>
     );
   }
