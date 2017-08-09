@@ -17,13 +17,26 @@ class ToDo extends React.Component {
   }
 
   //funciton to add todo
-    //adds todo to database
-        //axios post request with given task
-            //returns the ToDo object
-            // push to this.state.toDo
-    //renders new todo
+  const createToDo = (task) => {
+      //adds todo to database
+          //axios post request with given task
+    axios.post('http://localhost:3000/todo',
+        {task}
+    )
+    //returns the Reminder object
+    // push to this.state.toDo and update state
+    .then((resp) => {
+        newToDo = [...this.state.toDo,resp]
+        this.setState({toDo: newToDo})
+    })
+  }
+
   //funciton to delete todo
+  const createToDo = (task) => {
     // post request to delete
+    axios.post('http://localhost:3000/deltodo',
+        {task}
+    )
         //remove from state array --> find by id or task in array
 
 
