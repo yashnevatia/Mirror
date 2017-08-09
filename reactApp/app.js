@@ -48,7 +48,7 @@ class Container extends React.Component {
     socket.on('cancel', function(){
       console.log("cancelled");
       var temp = this.state.widget.slice();
-      temp.shift();
+      if(temp.length !== 0) temp.shift();
       this.setState({
         widget: temp
       })
