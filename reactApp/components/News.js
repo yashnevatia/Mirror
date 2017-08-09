@@ -16,6 +16,7 @@ class News extends React.Component {
       socket: props.socket
     };
 
+    this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
   }
 
@@ -43,14 +44,9 @@ class News extends React.Component {
     });
 
     // next line starts google listening as soon as component renders:
-    this.startListening();
+    this.startListening('NEWS');
 
     // END SOCKETS STUFF
-  }
-
-  // FUNCTION TO START STT LISTNENING
-  startListening () {
-    this.state.socket.emit('stt', 'NEWS');
   }
 
   processRequest(respObj) {
@@ -60,13 +56,9 @@ class News extends React.Component {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
         .then(() => {
-          // next line for testing purposes only:
           console.log(' here here here here ', self.state.currentSource, self.state.currentArticles)
-          // this.pinArticle("North Korea");
-        })
-        .then(() => {
           // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
-          // self.startListening();
+          self.startListening('NEWS');
         })
         .catch( err => {
           console.log('ERROR :(', err);
@@ -115,14 +107,12 @@ class News extends React.Component {
     if (articleNum < this.state.currentArticles.length) {
       this.setState({currentSource: this.state.currentArticles[articleNum]});
 
-    // this.state.currentArticles.map(article => {
-      // console.log('bool', article.title.toLowerCase().startsWith(articleTitle.toLowerCase()));
-      // if (article.title.toLowerCase().startsWith(articleTitle.toLowerCase())) {
       const linkToSend = this.state.currentSource.url;
       console.log('LINK', linkToSend);
 
       // send link
       axios.post('/sendArticle', {link: linkToSend});
+
     } else {
       self.state.socket.emit('invalid_request');
       resolve('did nothing');

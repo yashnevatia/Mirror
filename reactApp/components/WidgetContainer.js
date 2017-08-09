@@ -19,41 +19,44 @@ class WidgetContainer extends React.Component {
   }
 
   componentDidMount() {
-
-  // START SOCKET LISTENERS
-  const self = this;
-  this.state.socket.on('connect', () => {
-    console.log("connected container");
-    self.state.socket.emit('join', 'W_CONTAINER');
-
-  });
-
-  this.state.socket.on('invalid_request', () => {
-    console.log('WC in invalid request')
-    this.setState({currentResponse: "I'm sorry, I did not understand that"});
-  });
-
-  this.state.socket.on('stt_continuing', respObj => {
-    console.log('WC received stt continuing', respObj);
-
-    this.setState({currentResponse: respObj.response});
-    console.log('WC reset state with current response')
-  });
-
-  this.state.socket.on('stt_finished', respObj => {
-    console.log('WC received stt finished', respObj);
+    // START SOCKET LISTENERS
     const self = this;
+    this.state.socket.on('connect', () => {
+      console.log("connected container");
+      self.state.socket.emit('join', 'W_CONTAINER');
 
-    this.setState({currentResponse: respObj.response});
-    const timeout = (respObj.category === "news article") ? 6000 : 1000;
-    setTimeout(() => {
-      console.log('WC in timeout of stt finished');
-      self.setState({currentResponse: ''})
-    }, timeout)
-  });
-  // END SOCKET LISTENERS
-}
+    });
 
+    this.state.socket.on('invalid_request', () => {
+      console.log('WC in invalid request')
+      this.setState({currentResponse: "I'm sorry, I did not understand that"});
+    });
+
+    this.state.socket.on('stt_continuing', respObj => {
+      console.log('WC received stt continuing', respObj);
+
+      this.setState({currentResponse: respObj.response});
+      console.log('WC reset state with current response')
+    });
+
+    this.state.socket.on('stt_finished', respObj => {
+      console.log('WC received stt finished', respObj);
+      const self = this;
+
+      this.setState({currentResponse: respObj.response});
+      const timeout = (respObj.category === "news article") ? 6000 : 1000;
+      setTimeout(() => {
+        console.log('WC in timeout of stt finished');
+        self.setState({currentResponse: ''})
+      }, timeout)
+    });
+    // END SOCKET LISTENERS
+  }
+
+  // FUNCTION FOR WIDGET START STT LISTNENING
+  startListening (widgetName) {
+    this.state.socket.emit('stt', widgetName.toUpperCase());
+  }
 
   determineThreeWidgets() {
      // function to determine which widgets show
@@ -80,8 +83,8 @@ class WidgetContainer extends React.Component {
                 transitionAppear = {true} transitionAppearTimeout = {2000}
                 transitionEnter = {false} transitionLeave = {false}>
 
-				        {this.props.widget === 'radio' ? <Radio socket={this.state.socket} /> : <div></div>}
-                {this.props.widget === 'news' ? <News socket={this.state.socket}  /> : <div></div>}
+				        {this.props.widget === 'radio' ? <Radio socket={this.state.socket} listen={this.startListening} /> : <div></div>}
+                {this.props.widget === 'news' ? <News socket={this.state.socket} listen={this.startListening} /> : <div></div>}
 
               </ReactCSSTransitionGroup>
           </div>
