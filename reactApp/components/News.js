@@ -75,6 +75,7 @@ class News extends React.Component {
     } else if (respObj.category === 'news article') {
       const articleNum = parseInt(respObj.params.number) || parseInt(respObj.params.ordinal) || 1;
       self.pinArticle(articleNum - 1)
+      
     } else {
       self.state.socket.emit('invalid_request');
     }
