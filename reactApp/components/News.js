@@ -30,15 +30,14 @@ class News extends React.Component {
 
     // START SOCKETS STUFF
     const self = this;
-    console.log('going to connect to socket', this.state.socket);
     this.state.socket.on('connect', () => {
-      console.log("connected news");
-
+      // join socket as ToDo
+      console.log('CLIENT news connected to sockets');
       self.state.socket.emit('join', 'NEWS');
 
+      // listen for end of stt
       self.state.socket.on('stt_finished', respObj => {
         console.log('received stt finished', respObj);
-
         self.processRequest(respObj);
       });
     });
@@ -56,7 +55,6 @@ class News extends React.Component {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
         .then(() => {
-          console.log(' here here here here ', self.state.currentSource, self.state.currentArticles)
           // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
           self.startListening('NEWS');
         })
@@ -65,7 +63,9 @@ class News extends React.Component {
         });
 
     } else if (respObj.category === 'news article') {
+      // user specifies number of article
       const articleNum = parseInt(respObj.params.number) || parseInt(respObj.params.ordinal) || 1;
+      // twilio texts article to user
       self.pinArticle(articleNum - 1)
 
     } else {

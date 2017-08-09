@@ -12,7 +12,7 @@ const client = new twilio(accountSid, authToken);
 const FROM_NUMBER = process.env.MY_TWILIO_NUMBER; // custom Twilio number
 const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; format: +1234567890
 
-//------------------- ToDo Routes -----------------------
+/*------------------- ToDo Routes -----------------------*/
 
 router.get('/todo', (req, res) => {
     //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
@@ -49,13 +49,16 @@ router.post('/deltodo', (req, res) => {
             res.send(resp)
         })
     })
-    //create new Reminder form model and store it in DB
-     // return the Reminder in response and push it into array
+
 });
 
-// INSERT UBER ROUTES
+/*------------------- INSERT Uber Routes -----------------------*/
 
-// NEWS TWILIO ROUTE
+
+
+/*------------------- News Routes -----------------------*/
+
+//use twilio to send article link to phone via text
 router.post('/sendArticle', (req, res) => {
   client.messages.create({
     body: req.body.link,

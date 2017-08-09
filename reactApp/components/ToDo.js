@@ -2,15 +2,15 @@ import React from 'react';
 import axios from 'axios';
 
 class ToDo extends React.Component {
-  //componentdidMount --> onConnect--> emit join &widget name
-  //on stt finished// create finished processing funciton
-
   constructor (props) {
     super(props);
+
     this.state = {
       toDo: [{task:'clean'},{task:'jump'}],
       socket: props.socket
     };
+
+    this.startListening = this.props.listen.bind(this);
   }
 
   componentDidMount() {
@@ -20,11 +20,15 @@ class ToDo extends React.Component {
     // START SOCKETS STUFF:
     const self = this;
     this.state.socket.on('connect', () => {
+      // join socket as ToDo
       console.log('CLIENT todo connected to sockets');
-
       self.state.socket.emit('join', 'TODO');
 
-      
+      // listen for end of stt
+      self.state.socket.on('stt_finished', respObj => {
+        console.log('received stt finished', respObj);
+        self.processRequest(respObj);
+      });
 
     });
   }
@@ -49,6 +53,20 @@ class ToDo extends React.Component {
       this.setState({toDo: resp})
     })
   };
+
+  processRequest(respObj) {
+    const self = this;
+
+    if (respObj.category === 'todo') {
+      // if add task
+      this.createToDo(respObj.params.NAME)
+      // if remove task
+      this.deleteToDo(respObj.params.NAME)
+
+    } else {
+      self.state.socket.emit('invalid_request');
+    }
+  }
 
 
   render () {
