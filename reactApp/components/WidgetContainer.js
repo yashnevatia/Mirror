@@ -54,11 +54,7 @@ class WidgetContainer extends React.Component {
      // function to determine which widgets show
   }
 
-  // renderWidget(){
-  //   return(
-  //     <h1>hello yash</h1>
-  //   )
-  // }
+
 
   render () {
 	  console.log("ACTIVE", this.props.isActive, this.props.widget);
@@ -88,7 +84,6 @@ class WidgetContainer extends React.Component {
                   {widget === "uber" ? <Uber socket={this.state.socket}  /> : <div></div>}
                   {widget === "todo" ? <Todo socket={this.state.socket}  /> : <div></div>}
                 })}
-
               </ReactCSSTransitionGroup>
           </div>
 	 </div>

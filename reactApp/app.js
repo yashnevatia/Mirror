@@ -9,9 +9,9 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: true,
-      widget: [],
-    };
+      isActive: false,
+	  widget: []
+    }
     this.isMirrorActive = this.isMirrorActive.bind(this);
   }
 
@@ -47,61 +47,24 @@ class Container extends React.Component {
 
     socket.on('cancel', function(){
       console.log("cancelled");
-      var temp = this.state.widget.slice();
+      var temp = self.state.widget.slice();
       if(temp.length !== 0) temp.shift();
-      this.setState({
+      self.setState({
         widget: temp
       })
     })
 
     socket.on('widget', function(widgetName){
       console.log("widget", widgetName);
-      var temp = this.state.widget.slice();
+      var temp = self.state.widget.slice();
       if(temp.length === 3)temp.pop();
       temp.unshift(widgetName);
-      this.setState({
+      self.setState({
         widget: temp
       })
     })
 
-    // socket.on('radio', function(){
-  	//   console.log("widget");
-    //   var temp = this.state.widget.slice();
-    //   if(temp.length === 3)temp.pop();
-    //   temp.unshift("radio");
-    //     self.setState({
-    //       widget:temp
-    //     })
-    // })
-    //
-    // socket.on('news', function(){
-  	//   console.log("widget");
-    //   var temp = this.state.widget.slice();
-    //   if(temp.length === 3)temp.pop();
-    //   temp.unshift("news");
-    //     self.setState({
-    //       widget:temp
-    //     })
-	  // })
-    //
-    // socket.on('uber', function(){
-  	//   console.log("widget");
-    //   var temp = this.state.widget.slice();
-    //   if(temp.length === 3)temp.pop();
-    //   temp.unshift("uber");
-    //     self.setState({
-    //       widget:temp
-    //     })
-	  // })
-    //
-    // socket.on('todo', function(){
-  	//   console.log("widget");
-    //   var temp = this.state.widget.slice();
-    //   temp.unshift("todo");
-    //     self.setState({
-    //       widget:temp
-    //     })
-	  // })
+    
 
   }
 
@@ -109,8 +72,7 @@ class Container extends React.Component {
     console.log('sending socket', socket);
     return (
       <WidgetContainer isActive={this.state.isActive}
-        // widget={this.state.widget}
-        widget={'news'}
+        widget={this.state.widget}
         className="card2"
         socket={socket}
       />

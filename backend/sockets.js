@@ -71,25 +71,6 @@ module.exports = function (io) {
       else{
         socket.emit('widget', hotword);
       }
-      // else if(hotword === 'radio'){
-      //   console.log("widget was heard");
-      //   socket.emit('radio');
-      // }
-      // else if(hotword === 'news'){
-      //   console.log("widget was heard");
-      //   socket.emit('news');
-      // }
-      // else if(hotword === 'uber'){
-      //   console.log("widget was heard");
-      //   socket.emit('uber');
-      // }
-      // else if(hotword === 'todo'){
-      //   console.log("widget was heard");
-      //   socket.emit('todo');
-      // }
-      // else {
-      //   console.log("unknown hotword");
-      // }
     });
 
     // socket listeners for STT

@@ -32,10 +32,10 @@ def radio():
 def todo():
     print("todo")
 
-def radio():
+def uber():
     print("uber")
 
-def radio():
+def cancel():
     print("cancel")
 
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
