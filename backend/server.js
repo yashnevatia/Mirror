@@ -22,7 +22,7 @@ socketConfig(io);
 // END SOCKET SERVER STUFF
 
 
-// TODO List & UBER Routes
+// WIDGET Routes
 app.use('/', routes);
 
 

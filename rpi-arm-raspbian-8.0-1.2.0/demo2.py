@@ -29,6 +29,7 @@ def news():
 def radio():
     print("radio")
 
+# modelpath = "/Users/amandahansen/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",

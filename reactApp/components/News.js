@@ -8,8 +8,6 @@ class News extends React.Component {
   constructor (props) {
     super(props);
 
-    console.log('props:', props.socket)
-
     this.state = {
       allSources: [],
       currentSource: {},
@@ -29,9 +27,14 @@ class News extends React.Component {
         // console.log('here', this.state.allSources);
         this.selectSource('BBC News');
       })
-      .catch(console.log);
+      .then(() => {
+        // next line for testing purposes only:
+        console.log(' here here here here ')
 
-    // this.pinArticle("Trump 'pressed Mexico");
+        this.pinArticle("North Korea");
+
+      })
+      .catch(console.log);
 
     // START SOCKETS STUFF
     const self = this;
@@ -41,9 +44,6 @@ class News extends React.Component {
 
       self.state.socket.emit('join', 'NEWS');
 
-      // next line for testing purposes only:
-      // self.state.socket.emit('stt', 'NEWS');
-
       self.state.socket.on('stt_finished', respObj => {
         console.log('received stt finished', respObj);
       });
@@ -51,37 +51,50 @@ class News extends React.Component {
       // change state of news here from respObj params
 
     });
+
+    // next line for testing purposes only:
+    // this.startListening();
+
     // END SOCKETS STUFF
+  }
+
+
+  startListening () {
+    this.state.socket.emit('stt', 'NEWS');
   }
 
   // function for user to select specific news source
   // sets state with source and headlines, returns null if not found
   selectSource (sourceName) {
-    this.state.allSources.map(source => {
-      if (source.name.toLowerCase().startsWith(sourceName.toLowerCase())) {
-        this.setState({currentSource: source});
+    return new Promise((resolve, reject) => {
+      this.state.allSources.map(source => {
+        if (source.name.toLowerCase().startsWith(sourceName.toLowerCase())) {
           // console.log('current source', this.state.currentSource);
-      }
+          this.setState({currentSource: source});
+        }
+      });
+
+      resolve( axios.get(`https://newsapi.org/v1/articles?source=${this.state.currentSource.id}&apiKey=${NEWS_API_KEY}`)
+        .then(resp => {
+          this.setState({currentArticles: [...resp.data.articles]});
+          resolve(this.setState({image: resp.data.articles[0].urlToImage}));
+        })
+      );
     });
 
-    return axios.get(`https://newsapi.org/v1/articles?source=${this.state.currentSource.id}&apiKey=${NEWS_API_KEY}`)
-      .then(resp => {
-        // console.log('RESP', resp);
-
-        this.setState({currentArticles: [...resp.data.articles]});
-        this.setState({image: resp.data.articles[0].urlToImage});
-        // console.log('IMAGE HERE', this.state.image);
-      })
-      .catch(console.log);
   }
 
-  // function from which we'll later send text to user of article url they choose
+  // function that texts user with link to article of their choosing
   pinArticle (articleTitle) {
+    console.log('CLIENT in send article', articleTitle, this.state.currentArticles);
+
     this.state.currentArticles.map(article => {
       if (article.title.toLowerCase().startsWith(articleTitle.toLowerCase())) {
-        // send twilio message with this article link
+        console.log('LINK', linkToSend);
         const linkToSend = article.url;
-        // console.log('LINK', linkToSend);
+
+        // send link
+        axios.post('/sendArticle', {link: linkToSend});
       }
     });
   }
