@@ -13,6 +13,7 @@ class Response extends React.Component {
   }
 
   render() {
+    console.log('rendered with ', this.props.display);
     return (
     <div className="response">
       <p>> Iris: </p>

@@ -82,18 +82,23 @@ module.exports = function (io) {
     // socket listeners for STT
     socket.room = 'DEFAULT';
     socket.on('join', widgetName => {
-      console.log('in join', widgetName);
+      console.log('SERVER in join', widgetName);
       socket.room = widgetName;
 
       socket.join(socket.room, () => {
-        console.log('joined ', socket.room);
+        console.log('SERVER joined ', socket.room);
       });
     });
 
     socket.on('stt', widgetName => {
-      console.log('in stt', widgetName);
+      console.log('SERVER in stt', widgetName);
       getCommand(socket.room, socket, io);
     });
+
+    socket.on('invalid_request', () => {
+      console.log('SERVER in invalid request');
+      io.to('W_CONTAINER').emit('invalid_request');
+    })
 
   });
 }

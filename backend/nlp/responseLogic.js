@@ -6,7 +6,7 @@ function analyzeRequest (data) {
 
   return new Promise((resolve, reject) => {
     const notFinished = resp.actionIncomplete;
-    const category = resp.action;
+    const category = resp.metadata.intentName.toLowerCase();
     const response = resp.fulfillment.speech;
 
     // return object with info widget needs

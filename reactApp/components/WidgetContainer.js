@@ -22,27 +22,34 @@ class WidgetContainer extends React.Component {
 
   // START SOCKET LISTENERS
   const self = this;
-  this.state.socket.on('connect', function(){
+  this.state.socket.on('connect', () => {
     console.log("connected container");
     self.state.socket.emit('join', 'W_CONTAINER');
 
   });
 
+  this.state.socket.on('invalid_request', () => {
+    console.log('WC in invalid request')
+    this.setState({currentResponse: "I'm sorry, I did not understand that"});
+  });
+
   this.state.socket.on('stt_continuing', respObj => {
-    console.log('received stt continuing', respObj);
+    console.log('WC received stt continuing', respObj);
 
     this.setState({currentResponse: respObj.response});
+    console.log('WC reset state with current response')
   });
 
   this.state.socket.on('stt_finished', respObj => {
-    console.log('received stt finished', respObj);
+    console.log('WC received stt finished', respObj);
     const self = this;
 
     this.setState({currentResponse: respObj.response});
+    const timeout = (respObj.category === "news article") ? 6000 : 1000;
     setTimeout(() => {
-      console.log('in timeout of stt finished');
+      console.log('WC in timeout of stt finished');
       self.setState({currentResponse: ''})
-    }, 6000)
+    }, timeout)
   });
   // END SOCKET LISTENERS
 }
@@ -57,8 +64,6 @@ class WidgetContainer extends React.Component {
     return(
       <div className="outerDiv" id="q">
 
-
-
            <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
              <ReactCSSTransitionGroup transitionName = "example"
                transitionAppear = {true} transitionAppearTimeout = {2000}
@@ -68,7 +73,7 @@ class WidgetContainer extends React.Component {
              </ReactCSSTransitionGroup>
           </div>
           <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-              { this.state.hasResponse && <div className="rDiv"><Response /></div> }
+              { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
           </div>
           <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
               <ReactCSSTransitionGroup transitionName = "example"
