@@ -7,11 +7,15 @@ class News extends React.Component {
 
   constructor (props) {
     super(props);
+
+    console.log('props:', props.socket)
+
     this.state = {
       allSources: [],
       currentSource: {},
       currentArticles: [],
-      image: ''
+      image: '',
+      socket: props.socket
     };
   }
 
@@ -22,12 +26,32 @@ class News extends React.Component {
         this.setState({allSources: newSources});
       })
       .then(() => {
-        console.log('here', this.state.allSources);
+        // console.log('here', this.state.allSources);
         this.selectSource('BBC News');
       })
       .catch(console.log);
 
-      // this.pinArticle("Trump 'pressed Mexico");
+    // this.pinArticle("Trump 'pressed Mexico");
+
+    // START SOCKETS STUFF
+    const self = this;
+    console.log('going to connect to socket', this.state.socket);
+    this.state.socket.on('connect', function() {
+      console.log("connected news");
+
+      self.state.socket.emit('join', 'NEWS');
+
+      // next line for testing purposes only:
+      // self.state.socket.emit('stt', 'NEWS');
+
+      self.state.socket.on('stt_finished', respObj => {
+        console.log('received stt finished', respObj);
+      });
+
+      // change state of news here from respObj params
+
+    });
+    // END SOCKETS STUFF
   }
 
   // function for user to select specific news source
@@ -36,18 +60,17 @@ class News extends React.Component {
     this.state.allSources.map(source => {
       if (source.name.toLowerCase().startsWith(sourceName.toLowerCase())) {
         this.setState({currentSource: source});
-        console.log('current source', this.state.currentSource
-        );
+          // console.log('current source', this.state.currentSource);
       }
     });
 
     return axios.get(`https://newsapi.org/v1/articles?source=${this.state.currentSource.id}&apiKey=${NEWS_API_KEY}`)
       .then(resp => {
-        console.log('RESP', resp);
+        // console.log('RESP', resp);
 
         this.setState({currentArticles: [...resp.data.articles]});
         this.setState({image: resp.data.articles[0].urlToImage});
-        console.log('IMAGE HERE', this.state.image);
+        // console.log('IMAGE HERE', this.state.image);
       })
       .catch(console.log);
   }
@@ -58,7 +81,7 @@ class News extends React.Component {
       if (article.title.toLowerCase().startsWith(articleTitle.toLowerCase())) {
         // send twilio message with this article link
         const linkToSend = article.url;
-        console.log('LINK', linkToSend);
+        // console.log('LINK', linkToSend);
       }
     });
   }
