@@ -9,6 +9,7 @@ import News from './News';
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,46 +21,49 @@ class WidgetContainer extends React.Component {
 
   componentDidMount() {
 
-  // START SOCKET LISTENERS
-  const self = this;
-  this.state.socket.on('connect', function(){
-    console.log("connected container");
-    self.state.socket.emit('join', 'W_CONTAINER');
-
-  });
-
-  this.state.socket.on('stt_continuing', respObj => {
-    console.log('received stt continuing', respObj);
-
-    this.setState({currentResponse: respObj.response});
-  });
-
-  this.state.socket.on('stt_finished', respObj => {
-    console.log('received stt finished', respObj);
+    // START SOCKET LISTENERS
     const self = this;
+    this.state.socket.on('connect', function(){
+      console.log("connected container");
+      self.state.socket.emit('join', 'W_CONTAINER');
 
-    this.setState({currentResponse: respObj.response});
-    setTimeout(() => {
-      console.log('in timeout of stt finished');
-      self.setState({currentResponse: ''})
-    }, 6000)
-  });
-  // END SOCKET LISTENERS
-}
+    });
 
+    this.state.socket.on('stt_continuing', respObj => {
+      console.log('received stt continuing', respObj);
+
+      this.setState({currentResponse: respObj.response});
+    });
+
+    this.state.socket.on('stt_finished', respObj => {
+      console.log('received stt finished', respObj);
+      const self = this;
+
+      this.setState({currentResponse: respObj.response});
+      setTimeout(() => {
+        console.log('in timeout of stt finished');
+        self.setState({currentResponse: ''})
+      }, 6000)
+    });
+    // END SOCKET LISTENERS
+  }
 
   determineThreeWidgets() {
      // function to determine which widgets show
   }
+
+  // renderWidget(){
+  //   return(
+  //     <h1>hello yash</h1>
+  //   )
+  // }
 
   render () {
 	  console.log("ACTIVE", this.props.isActive, this.props.widget);
     return(
       <div className="outerDiv" id="q">
 
-
-
-           <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
+          <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
              <ReactCSSTransitionGroup transitionName = "example"
                transitionAppear = {true} transitionAppearTimeout = {2000}
                transitionEnter = {false} transitionLeave = {false}>
@@ -75,8 +79,13 @@ class WidgetContainer extends React.Component {
                 transitionAppear = {true} transitionAppearTimeout = {2000}
                 transitionEnter = {false} transitionLeave = {false}>
 
-				        {this.props.widget === 'radio' ? <Radio socket={this.state.socket} /> : <div></div>}
-                {this.props.widget === 'news' ? <News socket={this.state.socket}  /> : <div></div>}
+                {this.props.widget.map((widget) => {
+                  //return this.renderWidget(widget)
+                  {widget === "radio" ? <Radio socket={this.state.socket} /> : <div></div>}
+                  {widget === "news" ? <News socket={this.state.socket}  /> : <div></div>}
+                  {widget === "uber" ? <Uber socket={this.state.socket}  /> : <div></div>}
+                  {widget === "todo" ? <Todo socket={this.state.socket}  /> : <div></div>}
+                })}
 
               </ReactCSSTransitionGroup>
           </div>

@@ -51,8 +51,7 @@ function getCommand (widgetName, socket, io) {
 module.exports = function (io) {
   io.on('connection', function(socket){
 
-  	console.log("connected to sockets");
-  	console.log("listening");
+  	console.log("connected to sockets and listening");
 
     // socket listener for Hot Word
     rl.on('line', hotword => {
@@ -62,24 +61,40 @@ module.exports = function (io) {
         socket.emit('wakeup');
       }
       else if(hotword === 'sleep'){
-  	  console.log("sleep");
-  	  socket.emit('sleep');
-  	  }
-      else if(hotword === 'radio'){
-        console.log("widget was heard");
-        socket.emit('radio');
+        console.log("sleep");
+        socket.emit('sleep');
       }
-      else if(hotword === 'news'){
-        console.log("widget was heard");
-        socket.emit('news');
+      else if(hotword === 'cancel'){
+        console.log("cancel");
+        socket.emit('cancel');
       }
-      else {
-        console.log("unknown hotword");
+      else{
+        socket.emit('widget', hotword);
       }
+      // else if(hotword === 'radio'){
+      //   console.log("widget was heard");
+      //   socket.emit('radio');
+      // }
+      // else if(hotword === 'news'){
+      //   console.log("widget was heard");
+      //   socket.emit('news');
+      // }
+      // else if(hotword === 'uber'){
+      //   console.log("widget was heard");
+      //   socket.emit('uber');
+      // }
+      // else if(hotword === 'todo'){
+      //   console.log("widget was heard");
+      //   socket.emit('todo');
+      // }
+      // else {
+      //   console.log("unknown hotword");
+      // }
     });
 
     // socket listeners for STT
     socket.room = 'DEFAULT';
+
     socket.on('join', widgetName => {
       console.log('in join', widgetName);
       socket.room = widgetName;
