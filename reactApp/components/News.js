@@ -31,12 +31,10 @@ class News extends React.Component {
       })
       .catch(console.log);
 
-    // this.pinArticle("Trump 'pressed Mexico");
-
     // START SOCKETS STUFF
     const self = this;
     console.log('going to connect to socket', this.state.socket);
-    this.state.socket.on('connect', function() {
+    this.state.socket.on('connect', () => {
       console.log("connected news");
 
       self.state.socket.emit('join', 'NEWS');
