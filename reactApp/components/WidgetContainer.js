@@ -77,6 +77,7 @@ class WidgetContainer extends React.Component {
               transitionEnter = {false} transitionLeave = {false}>
 
               {this.props.widget === 'news' ? <News socket={this.state.socket} /> : <div></div>}
+              {this.props.widget === 'reminder' ? <ToDo /> : <div></div>}
 
             </ReactCSSTransitionGroup>
         </div>

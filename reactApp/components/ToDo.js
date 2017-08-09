@@ -1,43 +1,43 @@
 import React from 'react';
-import axios from 'axios';x
+import axios from 'axios';
 
 class ToDo extends React.Component {
+//add socket to state
+//componentdidMount --> onConnect--> emit join &widget name
+//on stt finished// create finished processing funciton
 
   constructor (props) {
     super(props);
     this.state = {
-      toDo: [],
+      toDo: [{task:'clean'},{task:'jump'}],
     };
   }
 
-  componentDidMount () {
+ componentDidMount() {
     // get request to retrive all existing todos
-    axios.get('http://localhost:3000/todo')
-        .then((resp) => this.setState({toDo: resp}))
-  }
+    axios.get('http://localhost:3000/todo').then((resp) => this.setState({toDo: resp}))
+}
 
-  //funciton to add todo
-  const createToDo = (task) => {
-      //adds todo to database
-          //axios post request with given task
-    axios.post('http://localhost:3000/todo',
-        {task}
-    )
-    //returns the Reminder object
-    // push to this.state.toDo and update state
+//function to add todo
+createToDo(task){
+    //axios post request with given task
+    axios.post('http://localhost:3000/todo', {task})
+    //returns the Reminder object, push to this.state.toDo and update state
     .then((resp) => {
         newToDo = [...this.state.toDo,resp]
         this.setState({toDo: newToDo})
     })
-  }
+};
 
-  //funciton to delete todo
-  const createToDo = (task) => {
+//funciton to delete todo
+deleteToDo(task){
     // post request to delete
-    axios.post('http://localhost:3000/deltodo',
-        {task}
-    )
-        //remove from state array --> find by id or task in array
+    axios.post('http://localhost:3000/deltodo', {task})
+    //return array of reminders in database without deleted reminder
+    .then((resp) => {
+        this.setState({toDo: resp})
+    })
+};
 
 
 
@@ -45,7 +45,10 @@ class ToDo extends React.Component {
     // loop through articles for current source and list out article heaadlines
     return (
       <div >
-          {this.state.toDo.map((toDo)=> {<li>{toDo.task}</li>})}
+          <h1 style={{color: 'white'}}> Reminders</h1>
+          {this.state.toDo.map((toDo)=> {
+              return (<li style={{color: 'white'}}>{toDo.task}</li>)
+          })}
       </div>
     );
   }
