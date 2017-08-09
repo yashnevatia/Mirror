@@ -42,7 +42,7 @@ class News extends React.Component {
       });
     });
 
-    // next line for testing purposes only:
+    // next line starts google listening as soon as component renders:
     this.startListening();
 
     // END SOCKETS STUFF
@@ -65,8 +65,8 @@ class News extends React.Component {
           // this.pinArticle("North Korea");
         })
         .then(() => {
-          // for testing purposes only
-          self.startListening();
+          // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
+          // self.startListening();
         })
         .catch( err => {
           console.log('ERROR :(', err);
@@ -75,7 +75,7 @@ class News extends React.Component {
     } else if (respObj.category === 'news article') {
       const articleNum = parseInt(respObj.params.number) || parseInt(respObj.params.ordinal) || 1;
       self.pinArticle(articleNum - 1)
-      
+
     } else {
       self.state.socket.emit('invalid_request');
     }
