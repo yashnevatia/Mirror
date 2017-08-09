@@ -16,7 +16,7 @@ class Response extends React.Component {
     return (
     <div className="response">
       <p>> Iris: </p>
-      <p> hello how are you </p>
+      <p> {this.props.display} </p>
      </div>
     );
   }

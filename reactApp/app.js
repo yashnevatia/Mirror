@@ -9,7 +9,7 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: false,
+      isActive: true,
       widget: ""
     };
     this.isMirrorActive = this.isMirrorActive.bind(this);
@@ -45,18 +45,31 @@ class Container extends React.Component {
       })
     });
 
-    socket.on('widget', function(hotword){
-	  console.log("widget",hotword);
+    socket.on('radio', function(){
+	  console.log("widget");
       self.setState({
-        widget:hotword
+        widget:"radio"
       })
     })
+
+    socket.on('news', function(){
+	  console.log("widget");
+      self.setState({
+        widget:"news"
+      })
+	})
 
   }
 
   render () {
+    console.log('sending socket', socket);
     return (
-      <WidgetContainer isActive={this.state.isActive} widget={this.state.widget} className="card2"/>
+      <WidgetContainer isActive={this.state.isActive}
+        // widget={this.state.widget}
+        widget={'news'}
+        className="card2"
+        socket={socket}
+      />
     );
   }
 }
