@@ -61,7 +61,7 @@ class WidgetContainer extends React.Component {
              transitionAppear = {true} transitionAppearTimeout = {2000}
              transitionEnter = {false} transitionLeave = {false}>
              <Time timeState={this.props.isActive}/>
-             {/* <Weather weatherState={this.props.isActive}/> */}
+             <Weather weatherState={this.props.isActive}/>
            </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
