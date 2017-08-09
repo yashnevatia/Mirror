@@ -4,8 +4,8 @@ const { localGetCommand } = require('./processHuman');
 
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-// const myFilePath = '/home/pi/Public/';
-const myFilePath = '/Users/amandahansen/';
+const myFilePath = '/home/pi/Public/';
+//const myFilePath = '/Users/amandahansen/';
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 

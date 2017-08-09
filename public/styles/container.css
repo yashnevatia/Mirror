@@ -24,7 +24,7 @@
     align-items: flex-start;
     min-width: 30%;
     padding-left: 0%;
-    padding-top: 0%;
+    padding-top: 7%;
 
 
     width: 28vw;
@@ -96,7 +96,7 @@
 }
 .newsList {
     margin: 0;
-    padding: 5%;
+    padding-top: 7%;
 }
 .newsListItem {
     font-family: 'Josefin Sans', sans-serif;
@@ -150,7 +150,7 @@ body{
     display: flex;
     justify-content: center;
     padding-left:0%;
-    padding-top: 3%;
+    padding-top: 6%;
 }
 .scotch_music{
   position: relative;
