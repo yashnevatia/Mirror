@@ -1,4 +1,4 @@
-build/
+public/build/
 env.sh
 
 # Logs
