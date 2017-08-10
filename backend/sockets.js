@@ -1,11 +1,13 @@
 // FILE WITH CODE FOR SOCKETS
+
 const spawn = require('child_process').spawn;
 const { localGetCommand } = require('./processHuman');
 
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-const myFilePath = '/home/pi/Public/';
-//const myFilePath = '/Users/amandahansen/';
+// const myFilePath = '/home/pi/Public/'; // PI
+// const myFilePath = '/Users/JFH/horizons/'; // JENS
+const myFilePath = '/Users/amandahansen/' // AMANDA
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
@@ -77,18 +79,23 @@ module.exports = function (io) {
     socket.room = 'DEFAULT';
 
     socket.on('join', widgetName => {
-      console.log('in join', widgetName);
+      console.log('SERVER in join', widgetName);
       socket.room = widgetName;
 
       socket.join(socket.room, () => {
-        console.log('joined ', socket.room);
+        console.log('SERVER joined ', socket.room);
       });
     });
 
     socket.on('stt', widgetName => {
-      console.log('in stt', widgetName);
+      console.log('SERVER in stt', widgetName);
       getCommand(socket.room, socket, io);
     });
+
+    socket.on('invalid_request', () => {
+      console.log('SERVER in invalid request');
+      io.to('W_CONTAINER').emit('invalid_request');
+    })
 
   });
 }
