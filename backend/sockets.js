@@ -95,6 +95,11 @@ module.exports = function (io) {
     socket.on('invalid_request', () => {
       console.log('SERVER in invalid request');
       io.to('W_CONTAINER').emit('invalid_request');
+    });
+
+    socket.on('custom_msg', (msg) => {
+      console.log('SERVER in custom message');
+      io.to('W_CONTAINER').emit('custom_msg', msg);
     })
 
   });

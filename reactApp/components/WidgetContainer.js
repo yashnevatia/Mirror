@@ -35,6 +35,11 @@ class WidgetContainer extends React.Component {
       this.setState({currentResponse: "I'm sorry, I did not understand that"});
     });
 
+    this.state.socket.on('custom_msg', ({ resp }) => {
+      console.log('WC in custom message')
+      this.setState({currentResponse: resp});
+    });
+
     this.state.socket.on('stt_continuing', respObj => {
       console.log('WC received stt continuing', respObj);
 
@@ -96,11 +101,12 @@ class WidgetContainer extends React.Component {
             { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
         <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+          <ToDo socket={this.state.socket} listen={this.startListening} />
+
           {this.props.widgets.map((widget, i) => {
   					return this.getWidget(widget, i);
   				})}
         </div>
-        <div><ToDo socket={this.state.socket} listen={this.startListening} /> </div>
 	    </div>
     );
   }
