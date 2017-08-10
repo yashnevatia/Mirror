@@ -49,7 +49,6 @@ router.post('/deltodo', (req, res) => {
             res.send(resp)
         })
     })
-
 });
 
 /*------------------- INSERT Uber Routes -----------------------*/

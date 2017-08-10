@@ -10,7 +10,7 @@ class Container extends React.Component {
     super();
     this.state = {
       isActive: true,
-      widget: "reminder"
+      widget: "news"
     };
     this.isMirrorActive = this.isMirrorActive.bind(this);
   }

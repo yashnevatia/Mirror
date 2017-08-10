@@ -58,10 +58,10 @@ class ToDo extends React.Component {
     const self = this;
 
     if (respObj.category === 'todo') {
-      // if add task
-      this.createToDo(respObj.params.NAME)
-      // if remove task
-      this.deleteToDo(respObj.params.NAME)
+      // // if add task
+      // this.createToDo(respObj.params.NAME)
+      // // if remove task
+      // this.deleteToDo(respObj.params.NAME)
 
     } else {
       self.state.socket.emit('invalid_request');
