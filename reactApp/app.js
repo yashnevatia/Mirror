@@ -42,6 +42,7 @@ class Container extends React.Component {
       console.log("sleep");
       self.setState({
         isActive: false,
+        widget:[]
       })
     });
 
