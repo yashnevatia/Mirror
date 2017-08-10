@@ -61,6 +61,10 @@ class Uber extends React.Component {
     // } else if (obj.category === 'uber - no') {
     //   self.cancelUber();
     // }
+    else if (obj.params && obj.params.uberConfirmation && obj.params.uberConfirmation === 'no') {
+      self.state.socket.emit('custom_msg', {resp: 'Okay, I will cancel your Uber'});
+      self.setState({destination: '', prices: []});
+    }
     else if (obj.category.startsWith('smalltalk') || (obj.category === 'uber' && obj.notFinished)) {
       self.startListening('UBER')
     } else {

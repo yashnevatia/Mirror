@@ -52,7 +52,7 @@ router.post('/deltodo', (req, res) => {
     })
 });
 
-/*------------------- INSERT Uber Routes -----------------------*/
+/*------------------- Uber Routes -----------------------*/
 
 // initialize node-uber
 const uber = new Uber({
