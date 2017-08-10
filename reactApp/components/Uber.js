@@ -13,9 +13,19 @@ class Uber extends React.Component {
       socket: props.socket
     };
 
-    // this.startListening = this.props.listen.bind(this);
+    this.startListening = this.props.listen.bind(this);
+    this.processRequest = this.processRequest.bind(this);
   }
   componentDidMount() {
+    //GET AVAILABLE PRODUCTS
+    axios.get('http://localhost:3000/products', {
+      params: {
+        pickup: this.state.home
+      }
+    })
+    .then(resp => {
+      this.setState({ products: resp.data });
+    })
     ////////////////////////////START SOCKETS
     const self = this;
     console.log('going to connect to socket', this.state.socket);
@@ -26,64 +36,49 @@ class Uber extends React.Component {
 
       self.state.socket.on('stt_continuing', obj => {
         console.log('STT OBJ continuing', obj)
+        self.processRequest(obj);
       })
-      //result.parameters.uberDestination
-
 
       self.state.socket.on('stt_finished', respObj => {
         console.log('received stt finished', respObj);
-
-        // self.processRequest(respObj);
+        self.processRequest(respObj)
       });
     });
+
     //////////////////////////////END SOCKETS
 
-    //GET AVAILABLE PRODUCTS
-    axios.get('http://localhost:3000/products', {
-      params: {
-        pickup: this.state.home
-      }
-    })
-    .then(resp => {
-      this.setState({ products: resp.data });
-      console.log('IMAGES', this.state.products)
-    })
-
-    //GET CURRENT RIDE
-    // axios.get('http://localhost:3000/current')
-    // .then(resp => {
-    //   console.log('current ride', resp)
-    // })
-
-    //UPDATE DESTINATION
-    // axios.get('http://localhost:3000/modify', {
-    //   params: {
-    //     updatedDestination: //your updated destination
-    //   }
-    // })
-    // .then(resp => {
-    //   console.log('modified ride', resp)
-    // })
+    // starts listening!!
+    this.startListening('UBER')
   }
 
   processRequest(obj) {
     const self = this;
-    if (obj.category === 'uber') {
-      self.setDestination(obj.parameters.uberDestination)
-      .then(() => {
-        console.log('UBER UBER UBER DESTINATION')
-        self.startListening('UBER');
-      })
-      .catch(err => {
-        console.log('ERROR', err);
-      })
-    } else if (obj.category === 'uber - yes') {
-      //more logic
+    if (obj.category === 'uber' && obj.params.uberDestination && obj.notFinished) {
+      self.setDestination(obj.params.uberDestination)
     }
+    // else if (obj.category === 'uber - yes') {
+    //   self.callUber();
+    // } else if (obj.category === 'uber - no') {
+    //   self.cancelUber();
+    // }
+    else if (obj.category.startsWith('smalltalk') || (obj.category === 'uber' && obj.notFinished)) {
+      self.startListening('UBER')
+    } else {
+      self.state.socket.emit('invalid_request');
+    }
+  }
+
+  callUber() {
+    console.log('uber called')
+  }
+
+  cancelUber(){
+    console.log('uber cancelled');
   }
 
   setDestination(destination) {
     this.setState({ destination });
+    console.log("DESTINATION WAS SET IN STATE")
     //GET PRICE ESTIMATE FOR PRODUCTS
     axios.get('http://localhost:3000/price', {
       params: {
@@ -94,17 +89,16 @@ class Uber extends React.Component {
       console.log('price estimate', resp.data.prices)
       this.setState({ prices: resp.data.prices })
     })
-
-    //GET ESTIMATES FOR CURRENT RIDE
-    axios.get('http://localhost:3000/estimate', {
-      params: {
-        product_id: this.state.productId.POOL,
-        pickup: this.state.home,
-        destination: this.state.destination,
-      }
-    }).then(resp => {
-      console.log('general estimates', resp.data)
-    })
+    // //GET ESTIMATES FOR CURRENT RIDE
+    // axios.get('http://localhost:3000/estimate', {
+    //   params: {
+    //     product_id: this.state.productId.POOL,
+    //     pickup: this.state.home,
+    //     destination: this.state.destination,
+    //   }
+    // }).then(resp => {
+    //   console.log('general estimates', resp.data)
+    // })
   }
 
   render() {

@@ -99,6 +99,9 @@ class WidgetContainer extends React.Component {
           {this.props.widgets.map((widget) => {
   					return this.getWidget(widget);
   				})}
+          <div>
+            <Uber socket={this.state.socket} listen={this.startListening} />
+          </div>
         </div>
 	    </div>
     );
