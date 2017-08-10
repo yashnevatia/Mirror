@@ -105,6 +105,20 @@
     padding-top: 2%;
     padding-left: 0.1%
 }
+
+.remindersListItem {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 400;
+    font-size: 120%;
+    padding-top: 2%;
+    padding-left: 0.1%;
+    color: #fff;
+    white-space: nowrap;
+    /*overflow: hidden;*/
+    /*animation: type 4s steps(60, end);*/
+}
+
+
 .timeDiv {
     display: flex;
     justify-content: center;
@@ -118,6 +132,7 @@
     position: absolute;
     right: 0;
     top: 0;
+    padding-top: 2%;
 }
 
 .widgetsStandby {
@@ -260,6 +275,21 @@ body{
     background-size: 35px 20px, 100% 100%, 100% 100%;
 }
 
+/*.slide-fade li {
+  transition: all 0.4s ease-out;
+  opacity: 0;
+}
+.slide-fade li.show {
+  opacity: 1;
+}*/
+
+li {
+  color: #fff;
+  margin: 0;
+  width: 95%;
+}
+
+
 .footer{
   color: white;
   position: absolute;
@@ -285,10 +315,10 @@ body{
 
 /* END ANIMATION STYLING */
 h1 {
-  font-family: 'Alegreya';
-  font-size: 30px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
   color: #4f4f4f;
-  margin-left: 30px;
+  margin: 0px;
 }
 h2 {
   font-family: 'Alegreya';

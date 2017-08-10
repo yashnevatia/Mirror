@@ -37,7 +37,7 @@ class ToDo extends React.Component {
     });
 
     // start listening at mount of component
-    this.startListening('TODO');
+    // this.startListening('TODO');
   }
 
   //function to add todo
@@ -101,9 +101,11 @@ class ToDo extends React.Component {
     return (
       <div >
         <h1 style={{color: 'white'}}> Reminders</h1>
+        <ol>
         {this.state.toDo.map((toDo)=> {
-          return (<li style={{color: 'white'}}>{toDo.task}</li>)
+          return (<li className="remindersListItem">{toDo.task}</li>)
         })}
+      </ol>
       </div>
     );
   }
