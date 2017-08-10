@@ -3,8 +3,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 
 import Time from './Time';
-// import Weather from './Weather';
-// import Radio from './Radio';
+import Weather from './Weather';
+import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import Todo from './Todo';
