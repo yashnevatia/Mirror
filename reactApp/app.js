@@ -9,9 +9,9 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: true,
-      widget: "news"
-    };
+      isActive: false,
+	    widgets: []
+    }
     this.isMirrorActive = this.isMirrorActive.bind(this);
   }
 
@@ -42,22 +42,30 @@ class Container extends React.Component {
       console.log("sleep");
       self.setState({
         isActive: false,
+        widget:[]
       })
     });
 
-    socket.on('radio', function(){
-	  console.log("widget");
+    socket.on('cancel', function(){
+      console.log("cancelled");
+      var temp = self.state.widget.slice();
+      if(temp.length !== 0) temp.shift();
       self.setState({
-        widget:"radio"
+        widget: temp
       })
     })
 
-    socket.on('news', function(){
-	  console.log("widget");
-      self.setState({
-        widget:"news"
-      })
-	})
+    socket.on('widget', function(widgetName){
+      console.log("widget", widgetName);
+      var temp = self.state.widget.slice();
+      if(temp.length === 3)temp.pop();
+      if(temp.indexOf(widgetName)=== -1){
+        temp.unshift(widgetName);
+        self.setState({
+          widget: temp
+        })
+      }
+    });
 
   }
 
@@ -65,13 +73,13 @@ class Container extends React.Component {
     console.log('sending socket', socket);
     return (
       <WidgetContainer isActive={this.state.isActive}
-        // widget={this.state.widget}
-        widget={this.state.widget}
+        widgets={this.state.widgets}
         className="card2"
         socket={socket}
       />
     );
   }
+
 }
 
 

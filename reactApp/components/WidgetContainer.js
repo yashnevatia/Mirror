@@ -6,16 +6,18 @@ import Time from './Time';
 // import Weather from './Weather';
 // import Radio from './Radio';
 import News from './News';
-import ToDo from './ToDo';
+import Uber from './Uber';
+import Todo from './Todo';
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
         hasResponse: true,
         currentResponse: '',
-        socket: props.socket
+        socket: props.socket,
     };
   }
 
@@ -59,38 +61,46 @@ class WidgetContainer extends React.Component {
     this.state.socket.emit('stt', widgetName.toUpperCase());
   }
 
-  determineThreeWidgets() {
-     // function to determine which widgets show
-  }
+
+	getWidget(widget) {
+
+    switch (widget){
+    	case 'radio':
+    		return <Radio socket={this.state.socket} listen={this.startListening} />;
+    	case 'news':
+    		return <News socket={this.state.socket} listen={this.startListening} />;
+    	case 'uber':
+    		return <Uber socket={this.state.socket} listen={this.startListening} />;
+    	case 'todo':
+    		return <Todo socket={this.state.socket} listen={this.startListening} />
+    	default:
+    		return <div></div>;
+    }
+
+	}
 
   render () {
-	  console.log("ACTIVE", this.props.isActive, this.props.widget);
+	  console.log("ACTIVE", this.props.isActive, this.props.widgets);
     return(
       <div className="outerDiv" id="q">
 
-           <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
-             <ReactCSSTransitionGroup transitionName = "example"
-               transitionAppear = {true} transitionAppearTimeout = {2000}
-               transitionEnter = {false} transitionLeave = {false}>
-               <Time timeState={this.props.isActive}/>
-               {/* <Weather weatherState={this.props.isActive}/> */}
-             </ReactCSSTransitionGroup>
-          </div>
-          <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-              { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
-          </div>
-          <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-              <ReactCSSTransitionGroup transitionName = "example"
-                transitionAppear = {true} transitionAppearTimeout = {2000}
-                transitionEnter = {false} transitionLeave = {false}>
-
-				        {/* {this.props.widget === 'radio' ? <Radio socket={this.state.socket} listen={this.startListening} /> : <div></div>} */}
-                {this.props.widget === 'news' ? <News socket={this.state.socket} listen={this.startListening} /> : <div></div>}
-                {this.props.widget === 'todo' ? <ToDo socket={this.state.socket} listen={this.startListening} /> : <div></div>}
-
-              </ReactCSSTransitionGroup>
-          </div>
-	 </div>
+        <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
+           <ReactCSSTransitionGroup transitionName = "example"
+             transitionAppear = {true} transitionAppearTimeout = {2000}
+             transitionEnter = {false} transitionLeave = {false}>
+             <Time timeState={this.props.isActive}/>
+             {/* <Weather weatherState={this.props.isActive}/> */}
+           </ReactCSSTransitionGroup>
+        </div>
+        <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
+            { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
+        </div>
+        <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+          {this.props.widgets.map((widget) => {
+  					return this.getWidget(widget);
+  				})}
+        </div>
+	    </div>
     );
   }
 }

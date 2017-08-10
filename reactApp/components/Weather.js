@@ -22,7 +22,7 @@ class Weather extends React.Component {
         });
         // console.log(this.state.icon);
       });
-    }, 1000)
+    }, 60000 *5)
     });
   }
   componentWillUnmount() {

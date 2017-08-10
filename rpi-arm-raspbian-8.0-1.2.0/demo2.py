@@ -29,18 +29,27 @@ def news():
 def radio():
     print("radio")
 
-# modelpath = "/Users/amandahansen/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
+def todo():
+    print("todo")
+
+def uber():
+    print("uber")
+
+def cancel():
+    print("cancel")
+
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
-          modelpath + "news.pmdl", modelpath + "radio.pmdl"]
+          modelpath + "news.pmdl", modelpath + "radio.pmdl",
+          modelpath + "todo.pmdl", modelpath + "uber.pmdl", modelpath + "cancel.pmdl"]
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
-callbacks = [wakeup, sleep, news, radio]
+callbacks = [wakeup, sleep, news, radio, todo, uber, cancel]
 print('Listening... Press Ctrl+C to exit')
 
 # main loop
