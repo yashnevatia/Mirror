@@ -71,7 +71,7 @@ class WidgetContainer extends React.Component {
     		return <News socket={this.state.socket} listen={this.startListening} />;
     	case 'uber':
     		return <Uber socket={this.state.socket} listen={this.startListening} />;
-    	case 'todo':
+    	case 'reminders':
     		return <Todo socket={this.state.socket} listen={this.startListening} />
     	default:
     		return <div></div>;

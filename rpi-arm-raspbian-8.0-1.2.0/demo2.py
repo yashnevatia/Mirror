@@ -30,7 +30,7 @@ def radio():
     print("radio")
 
 def todo():
-    print("todo")
+    print("reminders")
 
 def uber():
     print("uber")
@@ -38,11 +38,11 @@ def uber():
 def cancel():
     print("cancel")
 
-modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
+modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/asif/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
           modelpath + "news.pmdl", modelpath + "radio.pmdl",
-          modelpath + "todo.pmdl", modelpath + "uber.pmdl", modelpath + "cancel.pmdl"]
+          modelpath + "reminders.pmdl", modelpath + "uber.pmdl", modelpath + "cancel.pmdl"]
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
