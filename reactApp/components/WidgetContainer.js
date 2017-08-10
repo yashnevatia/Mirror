@@ -3,8 +3,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 
 import Time from './Time';
-import Weather from './Weather';
-import Radio from './Radio';
+// import Weather from './Weather';
+// import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import Todo from './Todo';
@@ -18,103 +18,89 @@ class WidgetContainer extends React.Component {
         hasResponse: true,
         currentResponse: '',
         socket: props.socket,
-        widgets: props.widget
     };
   }
 
   componentDidMount() {
-
     // START SOCKET LISTENERS
     const self = this;
-    this.state.socket.on('connect', function(){
+    this.state.socket.on('connect', () => {
       console.log("connected container");
       self.state.socket.emit('join', 'W_CONTAINER');
 
     });
 
+    this.state.socket.on('invalid_request', () => {
+      console.log('WC in invalid request')
+      this.setState({currentResponse: "I'm sorry, I did not understand that"});
+    });
+
     this.state.socket.on('stt_continuing', respObj => {
-      console.log('received stt continuing', respObj);
+      console.log('WC received stt continuing', respObj);
 
       this.setState({currentResponse: respObj.response});
+      console.log('WC reset state with current response')
     });
 
     this.state.socket.on('stt_finished', respObj => {
-      console.log('received stt finished', respObj);
+      console.log('WC received stt finished', respObj);
       const self = this;
 
       this.setState({currentResponse: respObj.response});
+      const timeout = (respObj.category === "news article") ? 6000 : 1000;
       setTimeout(() => {
-        console.log('in timeout of stt finished');
+        console.log('WC in timeout of stt finished');
         self.setState({currentResponse: ''})
-      }, 6000)
+      }, timeout)
     });
     // END SOCKET LISTENERS
   }
 
-<<<<<<< HEAD
-  determineThreeWidgets() {
-=======
-		getWidget(widget) {
-			
-			switch (widget){
-				case 'radio':
-					return <Radio />;
-				case 'news':
-					return <News />;
-				case 'uber':
-					return <Uber />;
-				case 'todo':
-					return <Todo />
-				default:
-					return <div></div>;
-			}
-			
-		}
-
->>>>>>> 6d7ee38451ba4511098f282a9fe7887c91a1ac67
-
+  // FUNCTION FOR WIDGET START STT LISTNENING
+  startListening (widgetName) {
+    this.state.socket.emit('stt', widgetName.toUpperCase());
   }
 
+
+	getWidget(widget) {
+
+    switch (widget){
+    	case 'radio':
+    		return <Radio socket={this.state.socket} listen={this.startListening} />;
+    	case 'news':
+    		return <News socket={this.state.socket} listen={this.startListening} />;
+    	case 'uber':
+    		return <Uber socket={this.state.socket} listen={this.startListening} />;
+    	case 'reminders':
+    		return <Todo socket={this.state.socket} listen={this.startListening} />
+    	default:
+    		return <div></div>;
+    }
+
+	}
+
   render () {
-	  console.log("ACTIVE", this.props.isActive, this.props.widget);
+	  console.log("ACTIVE", this.props.isActive, this.props.widgets);
     return(
       <div className="outerDiv" id="q">
 
-          <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
-             <ReactCSSTransitionGroup transitionName = "example"
-               transitionAppear = {true} transitionAppearTimeout = {2000}
-               transitionEnter = {false} transitionLeave = {false}>
-               <Time timeState={this.props.isActive}/>
-               <Weather weatherState={this.props.isActive}/>
-             </ReactCSSTransitionGroup>
-          </div>
-          <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-              { this.state.hasResponse && <div className="rDiv"><Response /></div> }
-          </div>
-          <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-              <ReactCSSTransitionGroup transitionName = "example"
-                transitionAppear = {true} transitionAppearTimeout = {2000}
-                transitionEnter = {false} transitionLeave = {false}>
-
-<<<<<<< HEAD
-                {
-                  this.props.widget.map((widget) => {
-                    return widget === "radio" ? <Radio socket={this.state.socket} /> : <div></div>
-                    return widget === "news" ? <News socket={this.state.socket}  /> : <div></div>
-                    return widget === "uber" ? <Uber socket={this.state.socket}  /> : <div></div>
-                    return widget === "todo" ? <Todo socket={this.state.socket}  /> : <div></div>
-                  })
-                }
-=======
-                {this.props.widget.map((widget) => {
-					const widgetTarget = this.getWidget(widget);
-					return widgetTarget;
-				}					
-				)}
->>>>>>> 6d7ee38451ba4511098f282a9fe7887c91a1ac67
-              </ReactCSSTransitionGroup>
-          </div>
-	 </div>
+        <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
+           <ReactCSSTransitionGroup transitionName = "example"
+             transitionAppear = {true} transitionAppearTimeout = {2000}
+             transitionEnter = {false} transitionLeave = {false}>
+             <Time timeState={this.props.isActive}/>
+             {/* <Weather weatherState={this.props.isActive}/> */}
+           </ReactCSSTransitionGroup>
+        </div>
+        <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
+            { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
+        </div>
+        <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+          {this.props.widgets.map((widget) => {
+  					return this.getWidget(widget);
+  				})}
+        </div>
+	    </div>
     );
   }
 }

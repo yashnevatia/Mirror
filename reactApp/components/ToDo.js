@@ -31,6 +31,9 @@ class ToDo extends React.Component {
       });
 
     });
+
+    // start listening at mount of component
+    this.startListening('TODO');
   }
 
   //function to add todo
@@ -57,14 +60,25 @@ class ToDo extends React.Component {
   processRequest(respObj) {
     const self = this;
 
+    // command is under todo category --> process it
     if (respObj.category === 'todo') {
-      // // if add task
-      // this.createToDo(respObj.params.NAME)
-      // // if remove task
-      // this.deleteToDo(respObj.params.NAME)
 
+      if (!respObj.params) {   // if no params, keep listening
+	self.startListening('TODO');
+      } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
+	self.startListening('TODO');
+      } else if (respObj.params.verb === 'add') {   // command is to add task
+	self.createToDo(respObj.params.task);
+      } else if (respObj.params.verb === 'add') {   // command is to delete task
+        self.deleteToDo(respObj.params.task);
+      }
+
+      // need an else statement here ?
+
+    // command did not fall under todo --> ignore and start listening again
     } else {
       self.state.socket.emit('invalid_request');
+      self.startListening('TODO');
     }
   }
 
