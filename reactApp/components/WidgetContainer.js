@@ -17,7 +17,8 @@ class WidgetContainer extends React.Component {
     this.state = {
         hasResponse: true,
         currentResponse: '',
-        socket: props.socket
+        socket: props.socket,
+        widgets: props.widget
     };
   }
 
@@ -51,10 +52,8 @@ class WidgetContainer extends React.Component {
   }
 
   determineThreeWidgets() {
-     // function to determine which widgets show
+
   }
-
-
 
   render () {
 	  console.log("ACTIVE", this.props.isActive, this.props.widget);
@@ -77,13 +76,14 @@ class WidgetContainer extends React.Component {
                 transitionAppear = {true} transitionAppearTimeout = {2000}
                 transitionEnter = {false} transitionLeave = {false}>
 
-                {this.props.widget.map((widget) => {
-                  //return this.renderWidget(widget)
-                  {widget === "radio" ? <Radio socket={this.state.socket} /> : <div></div>}
-                  {widget === "news" ? <News socket={this.state.socket}  /> : <div></div>}
-                  {widget === "uber" ? <Uber socket={this.state.socket}  /> : <div></div>}
-                  {widget === "todo" ? <Todo socket={this.state.socket}  /> : <div></div>}
-                })}
+                {
+                  this.props.widget.map((widget) => {
+                    return widget === "radio" ? <Radio socket={this.state.socket} /> : <div></div>
+                    return widget === "news" ? <News socket={this.state.socket}  /> : <div></div>
+                    return widget === "uber" ? <Uber socket={this.state.socket}  /> : <div></div>
+                    return widget === "todo" ? <Todo socket={this.state.socket}  /> : <div></div>
+                  })
+                }
               </ReactCSSTransitionGroup>
           </div>
 	 </div>

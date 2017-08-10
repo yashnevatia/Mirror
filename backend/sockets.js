@@ -68,7 +68,7 @@ module.exports = function (io) {
         console.log("cancel");
         socket.emit('cancel');
       }
-      else{
+      else {
         socket.emit('widget', hotword);
       }
     });
