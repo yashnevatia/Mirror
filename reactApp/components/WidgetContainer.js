@@ -7,7 +7,7 @@ import Time from './Time';
 // import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
-import Todo from './Todo';
+import ToDo from './ToDo';
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
@@ -100,6 +100,7 @@ class WidgetContainer extends React.Component {
   					return this.getWidget(widget, i);
   				})}
         </div>
+        <div><ToDo socket={this.state.socket} listen={this.startListening} /> </div>
 	    </div>
     );
   }

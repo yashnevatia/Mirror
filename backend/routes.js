@@ -17,7 +17,7 @@ const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; form
 
 router.get('/todo', (req, res) => {
     //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
-    Remider.find()
+    Reminder.find()
     .then((resp) =>{
         console.log("mounting",resp);
         res.send(resp)
