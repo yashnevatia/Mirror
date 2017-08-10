@@ -1,4 +1,4 @@
-
+public/build/
 env.sh
 
 # Logs
@@ -59,3 +59,4 @@ typings/
 
 # dotenv environment variables file
 .env
+env.sh
