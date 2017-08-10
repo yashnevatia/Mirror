@@ -50,9 +50,22 @@ class WidgetContainer extends React.Component {
     // END SOCKET LISTENERS
   }
 
-  determineThreeWidgets() {
-     // function to determine which widgets show
-  }
+		getWidget(widget) {
+			
+			switch (widget){
+				case 'radio':
+					return <Radio />;
+				case 'news':
+					return <News />;
+				case 'uber':
+					return <Uber />;
+				case 'todo':
+					return <Todo />
+				default:
+					return <div></div>;
+			}
+			
+		}
 
 
 
@@ -78,12 +91,10 @@ class WidgetContainer extends React.Component {
                 transitionEnter = {false} transitionLeave = {false}>
 
                 {this.props.widget.map((widget) => {
-                  //return this.renderWidget(widget)
-                  {widget === "radio" ? <Radio socket={this.state.socket} /> : <div></div>}
-                  {widget === "news" ? <News socket={this.state.socket}  /> : <div></div>}
-                  {widget === "uber" ? <Uber socket={this.state.socket}  /> : <div></div>}
-                  {widget === "todo" ? <Todo socket={this.state.socket}  /> : <div></div>}
-                })}
+					const widgetTarget = this.getWidget(widget);
+					return widgetTarget;
+				}					
+				)}
               </ReactCSSTransitionGroup>
           </div>
 	 </div>
