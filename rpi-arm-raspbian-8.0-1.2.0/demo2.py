@@ -1,7 +1,6 @@
 import snowboydecoder
 import sys
 import signal
-print("running python file now.")
 
 # Demo code for listening two hotwords at the same time
 
@@ -51,7 +50,6 @@ signal.signal(signal.SIGINT, signal_handler)
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
 callbacks = [wakeup, sleep, news, radio, todo, uber, cancel]
-print('Listening from python file.')
 
 # main loop
 # make sure you have the same numbers of callbacks and models

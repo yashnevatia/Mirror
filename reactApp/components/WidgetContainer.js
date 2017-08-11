@@ -67,7 +67,7 @@ class WidgetContainer extends React.Component {
   }
 
 	getWidget(widget, i) {
-
+	console.log('**********************************************************************************');
     switch (widget){
     	case 'radio':
     		return <Radio key={i} socket={this.state.socket} listen={this.startListening} />;
@@ -93,15 +93,13 @@ class WidgetContainer extends React.Component {
              transitionAppear = {true} transitionAppearTimeout = {2000}
              transitionEnter = {false} transitionLeave = {false}>
              <Time timeState={this.props.isActive}/>
-             {/* <Weather weatherState={this.props.isActive}/> */}
+             <Weather weatherState={this.props.isActive}/>
            </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
             { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
         <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-          <ToDo socket={this.state.socket} listen={this.startListening} />
-
           {this.props.widgets.map((widget, i) => {
   					return this.getWidget(widget, i);
   				})}

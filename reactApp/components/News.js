@@ -18,19 +18,7 @@ class News extends React.Component {
 
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
-  }
-
-  componentDidMount () {
-
-    //api call
-    axios.get('https://newsapi.org/v1/sources?language=en')
-      .then(resp => {
-        const newSources = [...resp.data.sources];
-        this.setState({allSources: newSources});
-      })
-      .catch(console.log);
-
-    // START SOCKETS STUFF
+    
     const self = this;
 
     // called only once
@@ -49,6 +37,20 @@ class News extends React.Component {
 
     // next line starts google listening as soon as component renders:
     this.startListening('NEWS');
+  }
+
+  componentDidMount () {
+
+    //api call
+    axios.get('https://newsapi.org/v1/sources?language=en')
+      .then(resp => {
+        const newSources = [...resp.data.sources];
+        this.setState({allSources: newSources});
+      })
+      .catch(console.log);
+
+    // START SOCKETS STUFF
+    
 
     // END SOCKETS STUFF
   }

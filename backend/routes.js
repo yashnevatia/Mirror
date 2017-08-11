@@ -4,7 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const { localGetCommand } = require('./processHuman');
 // todo imports
-const Reminder = require('./models/models').Reminder;
+//const Reminder = require('./models/models').Reminder;
 // twilio imports
 const accountSid = process.env.TWILIO_SID; // Account SID from www.twilio.com/console
 const authToken = process.env.TWILIO_AUTH_TOKEN; // Auth Token from www.twilio.com/console
@@ -15,7 +15,7 @@ const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; form
 
 /*------------------- ToDo Routes -----------------------*/
 
-router.get('/todo', (req, res) => {
+/*router.get('/todo', (req, res) => {
     //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
     Reminder.find()
     .then((resp) =>{
@@ -51,7 +51,7 @@ router.post('/deltodo', (req, res) => {
         })
     })
 });
-
+*/
 /*------------------- Uber Routes -----------------------*/
 
 // initialize node-uber
