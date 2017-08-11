@@ -7,7 +7,7 @@ import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
-import Todo from './Todo';
+import ToDo from './ToDo';
 import Spotify from './Spotify'
 import Response from './responseDiv';
 
@@ -74,7 +74,7 @@ class WidgetContainer extends React.Component {
     	case 'uber':
     		return <Uber socket={this.state.socket} listen={this.startListening} />;
     	case 'reminders':
-    		return <Todo socket={this.state.socket} listen={this.startListening} />
+    		return <ToDo socket={this.state.socket} listen={this.startListening} />
     	default:
     		return <div></div>;
     }

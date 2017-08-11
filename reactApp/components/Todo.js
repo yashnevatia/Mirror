@@ -75,7 +75,7 @@ class ToDo extends React.Component {
       <div >
         <h1 style={{color: 'white'}}> Reminders</h1>
         {this.state.toDo.map((toDo)=> {
-          return (<li style={{color: 'white'}}>{toDo.task}</li>)
+          return (<li className='remindersListItem' style={{color: 'white'}}>{toDo.task}</li>)
         })}
       </div>
     );
