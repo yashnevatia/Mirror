@@ -30,6 +30,7 @@ function getCommand (widgetName, socket, io) {
         listenHotword(socket);
         // completed cycle, send to container & widget
         io.emit('stt_finished', respObj);
+        listenHotword(socket);
         return respObj;
       }
     })
@@ -44,6 +45,8 @@ let py;
 let rl;
 
 function listenHotword(socket) {
+
+	console.log("python file is listening again");
 
   py = spawn('python', ['-u', fp1],{
     stdio: ['pipe', 'pipe', 'ignore'],

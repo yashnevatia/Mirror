@@ -41,7 +41,7 @@ def cancel():
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
-          modelpath + "news.pmdl"]
+          modelpath + "news.pmdl", modelpath + "radio.pmdl", modelpath + "cancel.pmdl"]
 
 # models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
 #           modelpath + "news.pmdl", modelpath + "radio.pmdl",
@@ -55,7 +55,7 @@ sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
 
 # callbacks = [wakeup, sleep, news, radio, todo, uber, cancel]
-callbacks = [wakeup, sleep, news]
+callbacks = [wakeup, sleep, news, radio, cancel]
 
 
 # main loop
