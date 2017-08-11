@@ -61,7 +61,6 @@ class WidgetContainer extends React.Component {
     // END SOCKET LISTENERS
   }
 
-  // FUNCTION FOR WIDGET START STT LISTNENING
   startListening (widgetName) {
     this.state.socket.emit('stt', widgetName.toUpperCase());
   }
@@ -100,8 +99,6 @@ class WidgetContainer extends React.Component {
             { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
         <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-          <ToDo socket={this.state.socket} listen={this.startListening} />
-
           {this.props.widgets.map((widget, i) => {
   					return this.getWidget(widget, i);
   				})}

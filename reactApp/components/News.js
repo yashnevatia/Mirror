@@ -18,20 +18,6 @@ class News extends React.Component {
 
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
-  }
-
-  componentDidMount () {
-
-    //api call
-    axios.get('https://newsapi.org/v1/sources?language=en')
-      .then(resp => {
-        const newSources = [...resp.data.sources];
-        this.setState({allSources: newSources});
-      })
-      .catch(console.log);
-
-    // START SOCKETS STUFF
-    const self = this;
 
     // called only once
     self.state.socket.on('connect', () => {
@@ -49,8 +35,18 @@ class News extends React.Component {
 
     // next line starts google listening as soon as component renders:
     this.startListening('NEWS');
+  }
 
-    // END SOCKETS STUFF
+  componentDidMount () {
+
+    //api call
+    axios.get('https://newsapi.org/v1/sources?language=en')
+      .then(resp => {
+        const newSources = [...resp.data.sources];
+        this.setState({allSources: newSources});
+      })
+      .catch(console.log);
+
   }
 
   processRequest(respObj) {
@@ -128,10 +124,10 @@ class News extends React.Component {
     const newsStyle = {
       width: '100%',
       height: '33%',
-      backgroundImage: `linear-gradient(
-        rgba(0, 0, 0, 0.7),
-        rgba(0, 0, 0, 0)
-    ),   url({this.state.image})`
+    //   backgroundImage: `linear-gradient(
+    //     rgba(0, 0, 0, 0.7),
+    //     rgba(0, 0, 0, 0)
+    // ),   url({this.state.image})`
     };
     // loop through articles for current source and list out article heaadlines
     return (
