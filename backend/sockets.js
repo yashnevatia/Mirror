@@ -27,11 +27,10 @@ function getCommand (widgetName, socket, io) {
       }
       else {
         console.log('reached {D}');
-        listenHotword(socket);
-        // completed cycle, send to container & widget
         io.emit('stt_finished', respObj);
         listenHotword(socket);
         return respObj;
+        listenHotword(socket);
       }
     })
     .catch( err => {
