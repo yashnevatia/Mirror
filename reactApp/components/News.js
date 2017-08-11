@@ -19,7 +19,7 @@ class News extends React.Component {
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
 
-    
+
     const self = this;
 
 
@@ -34,6 +34,7 @@ class News extends React.Component {
     // listen for end of stt
     self.state.socket.on('stt_finished', respObj => {
       console.log('received stt finished', respObj);
+      respObj.category = "";
       self.processRequest(respObj);
     });
 
@@ -42,7 +43,6 @@ class News extends React.Component {
   }
 
   componentDidMount () {
-
     //api call
     axios.get('https://newsapi.org/v1/sources?language=en')
       .then(resp => {
@@ -50,10 +50,6 @@ class News extends React.Component {
         this.setState({allSources: newSources});
       })
       .catch(console.log);
-
-
-
-
   }
 
   processRequest(respObj) {
@@ -64,7 +60,8 @@ class News extends React.Component {
       self.selectSource(respObj.params.newsSource)
         .then(() => {
           // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
-          self.startListening('NEWS');
+          //self.startListening('NEWS');
+          console.log("CHANGED THE ABOVE LINE");
         })
         .catch( err => {
           console.log('ERROR :(', err);
@@ -99,7 +96,6 @@ class News extends React.Component {
           console.log('in set current articles')
           self.setState({currentArticles: [...resp.data.articles]});
           //   self.setState({image: resp.data.articles[0].urlToImage});
-
           resolve('success');
         })
         .catch( err => {
