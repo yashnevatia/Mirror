@@ -76,6 +76,8 @@ class WidgetContainer extends React.Component {
     		return <Uber key={i} socket={this.state.socket} listen={this.startListening} />;
     	case 'todo':
     		return <Todo key={i} socket={this.state.socket} listen={this.startListening} />
+      case 'spotify':
+      	return <SpotifyPlayer key={i} socket={this.state.socket} listen={this.startListening} />
     	default:
     		return <div></div>;
     }

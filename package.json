@@ -44,6 +44,7 @@
     "react-spotify-player": "^1.0.2",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
+    "spotify-web-api-node": "^2.4.0",
     "twilio": "^3.6.1",
     "webpack": "^2.7.0"
   },

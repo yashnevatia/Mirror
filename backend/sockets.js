@@ -3,6 +3,7 @@
 const spawn = require('child_process').spawn;
 const { localGetCommand } = require('./processHuman');
 const readline = require('readline');
+const SpotifyWebApi = require('spotify-web-api-node');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
 const myFilePath = '/home/pi/Public/'; // PI
@@ -30,7 +31,6 @@ function getCommand (widgetName, socket, io) {
         io.emit('stt_finished', respObj);
         listenHotword(socket);
         return respObj;
-        listenHotword(socket);
       }
     })
     .catch( err => {
@@ -111,6 +111,26 @@ module.exports = function (io) {
     socket.on('custom_msg', (msg) => {
       console.log('SERVER in custom message');
       io.to('W_CONTAINER').emit('custom_msg', msg);
+    })
+
+    socket.on('getToken', refreshToken => {
+
+      var spotifyApi = new SpotifyWebApi({
+        clientId: "681448e7f283472184ea59961a28e830",
+        clientSecret: "40afeab55a564fe297d1c9a8bbdcfd55",
+        redirectUri: "http://localhost:3000/"
+      });
+
+      spotifyApi.setRefreshToken(refreshToken);
+      spotifyApi.refreshAccessToken()
+      .then(data => {
+        spotifyApi.setAccessToken(data.body['access_token']);
+        socket.emit('setNewAccessToken', spotifyApi.getAccessToken());
+      })
+      .catch(error => {
+        console.log("error", error);
+      })
+
     })
 
   });

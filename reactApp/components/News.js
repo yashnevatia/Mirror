@@ -19,16 +19,22 @@ class News extends React.Component {
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
 
+  }
+
+  componentDidMount () {
+    //api call
+    axios.get('https://newsapi.org/v1/sources?language=en')
+    .then(resp => {
+      const newSources = [...resp.data.sources];
+      this.setState({allSources: newSources});
+    })
+    .catch(console.log);
 
     const self = this;
-
-
     // called only once
     self.state.socket.on('connect', () => {
-      // join socket as ToDo
       console.log('CLIENT news connected to sockets');
       self.state.socket.emit('join', 'NEWS');
-
     });
 
     // listen for end of stt
@@ -39,16 +45,6 @@ class News extends React.Component {
 
     // next line starts google listening as soon as component renders:
     this.startListening('NEWS');
-  }
-
-  componentDidMount () {
-    //api call
-    axios.get('https://newsapi.org/v1/sources?language=en')
-      .then(resp => {
-        const newSources = [...resp.data.sources];
-        this.setState({allSources: newSources});
-      })
-      .catch(console.log);
   }
 
   processRequest(respObj) {
