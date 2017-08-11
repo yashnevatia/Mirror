@@ -7,7 +7,7 @@ import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
-import ToDo from './ToDo';
+import ToDo from './Reminder';
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
@@ -19,6 +19,8 @@ class WidgetContainer extends React.Component {
       currentResponse: '',
       socket: props.socket,
     };
+
+    this.startListening = this.props.listen.bind(this);
   }
 
   componentDidMount() {
@@ -61,11 +63,11 @@ class WidgetContainer extends React.Component {
     // END SOCKET LISTENERS
   }
 
-  // FUNCTION FOR WIDGET START STT LISTNENING
-  startListening (widgetName) {
-    console.log('client emitting start listening');
-    this.state.socket.emit('stt', widgetName.toUpperCase());
-  }
+  // // FUNCTION FOR WIDGET START STT LISTNENING
+  // startListening (widgetName) {
+  //   console.log('client emitting start listening');
+  //   this.state.socket.emit('stt', widgetName.toUpperCase());
+  // }
 
 
   getWidget(widget, i) {

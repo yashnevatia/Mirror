@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-class ToDo extends React.Component {
+class Reminder extends React.Component {
   constructor (props) {
     super(props);
 
@@ -39,7 +39,7 @@ class ToDo extends React.Component {
 
     // start listening at mount of component
     // this.startListening('TODO');
-    this.startListening('TODO');
+    // this.startListening('TODO');
   }
 
   //function to add todo
@@ -55,7 +55,7 @@ class ToDo extends React.Component {
     })
     .catch( err => {
       console.log('ERROR: ', err);
-      this.state.emit('invalid request')
+      // this.state.emit('invalid request')
     })
   };
 
@@ -67,6 +67,9 @@ class ToDo extends React.Component {
     .then((resp) => {
       this.setState({toDo: resp})
     })
+    .catch( err => {
+      console.log('ERORRRR: ', err);
+    });
   };
 
   processRequest(respObj) {
@@ -77,9 +80,9 @@ class ToDo extends React.Component {
     if (respObj.category === 'todo') {
 
       if (!respObj.params) {   // if no params, keep listening
-        self.startListening('TODO');
+        // self.startListening('TODO');
       } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
-        self.startListening('TODO');
+        // self.startListening('TODO');
       } else if (respObj.verb === 'add') {   // command is to add task
         console.log('adding todo: ',respObj.params.task[0] )
         self.createToDo(respObj.params.task);
@@ -96,7 +99,7 @@ class ToDo extends React.Component {
       // command did not fall under todo --> ignore and start listening again
     } else {
       self.state.socket.emit('invalid_request');
-      self.startListening('TODO');
+      // self.startListening('TODO');
     }
   }
 
@@ -116,4 +119,4 @@ class ToDo extends React.Component {
   }
 }
 
-export default ToDo;
+export default Reminder;

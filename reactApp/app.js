@@ -15,10 +15,10 @@ class Container extends React.Component {
     this.isMirrorActive = this.isMirrorActive.bind(this);
   }
 
-  isMirrorActive() {
-     // function passed down to voice component to determine if
-     // mirror is standby or active
-    return;
+  // FUNCTION FOR WIDGET START STT LISTNENING
+  startListening (widgetName) {
+    console.log('client emitting start listening');
+    this.state.socket.emit('stt', widgetName.toUpperCase());
   }
 
   componentDidMount(){
@@ -65,6 +65,9 @@ class Container extends React.Component {
           widget: temp
         })
       }
+
+      // TRYING TO FIX SPEECH:
+      this.startListening(widgetName)
     });
   }
 
@@ -75,6 +78,7 @@ class Container extends React.Component {
         widgets={this.state.widgets}
         className="card2"
         socket={socket}
+        listen={this.startListening}
       />
     );
   }

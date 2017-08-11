@@ -80,6 +80,9 @@ function streamingMicRecognize (/*encoding, sampleRateHertz, languageCode*/) {
   }); // end promise
 }
 
+module.exports = { streamingMicRecognize };
+
+
 
 
 /* TO BE PUT IN:
@@ -125,5 +128,3 @@ if (!stopSpeaking) {
 
 console.log('Listening, press Ctrl+C to stop.');
 */
-
-module.exports = { streamingMicRecognize };

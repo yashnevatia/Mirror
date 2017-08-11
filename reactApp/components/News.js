@@ -44,7 +44,6 @@ class News extends React.Component {
 
     // next line starts google listening as soon as component renders:
     this.startListening('NEWS');
-
     // END SOCKETS STUFF
   }
 
@@ -56,7 +55,7 @@ class News extends React.Component {
       self.selectSource(respObj.params.newsSource)
         .then(() => {
           // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
-          self.startListening('NEWS');
+          // self.startListening('NEWS');
         })
         .catch( err => {
           console.log('ERROR :(', err);
