@@ -9,7 +9,7 @@ import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
-import ToDo from './ToDo';
+// import ToDo from './ToDo';
 import Spotify from './Spotify'
 import Response from './responseDiv';
 
@@ -99,7 +99,7 @@ class WidgetContainer extends React.Component {
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
             { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
-        
+
         <div style='animation: bounce'className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
           {this.props.widgets.map((widget) => {
   				return this.getWidget(widget);
