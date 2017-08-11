@@ -43,7 +43,7 @@ router.post('/todo', (req, res) => {
 router.post('/deltodo', (req, res) => {
     Remider.find()
     .then((resp) =>{
-        newResp = resp.slice(req.body.task, 1)
+        newResp = resp.slice(parseInt(req.body.task), 1)
         console.log("mounting",resp);
         res.send(newResp)
     })

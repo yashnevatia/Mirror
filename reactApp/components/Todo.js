@@ -6,7 +6,7 @@ class ToDo extends React.Component {
     super(props);
 
     this.state = {
-      toDo: [{task:'clean'},{task:'jump'}],
+      toDo: [],
       socket: props.socket
     };
     console.log('todo constructed')
@@ -64,18 +64,18 @@ class ToDo extends React.Component {
     if (respObj.category === 'todo') {
 
       if (!respObj.params) {   // if no params, keep listening
-	self.startListening('TODO');
+        self.startListening('TODO');
       } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
-	self.startListening('TODO');
+        self.startListening('TODO');
       } else if (respObj.params.verb === 'add') {   // command is to add task
-	self.createToDo(respObj.params.task);
-} else if (respObj.params.verb === 'delete') {   // command is to delete task
+        self.createToDo(respObj.params.task);
+      } else if (respObj.params.verb === 'delete') {   // command is to delete task
         self.deleteToDo(respObj.params.task);
       }
 
       // need an else statement here ?
 
-    // command did not fall under todo --> ignore and start listening again
+      // command did not fall under todo --> ignore and start listening again
     } else {
       self.state.socket.emit('invalid_request');
       self.startListening('TODO');
@@ -88,7 +88,7 @@ class ToDo extends React.Component {
     return (
       <div >
         <h1 style={{color: 'white'}}> Reminders</h1>
-        {this.state.toDo.map((toDo)=> {
+        {this.state.todo && this.state.toDo.map((toDo)=> {
           return (<li style={{color: 'white'}}>{toDo.task}</li>)
         })}
       </div>

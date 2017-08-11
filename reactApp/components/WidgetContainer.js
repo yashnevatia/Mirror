@@ -7,7 +7,7 @@ import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
-import Todo from './Todo';
+import ToDo from './Todo';
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
@@ -73,7 +73,7 @@ class WidgetContainer extends React.Component {
     	case 'uber':
     		return <Uber socket={this.state.socket} listen={this.startListening} />;
     	case 'reminders':
-    		return <Todo socket={this.state.socket} listen={this.startListening} />
+    		return <ToDo socket={this.state.socket} listen={this.startListening} />
     	default:
     		return <div></div>;
     }
@@ -97,6 +97,7 @@ class WidgetContainer extends React.Component {
             { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
         <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+          <ToDo socket={this.state.socket} listen={this.startListening} />
           {this.props.widgets.map((widget) => {
   					return this.getWidget(widget);
   				})}

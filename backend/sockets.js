@@ -34,9 +34,8 @@ function getCommand (widgetName, socket, io) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
         io.to('W_CONTAINER').emit('stt_continuing', respObj );
+        return getCommand(widgetName, socket, io);
 
-        return getCommand(widgetName, socket, io)
-        // return setTimeout(() => {return getCommand(widgetName)}, 1000);
       } else {
         console.log('reached {D}');
         // completed cycle, send to container & widget
