@@ -28,6 +28,7 @@ function getCommand (widgetName, socket, io) {
       else {
         console.log('reached {D}');
         io.emit('stt_finished', respObj);
+        listenHotword(socket);
         return respObj;
         listenHotword(socket);
       }
@@ -43,6 +44,8 @@ let py;
 let rl;
 
 function listenHotword(socket) {
+
+	console.log("python file is listening again");
 
   py = spawn('python', ['-u', fp1],{
     stdio: ['pipe', 'pipe', 'ignore'],
