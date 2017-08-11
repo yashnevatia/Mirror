@@ -9,8 +9,7 @@ class SpotifyPlayer extends React.Component{
     this.state = {
       songName : "congratulations",
       accessToken : "",
-      refreshToken : "AQAqVj-OUFmdlh_3TfEuqFcZcMv-2R1vXhMcsPlFqun8l2TdBKAKcmX6oZqpnbP-
-      5PRQV7J6rpU45FuNn9BdTOWNRU_7cXXTu_YX6-rExeeGU_8_rGN67VSRHgbc7DKvRLk",
+      refreshToken : "AQAqVj-OUFmdlh_3TfEuqFcZcMv-2R1vXhMcsPlFqun8l2TdBKAKcmX6oZqpnbP-5PRQV7J6rpU45FuNn9BdTOWNRU_7cXXTu_YX6-rExeeGU_8_rGN67VSRHgbc7DKvRLk",
       socket: props.socket
     }
     //this.startListening = this.props.listen.bind(this);
@@ -18,14 +17,15 @@ class SpotifyPlayer extends React.Component{
   }
 
   componentDidMount(){
+	  console.log("component did mount");
     var self = this;
     self.state.socket.on('connect', () => {
       console.log('CLIENT spotify connected to sockets');
       self.state.socket.emit('join', 'SPOTIFY');
-      socket.emit('getToken', self.state.refreshToken);
+      //socket.emit('getToken', self.state.refreshToken);
       //self.startListening('SPOTIFY');
     });
-
+	self.state.socket.emit('getToken', self.state.refreshToken);
     // self.state.socket.on('stt_finished', respObj => {
     //   console.log('received stt finished', respObj);
     //   self.processRequest(respObj);

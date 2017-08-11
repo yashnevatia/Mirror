@@ -13,6 +13,11 @@ const client = new twilio(accountSid, authToken);
 const FROM_NUMBER = process.env.MY_TWILIO_NUMBER; // custom Twilio number
 const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; format: +1234567890
 
+
+router.get('/',(req,res) => {
+	console.log("thanks");
+	res.send(200);
+})
 /*------------------- ToDo Routes -----------------------*/
 
 /*router.get('/todo', (req, res) => {

@@ -4,6 +4,7 @@ const spawn = require('child_process').spawn;
 const { localGetCommand } = require('./processHuman');
 const readline = require('readline');
 const SpotifyWebApi = require('spotify-web-api-node');
+var refresh = require('spotify-refresh');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
 const myFilePath = '/home/pi/Public/'; // PI
@@ -116,13 +117,14 @@ module.exports = function (io) {
     socket.on('getToken', refreshToken => {
       console.log("reached backend for token");
 
-      var spotifyApi = new SpotifyWebApi({
+      /*let spotifyApi = new SpotifyWebApi({
         clientId: "681448e7f283472184ea59961a28e830",
         clientSecret: "40afeab55a564fe297d1c9a8bbdcfd55",
-        redirectUri: "http://localhost:3000/"
+        redirectUri: "http://localhost:3000"
       });
 
       spotifyApi.setRefreshToken(refreshToken);
+      
       spotifyApi.refreshAccessToken()
       .then(data => {
         console.log("have refreshed sending now");
@@ -131,7 +133,16 @@ module.exports = function (io) {
       })
       .catch(error => {
         console.log("error", error);
-      })
+      })*/
+      
+      
+ 
+	refresh(refreshToken, "681448e7f283472184ea59961a28e830", "40afeab55a564fe297d1c9a8bbdcfd55", function (err, res, body) { 
+			if (err) return
+		//body = JSON.parse(body)
+		console.log("reached here", body);
+		//console.log(JSON.stringify(body)  );
+	})
 
     })
 
