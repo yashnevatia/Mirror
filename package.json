@@ -42,8 +42,11 @@
     "react-autocomplete": "^1.5.10",
     "react-dom": "^15.6.1",
     "react-sound": "^0.8.0",
+    "react-spotify-player": "^1.0.2",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
+    "spotify-refresh": "^2.0.3",
+    "spotify-web-api-node": "^2.4.0",
     "twilio": "^3.6.1",
     "webpack": "^2.7.0"
   },

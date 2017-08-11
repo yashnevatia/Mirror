@@ -10,9 +10,9 @@ class Weather extends React.Component {
   }
   componentDidMount() {
   // set weather at component mount
-  axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
-      .then(resp => {
-        this.setState({
+	axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
+	.then(resp => {
+		this.setState({
           description: resp.data.weather[0].description,
           min: resp.data.main.temp_min-273.15,
           max: resp.data.main.temp_max-273.15,

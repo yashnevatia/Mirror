@@ -12,6 +12,7 @@ import Uber from './Uber';
 import ToDo from './Reminder';
 import Spotify from './Spotify'
 import Response from './responseDiv';
+import SpotifyPlayer from './SpotifyPlayer';
 
 class WidgetContainer extends React.Component {
 
@@ -29,10 +30,10 @@ class WidgetContainer extends React.Component {
   componentDidMount() {
     // START SOCKET LISTENERS
     const self = this;
+
     this.state.socket.on('connect', () => {
       console.log("connected container");
       self.state.socket.emit('join', 'W_CONTAINER');
-
     });
 
     this.state.socket.on('invalid_request', () => {
@@ -75,6 +76,7 @@ class WidgetContainer extends React.Component {
 
   getWidget(widget, i) {
 
+	console.log('**********************************************************************************');
     switch (widget){
     	case 'radio':
     		return <Radio key={i} socket={this.state.socket} listen={this.startListening} />;
@@ -84,6 +86,8 @@ class WidgetContainer extends React.Component {
     		return <Uber key={i} socket={this.state.socket} listen={this.startListening} />;
     	case 'reminders':
     		return <ToDo key={i} socket={this.state.socket} listen={this.startListening} />
+      case 'spotify':
+      	return <SpotifyPlayer key={i} socket={this.state.socket} listen={this.startListening} />
     	default:
     		return <div key={i} ></div>;
     }
@@ -108,6 +112,7 @@ class WidgetContainer extends React.Component {
         </div>
 
         <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+
           {this.props.widgets.map((widget, i) => {
             return this.getWidget(widget, i);
           })}

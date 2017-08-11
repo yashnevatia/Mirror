@@ -4,6 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const { localGetCommand } = require('./processHuman');
 // todo imports
+// const mongoose = require('./mongoose');
 // const Reminder = require('./models/models').Reminder;
 // twilio imports
 const accountSid = process.env.TWILIO_SID; // Account SID from www.twilio.com/console
@@ -13,6 +14,11 @@ const client = new twilio(accountSid, authToken);
 const FROM_NUMBER = process.env.MY_TWILIO_NUMBER; // custom Twilio number
 const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; format: +1234567890
 
+
+router.get('/',(req,res) => {
+	console.log("thanks");
+	res.send(200);
+})
 /*------------------- ToDo Routes -----------------------*/
 /*
 router.get('/todo', (req, res) => {
@@ -22,6 +28,16 @@ router.get('/todo', (req, res) => {
     console.log("mounting",resp);
     res.send(resp)
   })
+=======
+
+/*router.get('/todo', (req, res) => {
+    //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
+    Reminder.find()
+    .then((resp) =>{
+        console.log("mounting",resp);
+        res.send(resp)
+    })
+>>>>>>> spotify
 })
 
 router.post('/todo', (req, res) => {
@@ -62,6 +78,7 @@ router.post('/deltodo', (req, res) => {
             res.send(resp)
         })
     })
+<<<<<<< HEAD
 }); */
 
 

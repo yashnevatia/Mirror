@@ -18,34 +18,30 @@ class News extends React.Component {
 
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
-
-// START SOCKETS STUFF
-    const self = this;
-    this.state.socket.on('connect', () => {
-      // join socket as ToDo
-      console.log('CLIENT news connected to sockets');
-      self.state.socket.emit('join', 'NEWS');
-
-      // listen for end of stt
-      self.state.socket.on('stt_finished', respObj => {
-        console.log('received stt finished', respObj);
-        self.processRequest(respObj);
-      });
-    });
-
   }
 
   componentDidMount () {
+    //api call
     axios.get('https://newsapi.org/v1/sources?language=en')
-      .then(resp => {
-        const newSources = [...resp.data.sources];
-        this.setState({allSources: newSources});
-      })
-      .catch(console.log);
-    
-    // next line starts google listening as soon as component renders:
-    this.startListening('NEWS');
-    // END SOCKETS STUFF
+    .then(resp => {
+      const newSources = [...resp.data.sources];
+      this.setState({allSources: newSources});
+    })
+    .catch(console.log);
+
+    const self = this;
+    // called only once
+    self.state.socket.on('connect', () => {
+      console.log('CLIENT news connected to sockets');
+      self.state.socket.emit('join', 'NEWS');
+    });
+
+    // listen for end of stt
+    self.state.socket.on('stt_finished', respObj => {
+      console.log('received stt finished', respObj);
+      self.processRequest(respObj);
+    });
+
   }
 
   processRequest(respObj) {
@@ -57,7 +53,8 @@ class News extends React.Component {
         .then(() => {
 			console.log('going to start listening again');
           // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
-          // self.startListening('NEWS');
+          //self.startListening('NEWS');
+          console.log("CHANGED THE ABOVE LINE");
         })
         .catch( err => {
           console.log('ERROR :(', err);
@@ -92,7 +89,6 @@ class News extends React.Component {
           console.log('in set current articles')
           self.setState({currentArticles: [...resp.data.articles]});
           //   self.setState({image: resp.data.articles[0].urlToImage});
-
           resolve('success');
         })
         .catch( err => {
@@ -124,10 +120,10 @@ class News extends React.Component {
     const newsStyle = {
       width: '100%',
       height: '33%',
-      backgroundImage: `linear-gradient(
-        rgba(0, 0, 0, 0.7),
-        rgba(0, 0, 0, 0)
-    ),   url({this.state.image})`
+    //   backgroundImage: `linear-gradient(
+    //     rgba(0, 0, 0, 0.7),
+    //     rgba(0, 0, 0, 0)
+    // ),   url({this.state.image})`
     };
     // loop through articles for current source and list out article heaadlines
     return (
