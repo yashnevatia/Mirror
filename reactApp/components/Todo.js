@@ -78,7 +78,7 @@ class ToDo extends React.Component {
         self.startListening('TODO');
       } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
         self.startListening('TODO');
-      } else if (respObj.params.verb === 'add') {   // command is to add task
+      } else if (respObj.verb === 'add') {   // command is to add task
         console.log('adding todo: ',respObj.params.task[0] )
         self.createToDo(respObj.params.task);
       } else if (respObj.params.verb === 'delete') {   // command is to delete task

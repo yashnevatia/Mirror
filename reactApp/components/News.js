@@ -131,16 +131,26 @@ class News extends React.Component {
     // loop through articles for current source and list out article heaadlines
     return (
       <div className="newsContainer" style={newsStyle}>
-        <div className="newsList" style={{color: 'white'}}>
+
+        {!this.state.currentArticles && <div className="newsList" style={{color: 'white'}}>
+          {this.state.allSources.map((source, i) => {
+            // SET 4 TO BE HOW EVER MANY Sources YOU WANT TO SHOW // change if get scrolling
+            if(i < 4) {
+              return (<div className="newsListItem" key={i}>{source.name}</div>);
+            }
+              return null;
+          })}
+        </div> }
+
+        {this.state.currentArticles && <div className="newsList" style={{color: 'white'}}>
           {this.state.currentArticles.map((article, i) => {
             // SET 4 TO BE HOW EVER MANY ARTICLES YOU WANT TO SHOW
             if(i < 4) {
               return (<div className="newsListItem" key={i}>{article.title}</div>);
             }
-            return null;
-          })
-        }
-        </div>
+              return null;
+          })}
+        </div> }
       </div>
     );
   }

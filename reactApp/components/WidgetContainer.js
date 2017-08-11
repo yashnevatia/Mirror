@@ -15,9 +15,9 @@ class WidgetContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        hasResponse: true,
-        currentResponse: '',
-        socket: props.socket,
+      hasResponse: true,
+      currentResponse: '',
+      socket: props.socket,
     };
   }
 
@@ -67,47 +67,47 @@ class WidgetContainer extends React.Component {
   }
 
 
-	getWidget(widget, i) {
+  getWidget(widget, i) {
 
     switch (widget){
-    	case 'radio':
-    		return <Radio key={i} socket={this.state.socket} listen={this.startListening} />;
-    	case 'news':
-    		return <News key={i} socket={this.state.socket} listen={this.startListening} />;
-    	case 'uber':
-    		return <Uber key={i} socket={this.state.socket} listen={this.startListening} />;
-    	case 'todo':
-    		return <Todo key={i} socket={this.state.socket} listen={this.startListening} />
-    	default:
-    		return <div></div>;
+      case 'radio':
+      return <Radio key={i} socket={this.state.socket} listen={this.startListening} />;
+      case 'news':
+      return <News key={i} socket={this.state.socket} listen={this.startListening} />;
+      case 'uber':
+      return <Uber key={i} socket={this.state.socket} listen={this.startListening} />;
+      case 'todo':
+      return <Todo key={i} socket={this.state.socket} listen={this.startListening} />
+      default:
+      return <div></div>;
     }
 
-	}
+  }
 
   render () {
-	  console.log("ACTIVE", this.props.isActive, this.props.widgets);
+    console.log("ACTIVE", this.props.isActive, this.props.widgets);
     return(
       <div className="outerDiv" id="q">
 
         <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
-           <ReactCSSTransitionGroup transitionName = "example"
-             transitionAppear = {true} transitionAppearTimeout = {2000}
-             transitionEnter = {false} transitionLeave = {false}>
-             <Time timeState={this.props.isActive}/>
-             {/* <Weather weatherState={this.props.isActive}/> */}
-           </ReactCSSTransitionGroup>
+          <ReactCSSTransitionGroup transitionName = "example"
+            transitionAppear = {true} transitionAppearTimeout = {2000}
+            transitionEnter = {false} transitionLeave = {false}>
+            <Time timeState={this.props.isActive}/>
+            {/* <Weather weatherState={this.props.isActive}/> */}
+          </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-            { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
+          { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
         <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-          <ToDo socket={this.state.socket} listen={this.startListening} />
+          {/* <News socket={this.state.socket} listen={this.startListening} /> */}
 
           {this.props.widgets.map((widget, i) => {
-  					return this.getWidget(widget, i);
-  				})}
+            return this.getWidget(widget, i);
+          })}
         </div>
-	    </div>
+      </div>
     );
   }
 }
