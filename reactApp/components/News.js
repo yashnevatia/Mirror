@@ -34,7 +34,6 @@ class News extends React.Component {
     // listen for end of stt
     self.state.socket.on('stt_finished', respObj => {
       console.log('received stt finished', respObj);
-      respObj.category = "";
       self.processRequest(respObj);
     });
 
