@@ -61,6 +61,7 @@ class News extends React.Component {
         });
 
     } else if (respObj.category === 'news article') {
+		console.log('in news article with article: ', respObj.params.number, respObj.params.ordinal);
       // user specifies number of article
       const articleNum = parseInt(respObj.params.number) || parseInt(respObj.params.ordinal) || 1;
       // twilio texts article to user

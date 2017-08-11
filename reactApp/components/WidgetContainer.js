@@ -79,17 +79,17 @@ class WidgetContainer extends React.Component {
 	console.log('**********************************************************************************');
     switch (widget){
     	case 'radio':
-    		return <Radio key={i} socket={this.state.socket} listen={this.startListening} />;
+    		return <Radio key={widget} socket={this.state.socket} listen={this.startListening} />;
     	case 'news':
-    		return <News key={i} socket={this.state.socket} listen={this.startListening} />;
+    		return <News key={widget} socket={this.state.socket} listen={this.startListening} />;
     	case 'uber':
-    		return <Uber key={i} socket={this.state.socket} listen={this.startListening} />;
+    		return <Uber key={widget} socket={this.state.socket} listen={this.startListening} />;
     	case 'reminders':
-    		return <ToDo key={i} socket={this.state.socket} listen={this.startListening} />
+    		return <ToDo key={widget} socket={this.state.socket} listen={this.startListening} />
       case 'spotify':
-      	return <SpotifyPlayer key={i} socket={this.state.socket} listen={this.startListening} />
+      	return <SpotifyPlayer key={widget} socket={this.state.socket} listen={this.startListening} />
     	default:
-    		return <div key={i} ></div>;
+    		return <div key={'empty'} ></div>;
     }
 
   }

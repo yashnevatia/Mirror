@@ -70,6 +70,14 @@ class Reminder extends React.Component {
     .catch( err => {
       console.log('ERORRRR: ', err);
     });
+    
+    /*axios({
+		url: "'http://localhost:3000/deltodo",
+		method: 'post',
+		data: {task: task},
+		success: function(){console.log("yo")}
+	})*/
+    
   };
 
   processRequest(respObj) {
@@ -81,6 +89,7 @@ class Reminder extends React.Component {
 
       if (!respObj.params) {   // if no params, keep listening
         // self.startListening('TODO');
+        console.log('doing nothing because no params');
       } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
         // self.startListening('TODO');
       } else if (respObj.verb === 'add') {   // command is to add task
