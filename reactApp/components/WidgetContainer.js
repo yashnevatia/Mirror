@@ -8,6 +8,7 @@ import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import Todo from './Todo';
+import Spotify from './Spotify'
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
@@ -55,6 +56,7 @@ class WidgetContainer extends React.Component {
     });
     // END SOCKET LISTENERS
   }
+
 
   // FUNCTION FOR WIDGET START STT LISTNENING
   startListening (widgetName) {
