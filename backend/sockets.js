@@ -5,9 +5,9 @@ const { localGetCommand } = require('./processHuman');
 
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-const myFilePath = '/home/pi/Public/'; // PI
+// const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-//const myFilePath = '/Users/amandahansen/' // AMANDA
+const myFilePath = '/Users/amandahansen/' // AMANDA
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
@@ -42,7 +42,7 @@ function getCommand (widgetName, socket, io) {
         // io.emit('stt_finished', respObj);
 		io.to('W_CONTAINER').emit('stt_finished', respObj);
 		io.to(widgetName.toUpperCase()).emit('stt_finished', respObj);
-        
+
         py = spawn('python', ['-u', fp1],{
 			stdio: ['pipe', 'pipe', 'ignore'],
 			cwd: fp2

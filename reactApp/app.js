@@ -12,7 +12,6 @@ class Container extends React.Component {
       isActive: true,
 	    widgets: ['todo']
     }
-    this.isMirrorActive = this.isMirrorActive.bind(this);
   }
 
   // FUNCTION FOR WIDGET START STT LISTNENING
