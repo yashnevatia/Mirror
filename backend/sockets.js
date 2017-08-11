@@ -34,11 +34,10 @@ function getCommand (widgetName, socket, io) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
         io.to('W_CONTAINER').emit('stt_continuing', respObj );
+        return getCommand(widgetName, socket, io);
 
-        return getCommand(widgetName, socket, io)
-        // return setTimeout(() => {return getCommand(widgetName)}, 1000);
       } else {
-        console.log('reached {D}');
+        console.log('reached {D}, emitting stt finished');
         // completed cycle, send to container & widget
         io.emit('stt_finished', respObj);
         return respObj;
@@ -53,7 +52,7 @@ function getCommand (widgetName, socket, io) {
 module.exports = function (io) {
   io.on('connection', function(socket){
 
-  	console.log("connected to sockets and listening");
+  	console.log("SOCKETS CODE compiled");
 
     // socket listener for Hot Word
     rl.on('line', hotword => {

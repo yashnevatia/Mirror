@@ -63,6 +63,7 @@ class WidgetContainer extends React.Component {
 
   // FUNCTION FOR WIDGET START STT LISTNENING
   startListening (widgetName) {
+    console.log('client emitting start listening');
     this.state.socket.emit('stt', widgetName.toUpperCase());
   }
 
@@ -70,16 +71,16 @@ class WidgetContainer extends React.Component {
   getWidget(widget, i) {
 
     switch (widget){
-      case 'radio':
-      return <Radio key={i} socket={this.state.socket} listen={this.startListening} />;
-      case 'news':
-      return <News key={i} socket={this.state.socket} listen={this.startListening} />;
-      case 'uber':
-      return <Uber key={i} socket={this.state.socket} listen={this.startListening} />;
-      case 'todo':
-      return <Todo key={i} socket={this.state.socket} listen={this.startListening} />
-      default:
-      return <div></div>;
+    	case 'radio':
+    		return <Radio socket={this.state.socket} listen={this.startListening} />;
+    	case 'news':
+    		return <News socket={this.state.socket} listen={this.startListening} />;
+    	case 'uber':
+    		return <Uber socket={this.state.socket} listen={this.startListening} />;
+    	case 'reminders':
+    		return <ToDo socket={this.state.socket} listen={this.startListening} />
+    	default:
+    		return <div></div>;
     }
 
   }
@@ -101,7 +102,7 @@ class WidgetContainer extends React.Component {
           { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
         <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-          {/* <News socket={this.state.socket} listen={this.startListening} /> */}
+          <ToDo socket={this.state.socket} listen={this.startListening} />
 
           {this.props.widgets.map((widget, i) => {
             return this.getWidget(widget, i);

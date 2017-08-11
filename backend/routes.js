@@ -16,40 +16,41 @@ const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; form
 /*------------------- ToDo Routes -----------------------*/
 
 router.get('/todo', (req, res) => {
-    //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
-    Reminder.find()
-    .then((resp) =>{
-        console.log("mounting",resp);
-        res.send(resp)
-    })
+  //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
+  Reminder.find()
+  .then((resp) =>{
+    console.log("mounting",resp);
+    res.send(resp)
+  })
 })
 
 router.post('/todo', (req, res) => {
-    //create new Reminder form model and store it in DB
-    var r = new Reminder({
-        task: req.body.task
-    })
-    //save to database
-    r.save(function(err, reminder) {
-      if (err) {
-        console.log(err);
-        res.status(500).send('fail');
-        return;
-      }
-      console.log("adding", reminder)
-      res.send(reminder);
-    });
+  //create new Reminder form model and store it in DB
+  console.log('in post route add todo');
+  var r = new Reminder({
+    task: req.body.task
+  })
+  //save to database
+  r.save(function(err, reminder) {
+    if (err) {
+      console.log(err);
+      res.status(500).send('fail');
+      return;
+    }
+    console.log("adding", reminder)
+    res.send(reminder);
+  });
 })
 
 router.post('/deltodo', (req, res) => {
-    Reminder.remove({task: req.body.task})
-    .then(() =>{
-        Remider.find()
-        .then((resp) => {
-            console.log("deleted", resp);
-            res.send(resp)
-        })
-    })
+  console.log('in post route remove todo');
+
+  Reminder.find()
+  .then((resp) =>{
+    newResp = resp.slice(parseInt(req.body.task), 1)
+    console.log("mounting",resp);
+    res.send(newResp)
+  })
 });
 
 /*------------------- Uber Routes -----------------------*/
@@ -71,31 +72,31 @@ router.get('/login', function(req, res) {
 });
 
 router.get('/callback', function(req, res) {
-   uber.authorizationAsync({authorization_code: req.query.code})
-   .spread(function(access_token, refresh_token, authorizedScopes, tokenExpiration) {
-     // store the user id and associated access_token, refresh_token, scopes & token expiration date
-     console.log('New access_token retrieved: ' + access_token);
-     console.log('... token allows access to scopes: ' + authorizedScopes);
-     console.log('... token is valid until: ' + tokenExpiration);
-     console.log('... after token expiration, re-authorize using refresh_token: ' + refresh_token);
-     // redirect the user back to actual app
-     res.redirect('/');
-   })
-   .error(function(err) {
-     console.error('ERROR:', err);
-   });
+  uber.authorizationAsync({authorization_code: req.query.code})
+  .spread(function(access_token, refresh_token, authorizedScopes, tokenExpiration) {
+    // store the user id and associated access_token, refresh_token, scopes & token expiration date
+    console.log('New access_token retrieved: ' + access_token);
+    console.log('... token allows access to scopes: ' + authorizedScopes);
+    console.log('... token is valid until: ' + tokenExpiration);
+    console.log('... after token expiration, re-authorize using refresh_token: ' + refresh_token);
+    // redirect the user back to actual app
+    res.redirect('/');
+  })
+  .error(function(err) {
+    console.error('ERROR:', err);
+  });
 });
 
 router.get('/products', function(req, res) {
-    let query = req.query
-    uber.products.getAllForAddressAsync(query.pickup)
-    .then(function(resp) {
-        res.send(resp.products);
-    })
-    .error(function(err) {
-      console.error("could not get available products", err);
-    });
+  let query = req.query
+  uber.products.getAllForAddressAsync(query.pickup)
+  .then(function(resp) {
+    res.send(resp.products);
   })
+  .error(function(err) {
+    console.error("could not get available products", err);
+  });
+})
 
 router.get('/price', function(req, res) {
   let query = req.query
@@ -122,9 +123,9 @@ router.get('/estimate', function(req, res) {
   let query = req.query;
   let home;
   uber.requests.getEstimatesAsync({
-  "product_id": query.product_id,
-  "startAddress": query.pickup,
-  "endAddress": query.destination
+    "product_id": query.product_id,
+    "startAddress": query.pickup,
+    "endAddress": query.destination
   })
   .then(function(resp) {
     res.send(resp);
@@ -138,7 +139,7 @@ router.get('/estimate', function(req, res) {
 router.get('/delete', function(req, res) {
   uber.requests.deleteCurrentAsync()
   .then(function(resp) {
-      res.send(resp);
+    res.send(resp);
   })
   .error(function(err) {
     console.error("could not delete current request", err);
@@ -147,10 +148,10 @@ router.get('/delete', function(req, res) {
 
 router.get('/modify', function(req, res) {
   uber.requests.updateCurrentAsync({
-  "endAddress": req.query.updatedDestination,
+    "endAddress": req.query.updatedDestination,
   })
   .then(function(resp) {
-      res.send(resp);
+    res.send(resp);
   })
   .error(function(err) {
     console.error("could not modify current request", err);
@@ -160,7 +161,7 @@ router.get('/modify', function(req, res) {
 router.get('/current', function(req, res) {
   uber.requests.getCurrentAsync()
   .then(function(resp) {
-      res.send(resp);
+    res.send(resp);
   })
   .error(function(err) {
     console.error("could not get current request", err);
