@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
+import { bounce } from 'react-animations';
+
 
 import Time from './Time';
 import Weather from './Weather';
@@ -97,10 +99,12 @@ class WidgetContainer extends React.Component {
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
             { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
-        <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+        
+        <div style='animation: bounce'className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
           {this.props.widgets.map((widget) => {
   				return this.getWidget(widget);
   		})}
+
         </div>
 	    </div>
     );
