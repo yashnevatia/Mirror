@@ -14,7 +14,8 @@ class Uber extends React.Component {
       estimates: [],
       socket: props.socket,
     };
-    this.startListening = this.props.listen.bind(this);
+
+    // this.startListening = this.props.listen.bind(this);
     this.processRequest = this.processRequest.bind(this);
     this.callUber = this.callUber.bind(this);
     this.setDestination = this.setDestination.bind(this);
@@ -52,8 +53,8 @@ class Uber extends React.Component {
 
     //////////////////////////////END SOCKETS/////////
 
-    // START LISTENING
-    this.startListening('UBER')
+    // starts listening!!
+    // this.startListening('UBER')
   }
 
   processRequest(obj) {
@@ -65,7 +66,7 @@ class Uber extends React.Component {
       this.setState({ service: obj.params.uberService })
     }
     else if (obj.category.startsWith('smalltalk') || (obj.category === 'uber' && obj.notFinished)) {
-      self.startListening('UBER')
+      // self.startListening('UBER')
     } else {
       self.state.socket.emit('invalid_request');
     }
@@ -133,8 +134,8 @@ class Uber extends React.Component {
       {this.state.products
         .filter(car => (car.display_name === "POOL" || car.display_name === "uberX" || car.display_name === "uberXL"))
         .sort((a, b) => (a.capacity - b.capacity))
-        .map(car => {
-        return <div style={{color:"white"}}>
+        .map((car, i) => {
+        return <div key={i} style={{color:"white"}}>
           {car.display_name}, {car.capacity} {car.capacity === 1 ? "seat" : "seats"}
           <div>
             {this.state.prices.filter(price => (price.display_name === car.display_name))

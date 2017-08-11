@@ -12,6 +12,7 @@ import Uber from './Uber';
 import ToDo from './Reminder';
 import Spotify from './Spotify'
 import Response from './responseDiv';
+import SpotifyPlayer from './SpotifyPlayer';
 
 class WidgetContainer extends React.Component {
 
@@ -29,10 +30,10 @@ class WidgetContainer extends React.Component {
   componentDidMount() {
     // START SOCKET LISTENERS
     const self = this;
+
     this.state.socket.on('connect', () => {
       console.log("connected container");
       self.state.socket.emit('join', 'W_CONTAINER');
-
     });
 
     this.state.socket.on('invalid_request', () => {
@@ -75,17 +76,20 @@ class WidgetContainer extends React.Component {
 
   getWidget(widget, i) {
 
+	console.log('**********************************************************************************');
     switch (widget){
     	case 'radio':
-    		return <Radio socket={this.state.socket} listen={this.startListening} />;
+    		return <Radio key={widget} socket={this.state.socket} listen={this.startListening} />;
     	case 'news':
-    		return <News socket={this.state.socket} listen={this.startListening} />;
+    		return <News key={widget} socket={this.state.socket} listen={this.startListening} />;
     	case 'uber':
-    		return <Uber socket={this.state.socket} listen={this.startListening} />;
+    		return <Uber key={widget} socket={this.state.socket} listen={this.startListening} />;
     	case 'reminders':
-    		return <ToDo socket={this.state.socket} listen={this.startListening} />
+    		return <ToDo key={widget} socket={this.state.socket} listen={this.startListening} />
+      case 'spotify':
+      	return <SpotifyPlayer key={widget} socket={this.state.socket} listen={this.startListening} />
     	default:
-    		return <div></div>;
+    		return <div key={'empty'} ></div>;
     }
 
   }
@@ -106,11 +110,13 @@ class WidgetContainer extends React.Component {
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
           { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
+
         <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
 
           {this.props.widgets.map((widget, i) => {
             return this.getWidget(widget, i);
           })}
+
         </div>
       </div>
     );

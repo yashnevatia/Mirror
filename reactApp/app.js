@@ -9,20 +9,14 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: true,
-	    widgets: ['uber']
+      isActive: false,
+	    widgets: []
     }
-  }
-
-  // FUNCTION FOR WIDGET START STT LISTNENING
-  startListening (widgetName) {
-    console.log('client emitting start listening');
-    this.state.socket.emit('stt', widgetName.toUpperCase());
   }
 
   componentDidMount(){
 
-    var self =this;
+    const self =this;
 
     console.log("this app was mounted.");
 
@@ -58,7 +52,7 @@ class Container extends React.Component {
       console.log("widget", widgetName);
       var temp = self.state.widgets.slice();
       if(temp.length === 3)temp.pop();
-      if(temp.indexOf(widgetName)=== -1){
+      if(temp.indexOf(widgetName) === -1){
         temp.unshift(widgetName);
         self.setState({
           widgets: temp
@@ -66,8 +60,15 @@ class Container extends React.Component {
       }
 
       // TRYING TO FIX SPEECH:
-      this.startListening(widgetName)
+      console.log('widget should startlistening');
+      self.startListening(widgetName.toUpperCase())
     });
+  }
+
+  // FUNCTION FOR WIDGET START STT LISTNENING
+  startListening (widgetName) {
+    console.log('client emitting start listening');
+    socket.emit('stt', widgetName.toUpperCase());
   }
 
   render () {

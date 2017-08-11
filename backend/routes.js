@@ -4,6 +4,8 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const { localGetCommand } = require('./processHuman');
 // todo imports
+//const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const Reminder = require('./models/models').Reminder;
 // twilio imports
 const accountSid = process.env.TWILIO_SID; // Account SID from www.twilio.com/console
@@ -13,15 +15,22 @@ const client = new twilio(accountSid, authToken);
 const FROM_NUMBER = process.env.MY_TWILIO_NUMBER; // custom Twilio number
 const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; format: +1234567890
 
-/*------------------- ToDo Routes -----------------------*/
+
+router.get('/',(req,res) => {
+	console.log("thanks");
+	res.send(200);
+})
+
+/*------------------- Reminder Routes -----------------------*/
 
 router.get('/todo', (req, res) => {
-  //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
-  Reminder.find()
-  .then((resp) =>{
-    console.log("mounting",resp);
-    res.send(resp)
-  })
+    //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
+    Reminder.find()
+    .then((resp) =>{
+        console.log("mounting",resp);
+        res.send(resp)
+    })
+
 })
 
 router.post('/todo', (req, res) => {
@@ -43,15 +52,28 @@ router.post('/todo', (req, res) => {
 })
 
 router.post('/deltodo', (req, res) => {
-  console.log('in post route remove todo');
 
-  Reminder.find()
+  console.log('in post route remove todo');
+	// CHECK WHETHER THIS WORKS
+  /*Reminder.find()
   .then((resp) =>{
     newResp = resp.slice(parseInt(req.body.task), 1)
     console.log("mounting",resp);
     res.send(newResp)
   })
-});
+});*/ 
+	// OR IF THIS WORKS
+    Reminder.remove({task: req.body.task})
+    .then(() =>{
+        Remider.find()
+        .then((resp) => {
+            console.log("deleted", resp);
+            res.send(resp)
+        })
+    })
+
+}); 
+
 
 /*------------------- Uber Routes -----------------------*/
 
@@ -179,6 +201,7 @@ router.get('/request', function(req, res) {
 
 //use twilio to send article link to phone via text
 router.post('/sendArticle', (req, res) => {
+  console.log('SERVER in send article: ', TO_NUMBER, FROM_NUMBER, req.body.link);
   client.messages.create({
     body: req.body.link,
     to: TO_NUMBER,  // Text this number

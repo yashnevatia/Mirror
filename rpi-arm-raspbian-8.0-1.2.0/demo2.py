@@ -1,7 +1,7 @@
 import snowboydecoder
 import sys
 import signal
-print("corey")
+
 
 # Demo code for listening two hotwords at the same time
 
@@ -47,14 +47,19 @@ models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
           modelpath + "news.pmdl", modelpath + "radio.pmdl",
           modelpath + "reminders.pmdl", modelpath + "uber.pmdl",
           modelpath + "cancel.pmdl", modelpath + "spotify.pmdl"]
+          
+
+'''models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
+          modelpath + "news.pmdl", modelpath + "radio.pmdl",
+          modelpath + "reminders.pmdl", modelpath + "uber.pmdl",
+          modelpath + "cancel.pmdl"]'''
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
-callbacks = [wakeup, sleep, news, radio, todo, uber, cancel, spotify]
-print('Listening... Press Ctrl+C to exit')
+callbacks = [wakeup, sleep, news, radio, todo, uber, cancel, spotify]                                          
 
 # main loop
 # make sure you have the same numbers of callbacks and models
