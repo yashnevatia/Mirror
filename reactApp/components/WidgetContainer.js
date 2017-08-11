@@ -3,8 +3,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 
 import Time from './Time';
-// import Weather from './Weather';
-// import Radio from './Radio';
+import Weather from './Weather';
+import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import Todo from './Todo';
@@ -89,7 +89,7 @@ class WidgetContainer extends React.Component {
              transitionAppear = {true} transitionAppearTimeout = {2000}
              transitionEnter = {false} transitionLeave = {false}>
              <Time timeState={this.props.isActive}/>
-             {/* <Weather weatherState={this.props.isActive}/> */}
+             <Weather weatherState={this.props.isActive}/>
            </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
@@ -97,8 +97,8 @@ class WidgetContainer extends React.Component {
         </div>
         <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
           {this.props.widgets.map((widget) => {
-  					return this.getWidget(widget);
-  				})}
+  				return this.getWidget(widget);
+  		})}
         </div>
 	    </div>
     );

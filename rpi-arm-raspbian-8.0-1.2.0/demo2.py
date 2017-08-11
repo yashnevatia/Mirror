@@ -38,18 +38,21 @@ def uber():
 def cancel():
     print("cancel")
 
+def spotify():
+    print("spotify")
+
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/asif/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
           modelpath + "news.pmdl", modelpath + "radio.pmdl",
-          modelpath + "reminders.pmdl", modelpath + "uber.pmdl", modelpath + "cancel.pmdl"]
+          modelpath + "reminders.pmdl", modelpath + "uber.pmdl", modelpath + "cancel.pmdl", modelpath + "spotify.pmdl"]
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
-callbacks = [wakeup, sleep, news, radio, todo, uber, cancel]
+callbacks = [wakeup, sleep, news, radio, todo, uber, cancel, spotify]
 print('Listening... Press Ctrl+C to exit')
 
 # main loop

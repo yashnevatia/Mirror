@@ -9,7 +9,19 @@ class Weather extends React.Component {
     };
   }
   componentDidMount() {
-  //update weather
+  // set weather at component mount
+  axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
+      .then(resp => {
+        this.setState({
+          description: resp.data.weather[0].description,
+          min: resp.data.main.temp_min-273.15,
+          max: resp.data.main.temp_max-273.15,
+          current: (resp.data.main.temp-273.15).toFixed(0),
+          icon: resp.data.weather[0].icon
+        });
+        // console.log(this.state.icon);
+      });
+  //update weather every two minutes
     this.setState({ interval: setInterval(() => {
       axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
       .then(resp => {
@@ -22,7 +34,7 @@ class Weather extends React.Component {
         });
         // console.log(this.state.icon);
       });
-    }, 60000 *5)
+    }, 60000 *2)
     });
   }
   componentWillUnmount() {
