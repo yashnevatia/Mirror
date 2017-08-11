@@ -107,7 +107,6 @@ class WidgetContainer extends React.Component {
           { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
         <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-          <ToDo socket={this.state.socket} listen={this.startListening} />
 
           {this.props.widgets.map((widget, i) => {
             return this.getWidget(widget, i);

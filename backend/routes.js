@@ -66,6 +66,7 @@ const uber = new Uber({
   sandbox: true // optional, defaults to false
 });
 
+// CONFIG & AUTH FOR UBER (do this on each new computer to log in)
 router.get('/login', function(req, res) {
   var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
   res.redirect(url);
@@ -87,17 +88,20 @@ router.get('/callback', function(req, res) {
   });
 });
 
+// GET AVAILABLE PRODUCTS
 router.get('/products', function(req, res) {
   let query = req.query
   uber.products.getAllForAddressAsync(query.pickup)
   .then(function(resp) {
     res.send(resp.products);
+    uber.products.setDriversAvailabilityByIDAsync("26546650-e557-4a7b-86e7-6a3942445247", true);
   })
   .error(function(err) {
     console.error("could not get available products", err);
   });
 })
 
+// GET PRICE ESTIMATES
 router.get('/price', function(req, res) {
   let query = req.query
   uber.estimates.getPriceForRouteByAddressAsync(query.pickup, query.destination)
@@ -109,64 +113,66 @@ router.get('/price', function(req, res) {
   });
 })
 
-router.get('/home', function(req, res) {
-  uber.places.getHomeAsync()
-  .then(function(resp) {
-    res.send(resp);
-  })
-  .error(function(err) {
-    console.log('could not get home address', err);
-  })
-})
-
-router.get('/estimate', function(req, res) {
+// MAKE RIDE REQUEST
+router.get('/request', function(req, res) {
   let query = req.query;
-  let home;
-  uber.requests.getEstimatesAsync({
-    "product_id": query.product_id,
+  uber.requests.createAsync({
+    "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
     "startAddress": query.pickup,
-    "endAddress": query.destination
+    "endAddress": query.destination,
   })
   .then(function(resp) {
-    res.send(resp);
+    res.send(resp)
   })
   .error(function(err) {
-    console.error("could not get estimates", err);
+    console.error('could not process your request rn', err);
   });
 })
 
+// GET HOME ADDRESS (WASN"T WORKING)
+// router.get('/home', function(req, res) {
+//   uber.places.getHomeAsync()
+//   .then(function(resp) {
+//     res.send(resp);
+//   })
+//   .error(function(err) {
+//     console.log('could not get home address', err);
+//   })
+// })
 
-router.get('/delete', function(req, res) {
-  uber.requests.deleteCurrentAsync()
-  .then(function(resp) {
-    res.send(resp);
-  })
-  .error(function(err) {
-    console.error("could not delete current request", err);
-  });
-})
+// GET ESTIMATES FOR ROUTE
+// router.get('/estimate', function(req, res) {
+//   let query = req.query;
+//   let home;
+//   uber.requests.getEstimatesAsync({
+//     "product_id": query.product_id,
+//     "startAddress": query.pickup,
+//     "endAddress": query.destination
+//   })
+//   .then(function(resp) {
+//     res.send(resp);
+//   })
+//   .error(function(err) {
+//     console.error("could not get estimates", err);
+//   });
+// })
 
-router.get('/modify', function(req, res) {
-  uber.requests.updateCurrentAsync({
-    "endAddress": req.query.updatedDestination,
-  })
-  .then(function(resp) {
-    res.send(resp);
-  })
-  .error(function(err) {
-    console.error("could not modify current request", err);
-  });
-})
+// SET DROVER STATUS
+// uber.requests.setStatusByIDAsync(resp.data.request_id, 'accepted')
+// .then(function(response) {
+//   res.send(response)
+// })
 
-router.get('/current', function(req, res) {
-  uber.requests.getCurrentAsync()
-  .then(function(resp) {
-    res.send(resp);
-  })
-  .error(function(err) {
-    console.error("could not get current request", err);
-  });
-})
+// GET CURRENT ROUTE
+// router.get('/current', function(req, res) {
+//   uber.requests.getCurrentAsync()
+//   .then(function(resp) {
+//     res.send(resp);
+//   })
+//   .error(function(err) {
+//     console.error("could not get current request", err);
+//   });
+// })
 
 
 /*------------------- News Routes -----------------------*/
