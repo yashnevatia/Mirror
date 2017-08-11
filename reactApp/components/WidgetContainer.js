@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
+import { bounce } from 'react-animations';
+
 
 import Time from './Time';
 import Weather from './Weather';
@@ -8,6 +10,7 @@ import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import ToDo from './Reminder';
+import Spotify from './Spotify'
 import Response from './responseDiv';
 
 class WidgetContainer extends React.Component {
@@ -93,17 +96,17 @@ class WidgetContainer extends React.Component {
       <div className="outerDiv" id="q">
 
         <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
-          <ReactCSSTransitionGroup transitionName = "example"
-            transitionAppear = {true} transitionAppearTimeout = {2000}
-            transitionEnter = {false} transitionLeave = {false}>
-            <Time timeState={this.props.isActive}/>
-            {/* <Weather weatherState={this.props.isActive}/> */}
-          </ReactCSSTransitionGroup>
+           <ReactCSSTransitionGroup transitionName = "example"
+             transitionAppear = {true} transitionAppearTimeout = {2000}
+             transitionEnter = {false} transitionLeave = {false}>
+             <Time timeState={this.props.isActive}/>
+             <Weather weatherState={this.props.isActive}/>
+           </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
           { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
-        <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+        <div style={{'animation: bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
           <ToDo socket={this.state.socket} listen={this.startListening} />
 
           {this.props.widgets.map((widget, i) => {

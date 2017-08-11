@@ -18,17 +18,8 @@ class News extends React.Component {
 
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
-  }
 
-  componentDidMount () {
-    axios.get('https://newsapi.org/v1/sources?language=en')
-      .then(resp => {
-        const newSources = [...resp.data.sources];
-        this.setState({allSources: newSources});
-      })
-      .catch(console.log);
-
-    // START SOCKETS STUFF
+// START SOCKETS STUFF
     const self = this;
     this.state.socket.on('connect', () => {
       // join socket as ToDo
@@ -42,6 +33,16 @@ class News extends React.Component {
       });
     });
 
+  }
+
+  componentDidMount () {
+    axios.get('https://newsapi.org/v1/sources?language=en')
+      .then(resp => {
+        const newSources = [...resp.data.sources];
+        this.setState({allSources: newSources});
+      })
+      .catch(console.log);
+    
     // next line starts google listening as soon as component renders:
     this.startListening('NEWS');
     // END SOCKETS STUFF
@@ -54,6 +55,7 @@ class News extends React.Component {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
         .then(() => {
+			console.log('going to start listening again');
           // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
           // self.startListening('NEWS');
         })

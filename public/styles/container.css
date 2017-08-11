@@ -24,7 +24,7 @@
     align-items: flex-start;
     min-width: 30%;
     padding-left: 0%;
-    padding-top: 7%;
+    padding-top: 2%;
 
 
     width: 28vw;
@@ -57,7 +57,7 @@
 .isStandbyTime {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 400;
-    font-size: 60px;
+    font-size: 40px;
     color: #fff;
     margin: 0 !important;
     text-align: center;
@@ -77,7 +77,7 @@
 .isStandbyWeather {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 100;
-    font-size: 35px;
+    font-size: 20px;
     color: #fff;
     margin: 0 !important;
     text-align: center;
@@ -86,10 +86,10 @@
 }
 .isStandbyDiv {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-left: 35%;
+    align-items: right;
+    flex-direction: column-reverse;
+    width: 300px;
+    padding-bottom: 20%;
 }
 .newsContainer {
     width: 100%;
@@ -132,7 +132,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    padding-top: 2%;
+    padding-top: 1.5%;
 }
 
 .widgetsStandby {
@@ -165,13 +165,24 @@ body{
     display: flex;
     justify-content: center;
     padding-left:0%;
-    padding-top: 6%;
+    padding-top: 0%;
 }
 .scotch_music{
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.remindersListItem {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 400;
+    font-size: 120%;
+    padding-top: 1%;
+    padding-left: 0.1%;
+    color: #fff;
+    white-space: nowrap;
+    /*overflow: hidden;*/
+    /*animation: type 4s steps(60, end);*/
 }
 
 .search div, .search input {
@@ -319,6 +330,7 @@ h1 {
   font-weight: 400;
   color: #4f4f4f;
   margin: 0px;
+  padding-top: 1%
 }
 h2 {
   font-family: 'Alegreya';
@@ -353,6 +365,9 @@ p:nth-child(2){
 p a{
   color: lime;
   text-decoration: none;
+}
+ol {
+  margin: 0;
 }
 
 

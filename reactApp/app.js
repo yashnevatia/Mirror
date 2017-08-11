@@ -42,7 +42,7 @@ class Container extends React.Component {
       console.log("sleep");
       self.setState({
         isActive: false,
-        widget:[]
+        widgets:[]
       })
     });
 
@@ -51,7 +51,7 @@ class Container extends React.Component {
       var temp = self.state.widgets.slice();
       if(temp.length !== 0) temp.shift();
       self.setState({
-        widget: temp
+        widgets: temp
       })
     })
 
@@ -62,7 +62,7 @@ class Container extends React.Component {
       if(temp.indexOf(widgetName)=== -1){
         temp.unshift(widgetName);
         self.setState({
-          widget: temp
+          widgets: temp
         })
       }
 

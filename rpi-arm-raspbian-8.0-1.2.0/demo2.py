@@ -39,7 +39,7 @@ def cancel():
     print("cancel")
 
 def spotify():
-    print ("spotify")
+    print("spotify")
 
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/asif/"
 
