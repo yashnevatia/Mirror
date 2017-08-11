@@ -1,7 +1,7 @@
 import snowboydecoder
 import sys
 import signal
-print("corey")
+print("running python file now.")
 
 # Demo code for listening two hotwords at the same time
 
@@ -42,7 +42,8 @@ modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
           modelpath + "news.pmdl", modelpath + "radio.pmdl",
-          modelpath + "todo.pmdl", modelpath + "uber.pmdl", modelpath + "cancel.pmdl"]
+          modelpath + "todo.pmdl", modelpath + "uber.pmdl",
+          modelpath + "cancel.pmdl"]
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
@@ -50,7 +51,7 @@ signal.signal(signal.SIGINT, signal_handler)
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
 callbacks = [wakeup, sleep, news, radio, todo, uber, cancel]
-print('Listening... Press Ctrl+C to exit')
+print('Listening from python file.')
 
 # main loop
 # make sure you have the same numbers of callbacks and models

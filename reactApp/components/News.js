@@ -21,6 +21,8 @@ class News extends React.Component {
   }
 
   componentDidMount () {
+
+    //api call
     axios.get('https://newsapi.org/v1/sources?language=en')
       .then(resp => {
         const newSources = [...resp.data.sources];
@@ -30,16 +32,19 @@ class News extends React.Component {
 
     // START SOCKETS STUFF
     const self = this;
-    this.state.socket.on('connect', () => {
+
+    // called only once
+    self.state.socket.on('connect', () => {
       // join socket as ToDo
       console.log('CLIENT news connected to sockets');
       self.state.socket.emit('join', 'NEWS');
 
-      // listen for end of stt
-      self.state.socket.on('stt_finished', respObj => {
-        console.log('received stt finished', respObj);
-        self.processRequest(respObj);
-      });
+    });
+
+    // listen for end of stt
+    self.state.socket.on('stt_finished', respObj => {
+      console.log('received stt finished', respObj);
+      self.processRequest(respObj);
     });
 
     // next line starts google listening as soon as component renders:

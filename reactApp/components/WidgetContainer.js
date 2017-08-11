@@ -24,10 +24,10 @@ class WidgetContainer extends React.Component {
   componentDidMount() {
     // START SOCKET LISTENERS
     const self = this;
+
     this.state.socket.on('connect', () => {
       console.log("connected container");
       self.state.socket.emit('join', 'W_CONTAINER');
-
     });
 
     this.state.socket.on('invalid_request', () => {
@@ -65,7 +65,6 @@ class WidgetContainer extends React.Component {
   startListening (widgetName) {
     this.state.socket.emit('stt', widgetName.toUpperCase());
   }
-
 
 	getWidget(widget, i) {
 
