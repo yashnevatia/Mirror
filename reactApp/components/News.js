@@ -18,8 +18,10 @@ class News extends React.Component {
 
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
+
     
     const self = this;
+
 
     // called only once
     self.state.socket.on('connect', () => {
@@ -49,10 +51,9 @@ class News extends React.Component {
       })
       .catch(console.log);
 
-    // START SOCKETS STUFF
-    
 
-    // END SOCKETS STUFF
+
+
   }
 
   processRequest(respObj) {
@@ -130,10 +131,10 @@ class News extends React.Component {
     const newsStyle = {
       width: '100%',
       height: '33%',
-      backgroundImage: `linear-gradient(
-        rgba(0, 0, 0, 0.7),
-        rgba(0, 0, 0, 0)
-    ),   url({this.state.image})`
+    //   backgroundImage: `linear-gradient(
+    //     rgba(0, 0, 0, 0.7),
+    //     rgba(0, 0, 0, 0)
+    // ),   url({this.state.image})`
     };
     // loop through articles for current source and list out article heaadlines
     return (
