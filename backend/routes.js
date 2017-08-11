@@ -41,13 +41,11 @@ router.post('/todo', (req, res) => {
 })
 
 router.post('/deltodo', (req, res) => {
-    Reminder.remove({task: req.body.task})
-    .then(() =>{
-        Remider.find()
-        .then((resp) => {
-            console.log("deleted", resp);
-            res.send(resp)
-        })
+    Remider.find()
+    .then((resp) =>{
+        newResp = resp.slice(req.body.task, 1)
+        console.log("mounting",resp);
+        res.send(newResp)
     })
 });
 
