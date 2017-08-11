@@ -9,6 +9,7 @@ import News from './News';
 import Uber from './Uber';
 import ToDo from './ToDo';
 import Response from './responseDiv';
+import SpotifyPlayer from './SpotifyPlayer';
 
 class WidgetContainer extends React.Component {
 

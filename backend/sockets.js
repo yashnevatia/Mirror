@@ -114,6 +114,7 @@ module.exports = function (io) {
     })
 
     socket.on('getToken', refreshToken => {
+      console.log("reached backend for token");
 
       var spotifyApi = new SpotifyWebApi({
         clientId: "681448e7f283472184ea59961a28e830",
@@ -124,6 +125,7 @@ module.exports = function (io) {
       spotifyApi.setRefreshToken(refreshToken);
       spotifyApi.refreshAccessToken()
       .then(data => {
+        console.log("have refreshed sending now");
         spotifyApi.setAccessToken(data.body['access_token']);
         socket.emit('setNewAccessToken', spotifyApi.getAccessToken());
       })

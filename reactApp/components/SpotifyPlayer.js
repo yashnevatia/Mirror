@@ -4,6 +4,7 @@ import axios from 'axios';
 class SpotifyPlayer extends React.Component{
 
   constructor(props){
+    console.log("reached spotify");
     super(props);
     this.state = {
       songName : "congratulations",
@@ -31,8 +32,37 @@ class SpotifyPlayer extends React.Component{
     // });
 
     self.state.socket.on('setNewAccessToken', token => {
+      console.log("accesstoken was received", token);
       self.setState({
         accessToken: token
+      }, function(){
+        axios({
+          method:'get',
+          url: `https://api.spotify.com/v1/search?q=congratulations&type=track&market=US`,
+          headers: {
+            'Authorization': 'Bearer ' + self.state.accessToken,
+            'Content-Type': "application/json"
+          },
+          success: function(data){
+            var songURI = data.items[0].album.artists[0].uri;
+            console.log(songURI);
+            axios({
+              method:'put',
+              url: 'https://api.spotify.com/v1/me/player/play',
+              headers: {
+                'Authorization': 'Bearer ' + self.state.accessToken,
+                'Content-Type': "application/json"
+              },
+              data: JSON.stringify({
+                "uris": [songURI]
+              }),
+              dataType: "JSON",
+              success: function(data){
+                console.log("song successfully changed");
+              }
+            })
+          }
+        })
       })
     })
   }
@@ -67,7 +97,6 @@ class SpotifyPlayer extends React.Component{
           })
         }
       })
-
     }
   }
 
