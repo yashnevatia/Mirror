@@ -9,7 +9,7 @@ class ToDo extends React.Component {
       toDo: [{task:'clean'},{task:'jump'}],
       socket: props.socket
     };
-
+    console.log('todo constructed')
     this.startListening = this.props.listen.bind(this);
   }
 
