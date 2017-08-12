@@ -88,6 +88,7 @@ module.exports = function (io) {
 
     // socket listeners for STT
     socket.room = 'DEFAULT';
+    console.log('DEFAULT ROOM SET:', socket.room);
 
     socket.on('join', widgetName => {
       console.log('SERVER in join', widgetName);

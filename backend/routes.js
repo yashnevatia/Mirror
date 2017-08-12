@@ -11,7 +11,8 @@ const Reminder = require('./models/models').Reminder;
 const accountSid = process.env.TWILIO_SID; // Account SID from www.twilio.com/console
 const authToken = process.env.TWILIO_AUTH_TOKEN; // Auth Token from www.twilio.com/console
 const twilio = require('twilio');
-const client = new twilio(accountSid, authToken);
+const client = require('twilio')(accountSid, authToken);
+// const client = new twilio(accountSid, authToken);
 const FROM_NUMBER = process.env.MY_TWILIO_NUMBER; // custom Twilio number
 const TO_NUMBER = process.env.MY_PHONE_NUMBER; // telephone number to text; format: +1234567890
 
@@ -209,7 +210,10 @@ router.post('/sendArticle', (req, res) => {
   })
   .then( msg => {
     console.log('SERVER sent msg:', msg);
-  });
+  })
+	.catch( err => {
+		console.log ('THIS IS WHERE YOU SEE THE ERR', err);
+	})
 
 })
 

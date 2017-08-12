@@ -10,6 +10,7 @@ class News extends React.Component {
 
     this.state = {
       allSources: [],
+      allArticles: [],
       currentSource: {},
       currentArticles: [],
       image: '',
@@ -18,9 +19,12 @@ class News extends React.Component {
 
     this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
+    console.log('news rendered');
   }
 
   componentDidMount () {
+    const self = this;
+
     //api call
     axios.get('https://newsapi.org/v1/sources?language=en')
     .then(resp => {
@@ -29,7 +33,6 @@ class News extends React.Component {
     })
     .catch(console.log);
 
-    const self = this;
     // called only once
     self.state.socket.on('connect', () => {
       console.log('CLIENT news connected to sockets');
@@ -41,6 +44,8 @@ class News extends React.Component {
       console.log('received stt finished', respObj);
       self.processRequest(respObj);
     });
+
+
 
   }
 
@@ -88,7 +93,7 @@ class News extends React.Component {
       axios.get(`https://newsapi.org/v1/articles?source=${this.state.currentSource.id}&apiKey=${NEWS_API_KEY}`)
         .then( resp => {
           console.log('in set current articles')
-          self.setState({currentArticles: [...resp.data.articles]});
+          self.setState({allArticles: [...resp.data.articles], currentArticles: resp.data.articles.slice(0,4)});
           //   self.setState({image: resp.data.articles[0].urlToImage});
           resolve('success');
         })
@@ -96,6 +101,12 @@ class News extends React.Component {
           reject('errrorrrrr', err);
         });
     });
+  }
+
+  nextArticles () {
+    // set next starting position within all articles array
+    const nextPos = this.state.allArticles.indexOf(this.state.currentArticles[this.state.currentArticles.length]) + 1;
+    this.setState({currentArticles: this.state.currentArticles.slice(nextPos, nextPos+4)})
   }
 
   // function that texts user with link to article of their choosing
@@ -113,7 +124,8 @@ class News extends React.Component {
 
     } else {
       // self.state.socket.emit('invalid_request');
-      resolve('did nothing');
+      // resolve('did nothing');
+      console.log('this is here in the else of pin article');
     }
   }
 
@@ -143,9 +155,9 @@ class News extends React.Component {
         {this.state.currentArticles && <div className="newsList" style={{color: 'white'}}>
           {this.state.currentArticles.map((article, i) => {
             // SET 4 TO BE HOW EVER MANY ARTICLES YOU WANT TO SHOW
-            if(i < 4) {
+            // if(i < 4) {
               return (<div className="newsListItem" key={i}>{article.title}</div>);
-            }
+            // }
               return null;
           })}
         </div> }

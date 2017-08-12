@@ -8,7 +8,7 @@ import Time from './Time';
 import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
-import Uber from './Uber';
+// import Uber from './Uber';
 import ToDo from './Reminder';
 import Spotify from './Spotify'
 import Response from './responseDiv';
@@ -74,7 +74,7 @@ class WidgetContainer extends React.Component {
   // }
 
 
-  getWidget(widget, i) {
+  getWidget(widget) {
 
 	console.log('**********************************************************************************');
     switch (widget){
@@ -113,8 +113,8 @@ class WidgetContainer extends React.Component {
 
         <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
 
-          {this.props.widgets.map((widget, i) => {
-            return this.getWidget(widget, i);
+          {this.props.widgets.map((widget) => {
+            return this.getWidget(widget);
           })}
 
         </div>
