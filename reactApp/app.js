@@ -9,8 +9,8 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: false,
-	    widgets: []
+      isActive: true,
+	    widgets: ['uber']
     }
   }
 
@@ -63,6 +63,7 @@ class Container extends React.Component {
       console.log('widget should startlistening');
       self.startListening(widgetName.toUpperCase())
     });
+    this.startListening('UBER')
   }
 
   // FUNCTION FOR WIDGET START STT LISTNENING

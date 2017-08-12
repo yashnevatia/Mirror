@@ -36,10 +36,10 @@ class WidgetContainer extends React.Component {
       self.state.socket.emit('join', 'W_CONTAINER');
     });
 
-    this.state.socket.on('invalid_request', () => {
-      console.log('WC in invalid request')
-      this.setState({currentResponse: "I'm sorry, I did not understand that"});
-    });
+    // this.state.socket.on('invalid_request', () => {
+    //   console.log('WC in invalid request')
+    //   this.setState({currentResponse: "I'm sorry, I did not understand that"});
+    // });
 
     this.state.socket.on('custom_msg', ({ resp }) => {
       console.log('WC in custom message')

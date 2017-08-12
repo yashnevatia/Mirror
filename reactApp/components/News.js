@@ -68,7 +68,7 @@ class News extends React.Component {
       self.pinArticle(articleNum - 1)
 
     } else {
-      self.state.socket.emit('invalid_request');
+      // self.state.socket.emit('invalid_request');
     }
   }
 
@@ -112,7 +112,7 @@ class News extends React.Component {
       axios.post('/sendArticle', {link: linkToSend});
 
     } else {
-      self.state.socket.emit('invalid_request');
+      // self.state.socket.emit('invalid_request');
       resolve('did nothing');
     }
   }

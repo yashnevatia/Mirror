@@ -6,7 +6,7 @@ class Uber extends React.Component {
     super(props);
     this.state = {
       home: '1412 Market St, San Francisco, CA 94103, US',
-      destination: '1080 Folsom St, San Francisco, CA 94103, US',
+      destination: '',
       service: 'POOL',
       request_id: '',
       products: [],
@@ -15,14 +15,13 @@ class Uber extends React.Component {
       socket: props.socket,
     };
 
-    // this.startListening = this.props.listen.bind(this);
+    this.startListening = this.props.listen.bind(this);
     this.processRequest = this.processRequest.bind(this);
     this.callUber = this.callUber.bind(this);
     this.setDestination = this.setDestination.bind(this);
   }
   componentDidMount() {
     //  GET AVAILABLE PRODUCTS
-    this.setDestination(this.state.destination);
     axios.get('http://localhost:3000/products', {
       params: {
         pickup: this.state.home
@@ -52,9 +51,6 @@ class Uber extends React.Component {
     });
 
     //////////////////////////////END SOCKETS/////////
-
-    // starts listening!!
-    // this.startListening('UBER')
   }
 
   processRequest(obj) {
@@ -62,13 +58,8 @@ class Uber extends React.Component {
     if (obj.category === 'uber' && obj.params.uberDestination) {
       self.setDestination(obj.params.uberDestination)
     }
-    else if (obj.category === 'uber' && obj.params.uberService) {
+    if (obj.category === 'uber' && obj.params.uberService) {
       this.setState({ service: obj.params.uberService })
-    }
-    else if (obj.category.startsWith('smalltalk') || (obj.category === 'uber' && obj.notFinished)) {
-      // self.startListening('UBER')
-    } else {
-      self.state.socket.emit('invalid_request');
     }
   }
 
@@ -77,14 +68,13 @@ class Uber extends React.Component {
     if(obj.params.uberConfirmation === 'yes') {
       self.callUber()
     } else {
-      self.cancelUber();
+      self.cancelUber()
       self.state.socket.emit('custom_msg', {resp: 'Okay, I will cancel your Uber'});
       self.setState({destination: '', prices: [], request_id: ''});
     }
   }
 
   callUber() {
-    const self = this
     console.log('home', this.state.home);
     console.log('destination', this.state.destination);
     axios.get('http://localhost:3000/request', {
@@ -95,7 +85,7 @@ class Uber extends React.Component {
     })
     .then(function(resp) {
       console.log('uber called RESP:', resp);
-      self.setState({ request_id: resp.data.request_id })
+      this.setState({ request_id: resp.data.request_id })
     })
   }
 

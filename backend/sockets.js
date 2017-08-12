@@ -7,9 +7,9 @@ const SpotifyWebApi = require('spotify-web-api-node');
 var refresh = require('spotify-refresh');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-const myFilePath = '/home/pi/Public/'; // PI
+// const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-//const myFilePath = '/Users/amandahansen/' // AMANDA
+const myFilePath = '/Users/amandahansen/' // AMANDA
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
@@ -125,7 +125,7 @@ module.exports = function (io) {
       });
 
       spotifyApi.setRefreshToken(refreshToken);
-      
+
       spotifyApi.refreshAccessToken()
       .then(data => {
         console.log("have refreshed sending now");
@@ -135,10 +135,10 @@ module.exports = function (io) {
       .catch(error => {
         console.log("error", error);
       })*/
-      
-      
- 
-	refresh(refreshToken, "681448e7f283472184ea59961a28e830", "40afeab55a564fe297d1c9a8bbdcfd55", function (err, res, body) { 
+
+
+
+	refresh(refreshToken, "681448e7f283472184ea59961a28e830", "40afeab55a564fe297d1c9a8bbdcfd55", function (err, res, body) {
 			if (err) return
 		//body = JSON.parse(body)
 		console.log("reached here", body);
