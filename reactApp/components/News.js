@@ -52,7 +52,7 @@ class News extends React.Component {
   processRequest(respObj) {
     const self = this;
 
-    if (respObj.category === 'news') {
+    if (respObj.category === 'news' && respObj.params && respObj.params.newsSource) {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
         .then(() => {
@@ -65,6 +65,8 @@ class News extends React.Component {
           console.log('ERROR :(', err);
         });
 
+    } else if (respObj.category === 'news' && respObj.params && respObj.params.newsAction) {
+      self.nextArticles();
     } else if (respObj.category === 'news article') {
 		console.log('in news article with article: ', respObj.params.number, respObj.params.ordinal);
       // user specifies number of article
