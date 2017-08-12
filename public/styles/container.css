@@ -187,13 +187,16 @@ body{
 .uberOptions {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 400;
-    font-size: 120%;
+    font-size: 150%;
     padding-top: 1%;
     padding-left: 0.1%;
     color: #fff;
     white-space: nowrap;
-    /*overflow: hidden;*/
+    padding-top: 2%;
     animation: type 4s steps(60, end);
+    font-size: 130%;
+    display: inline-block;
+    flex-direction: column-reverse;
 }
 
 .search div, .search input {

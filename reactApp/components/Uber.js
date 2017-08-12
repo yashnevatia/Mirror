@@ -108,8 +108,9 @@ class Uber extends React.Component {
   render() {
     return (
       <div className="uberDiv">
+      <div className="uberOptions" >
       <img src="http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png"></img>
-      <div className="uberOptions">
+      
       {this.state.products
         .filter(car => (car.display_name === "POOL" || car.display_name === "uberX" || car.display_name === "uberXL"))
         .sort((a, b) => (a.capacity - b.capacity))
