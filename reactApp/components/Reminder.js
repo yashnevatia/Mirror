@@ -26,11 +26,11 @@ class Reminder extends React.Component {
     this.state.socket.on('connect', () => {
       // join socket as ToDo
       console.log('CLIENT todo connected to sockets');
-      self.state.socket.emit('join', 'TODO');
+      self.state.socket.emit('join', 'REMINDERS');
 
       // listen for end of stt
       self.state.socket.on('stt_finished', respObj => {
-        console.log('received stt finished', respObj);
+        console.log('TODO received stt finished', respObj);
         console.log('calling process request')
         self.processRequest(respObj);
       });

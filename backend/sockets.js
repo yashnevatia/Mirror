@@ -27,8 +27,9 @@ function getCommand (widgetName, socket, io) {
         return getCommand(widgetName, socket, io);
       }
       else {
-        console.log('reached {D}');
-        io.emit('stt_finished', respObj);
+        console.log('reached {D}', widgetName);
+        io.to(widgetName.toUpperCase()).emit('stt_finished', respObj);
+        io.to('W_CONTAINER').emit('stt_finished', respObj);
         listenHotword(socket);
 
         return respObj;
