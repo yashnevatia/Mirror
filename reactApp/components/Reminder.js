@@ -73,34 +73,35 @@ class Reminder extends React.Component {
   };
 
   processRequest(respObj) {
-    // const self = this;
-    // console.log('in process request with ', respObj)
-    //
-    // // command is under todo category --> process it
-    // if (respObj.category === 'todo') {
-    //
-    //   if (!respObj.params) {   // if no params, keep listening
-    //     // self.startListening('TODO');
-    //   } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
-    //     // self.startListening('TODO');
-    //   } else if (respObj.verb === 'add') {   // command is to add task
-    //     console.log('adding todo: ',respObj.params.task[0] )
-    //     self.createToDo(respObj.params.task);
-    //   } else if (respObj.params.verb === 'delete') {   // command is to delete task
-    //     console.log('deleting todo: ',respObj.params.task[0] )
-    //   } else if (respObj.params.verb === 'add') {   // command is to add task
-    //     self.createToDo(respObj.params.task);
-    //   } else if (respObj.params.verb === 'delete') {   // command is to delete task
-    //     self.deleteToDo(respObj.params.task);
-    //   }
-    //
-    //   // need an else statement here ?
-    //
-    //   // command did not fall under todo --> ignore and start listening again
-    // } else {
-    //   self.state.socket.emit('invalid_request');
-    //   // self.startListening('TODO');
-    // }
+    const self = this;
+    console.log('in process request with ', respObj)
+   
+    // command is under todo category --> process it
+    if (respObj.category === 'todo') {
+    
+      if (!respObj.params) {   // if no params, keep listening
+        // self.startListening('TODO');
+      } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
+        // self.startListening('TODO');
+      } else if (respObj.verb === 'add') {   // command is to add task
+        console.log('adding todo: ',respObj.params.task[0] )
+        self.createToDo(respObj.params.task);
+      } else if (respObj.params.verb === 'delete') {   // command is to delete task
+        console.log('deleting todo: ',respObj.params.task[0] )
+      } else if (respObj.params.verb === 'add') {   // command is to add task
+        self.createToDo(respObj.params.task);
+      } else if (respObj.params.verb === 'delete') {   // command is to delete task
+        self.deleteToDo(respObj.params.task);
+      }
+    
+      // need an else statement here ?
+    
+      // command did not fall under todo --> ignore and start listening again
+    } else {
+	  console.log('invalid request');
+      // self.state.socket.emit('invalid_request');
+      // self.startListening('TODO');
+    }
   }
 
 
@@ -108,12 +109,12 @@ class Reminder extends React.Component {
     // loop through articles for current source and list out article heaadlines
     return (
       <div >
-        {/* <h1 style={{color: 'white'}}> Reminders</h1>
+        <h1 style={{color: 'white'}}> Reminders</h1>
         <ol>
           {this.state.toDo.map((toDo)=> {
             return (<li className="remindersListItem">{toDo.task}</li>)
           })}
-        </ol> */}
+        </ol>
       </div>
     );
   }

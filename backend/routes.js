@@ -23,7 +23,7 @@ router.get('/',(req,res) => {
 })
 
 /*------------------- Reminder Routes -----------------------*/
-/*
+
 router.get('/todo', (req, res) => {
     //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
     Reminder.find()
@@ -62,7 +62,7 @@ router.post('/deltodo', (req, res) => {
     console.log("mounting",resp);
     res.send(newResp)
   })
-});*/ /*
+});*/ 
 	// OR IF THIS WORKS
     Reminder.remove({task: req.body.task})
     .then(() =>{
@@ -74,7 +74,7 @@ router.post('/deltodo', (req, res) => {
     })
 
 });
-*/
+
 
 /*------------------- Uber Routes -----------------------*/
 
