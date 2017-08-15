@@ -8,7 +8,7 @@ import Time from './Time';
 import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
-// import Uber from './Uber';
+import Uber from './Uber';
 import ToDo from './Reminder';
 import Spotify from './Spotify'
 import Response from './responseDiv';
@@ -36,14 +36,14 @@ class WidgetContainer extends React.Component {
       self.state.socket.emit('join', 'W_CONTAINER');
     });
 
-    // this.state.socket.on('invalid_request', () => {
-    //   console.log('WC in invalid request')
-    //   this.setState({currentResponse: "I'm sorry, I did not understand that"});
-    // });
+    this.state.socket.on('invalid_request', () => {
+      console.log('WC in invalid request')
+      this.setState({currentResponse: "I'm sorry, I did not understand that"});
+    });
 
     this.state.socket.on('custom_msg', ({ resp }) => {
       console.log('WC in custom message')
-      this.setState({currentResponse: resp});
+      this.setState({ currentResponse: resp });
     });
 
     this.state.socket.on('stt_continuing', respObj => {
@@ -67,11 +67,11 @@ class WidgetContainer extends React.Component {
     // END SOCKET LISTENERS
   }
 
-  // // FUNCTION FOR WIDGET START STT LISTNENING
-  // startListening (widgetName) {
-  //   console.log('client emitting start listening');
-  //   this.state.socket.emit('stt', widgetName.toUpperCase());
-  // }
+  // FUNCTION FOR WIDGET START STT LISTNENING
+  startListening (widgetName) {
+    console.log('client emitting start listening');
+    this.state.socket.emit('stt', widgetName.toUpperCase());
+  }
 
 
   getWidget(widget) {

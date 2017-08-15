@@ -62,7 +62,7 @@ router.post('/deltodo', (req, res) => {
     console.log("mounting",resp);
     res.send(newResp)
   })
-});*/ 
+});*/
 	// OR IF THIS WORKS
     Reminder.remove({task: req.body.task})
     .then(() =>{
@@ -95,8 +95,9 @@ router.get('/login', function(req, res) {
   res.redirect(url);
 });
 
+
 router.get('/callback', function(req, res) {
-  uber.authorizationAsync({authorization_code: req.query.code})
+  uber.authorizationAsync({ authorization_code: req.query.code })
   .spread(function(access_token, refresh_token, authorizedScopes, tokenExpiration) {
     // store the user id and associated access_token, refresh_token, scopes & token expiration date
     console.log('New access_token retrieved: ' + access_token);
@@ -136,15 +137,19 @@ router.get('/price', function(req, res) {
   });
 })
 
-// MAKE RIDE REQUEST
-router.get('/request', function(req, res) {
-  let query = req.query;
+// POST A RIDE REQUEST
+router.post('/request', function(req, res) {
   uber.requests.createAsync({
     "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
-    "startAddress": query.pickup,
-    "endAddress": query.destination,
+    "start_latitude": 37.761492,
+    "start_longitude": -122.423941,
+    "end_latitude": 37.775393,
+    "end_longitude": -122.417546
+    // "startAddress": req.query.home,
+    // "endAddress": req.query.destination,
   })
   .then(function(resp) {
+    console.log('POSTED UBER REQUEST!!')
     res.send(resp)
   })
   .error(function(err) {
@@ -152,50 +157,49 @@ router.get('/request', function(req, res) {
   });
 })
 
-// GET HOME ADDRESS (WASN"T WORKING)
-// router.get('/home', function(req, res) {
-//   uber.places.getHomeAsync()
-//   .then(function(resp) {
-//     res.send(resp);
-//   })
-//   .error(function(err) {
-//     console.log('could not get home address', err);
-//   })
-// })
+// PUT DRIVER STATUS
+// note: defaults to processing, then set to 'accepted', then 'arriving', then 'in_progress'
+router.put('/sandbox/status', function(req, res) {
+  uber.requests.setStatusByIDAsync(req.query.request_id, req.query.status)
+  .then(function(resp) {
+    console.log('CHANGED SANDBOX STATUS TO' + req.query.status);
+    if (req.query.status === 'accepted') {
+      res.send('Your request has been accepted and a driver is en route to your location.')
+    }
+    if (req.query.status === 'arriving') {
+      res.send('Your ride will be arriving soon.')
+    }
+  })
+})
 
-// GET ESTIMATES FOR ROUTE
-// router.get('/estimate', function(req, res) {
-//   let query = req.query;
-//   let home;
-//   uber.requests.getEstimatesAsync({
-//     "product_id": query.product_id,
-//     "startAddress": query.pickup,
-//     "endAddress": query.destination
-//   })
-//   .then(function(resp) {
-//     res.send(resp);
-//   })
-//   .error(function(err) {
-//     console.error("could not get estimates", err);
-//   });
-// })
+router.get('/sandbox/drivers', function(req, res) {
+	uber.products.setDriversAvailabilityByIDAsync("26546650-e557-4a7b-86e7-6a3942445247", true)
+	.then(function(resp) {
+		console.log('drivers are available');
+	})
+})
 
-// SET DROVER STATUS
-// uber.requests.setStatusByIDAsync(resp.data.request_id, 'accepted')
-// .then(function(response) {
-//   res.send(response)
-// })
+// GET CURRENT REQUEST BY ID (will change as you update status)
+router.get('/current', function(req, res) {
+  uber.requests.getByIDAsync(req.query.product_id)
+  .then(function(resp) {
+    res.send(resp);
+  })
+  .error(function(err) {
+    console.error("could not GET current request by ID", err);
+  });
+})
 
-// GET CURRENT ROUTE
-// router.get('/current', function(req, res) {
-//   uber.requests.getCurrentAsync()
-//   .then(function(resp) {
-//     res.send(resp);
-//   })
-//   .error(function(err) {
-//     console.error("could not get current request", err);
-//   });
-// })
+// DELETE CURRENT REQUEST BY ID
+router.get('/delete', function(req, res) {
+  uber.requests.deleteByIDAsync(req.query.product_id)
+  .then(function(resp) {
+    res.send(resp);
+  })
+  .error(function(err) {
+    console.error("could not DELETE current request by ID", err);
+  });
+})
 
 
 /*------------------- News Routes -----------------------*/
