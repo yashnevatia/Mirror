@@ -42,7 +42,7 @@ class News extends React.Component {
         this.setState({allSources: newSources});
       })
       .catch(console.log);
-    
+
     // next line starts google listening as soon as component renders:
     this.startListening('NEWS');
 
@@ -134,7 +134,14 @@ class News extends React.Component {
     return (
       <div className="newsContainer" style={newsStyle}>
         <div className="newsList" style={{color: 'white'}}>
-          {this.state.currentArticles.map((article, i) => {
+          {this.state.allSources && !this.state.currentArticles &&
+            <div id="crawl">
+              {this.state.allSources.map(source => (
+                <div className="newsListItem" key={i}>{source.name}</div>
+              ))}
+            </div>
+          }
+          {this.state.currentArticles && this.state.currentArticles.map((article, i) => {
             // SET 4 TO BE HOW EVER MANY ARTICLES YOU WANT TO SHOW
             if(i < 4) {
               return (<div className="newsListItem" key={i}>{article.title}</div>);

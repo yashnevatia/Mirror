@@ -365,3 +365,19 @@ ol {
   color: #b2b2b2;
   margin-right: 15px;
 }
+
+
+
+/* amanda's styling: */
+/**
+ * Infinite crawl effect using CSS animations
+ */
+@keyframes crawl {
+  0% { background-position: 0 0; }
+  100% { background-position: -1500px 0; /* 1500px = width of image */ }
+}
+#crawl {
+  background: url(http://f.cl.ly/items/2i3q0a123z3w17241Q3F/page-subheader.jpg);
+  height: 100px;
+  animation: crawl 60s infinite linear;
+}
