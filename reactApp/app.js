@@ -63,7 +63,9 @@ class Container extends React.Component {
       console.log('widget should startlistening');
       self.startListening(widgetName.toUpperCase())
     });
-    this.startListening('UBER')
+
+    // TESTING PURPOSES BUG
+    // this.startListening('UBER')
   }
 
   // FUNCTION FOR WIDGET START STT LISTNENING

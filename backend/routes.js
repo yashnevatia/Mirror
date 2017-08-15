@@ -112,6 +112,7 @@ router.get('/callback', function(req, res) {
   });
 });
 
+
 // GET AVAILABLE PRODUCTS
 router.get('/products', function(req, res) {
   let query = req.query
@@ -141,15 +142,15 @@ router.get('/price', function(req, res) {
 router.post('/request', function(req, res) {
   uber.requests.createAsync({
     "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
-    "start_latitude": 37.761492,
-    "start_longitude": -122.423941,
-    "end_latitude": 37.775393,
-    "end_longitude": -122.417546
-    // "startAddress": req.query.home,
-    // "endAddress": req.query.destination,
+    // "start_latitude": 37.761492,
+    // "start_longitude": -122.423941,
+    // "end_latitude": 37.775393,
+    // "end_longitude": -122.417546
+    "startAddress": req.body.home,
+    "endAddress": req.body.destination,
   })
   .then(function(resp) {
-    console.log('POSTED UBER REQUEST!!')
+    console.log('POSTED UBER REQUEST!!', resp)
     res.send(resp)
   })
   .error(function(err) {
@@ -160,13 +161,13 @@ router.post('/request', function(req, res) {
 // PUT DRIVER STATUS
 // note: defaults to processing, then set to 'accepted', then 'arriving', then 'in_progress'
 router.put('/sandbox/status', function(req, res) {
-  uber.requests.setStatusByIDAsync(req.query.request_id, req.query.status)
+  uber.requests.setStatusByIDAsync(req.body.request_id, req.body.status)
   .then(function(resp) {
-    console.log('CHANGED SANDBOX STATUS TO' + req.query.status);
-    if (req.query.status === 'accepted') {
+    console.log('CHANGED SANDBOX STATUS TO' + req.body.status);
+    if (req.body.status === 'accepted') {
       res.send('Your request has been accepted and a driver is en route to your location.')
     }
-    if (req.query.status === 'arriving') {
+    if (req.body.status === 'arriving') {
       res.send('Your ride will be arriving soon.')
     }
   })
@@ -181,7 +182,7 @@ router.get('/sandbox/drivers', function(req, res) {
 
 // GET CURRENT REQUEST BY ID (will change as you update status)
 router.get('/current', function(req, res) {
-  uber.requests.getByIDAsync(req.query.product_id)
+  uber.requests.getByIDAsync(req.query.request_id)
   .then(function(resp) {
     res.send(resp);
   })
@@ -200,6 +201,7 @@ router.get('/delete', function(req, res) {
     console.error("could not DELETE current request by ID", err);
   });
 })
+
 
 
 /*------------------- News Routes -----------------------*/

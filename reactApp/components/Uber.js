@@ -10,8 +10,23 @@ class Uber extends React.Component {
       products: [],
       service: '',
       prices: [],
-      request_id: '0c2efbd9-4c9e-4bc7-b320-a9e59112930e',
-      socket: props.socket
+      request_id: 'd3eead6b-e996-4ba2-a2d5-d7149485af64',
+      socket: props.socket,
+      driverDetails: {
+        "driver": {
+        "phone_number": "690-040-1939",
+        "sms_number": "",
+        "rating": 5,
+        "picture_url": "https://upload.wikimedia.org/wikipedia/en/1/13/Stick_figure.png",
+        "name": "Bob"
+        },
+      "vehicle": {
+        "make": "Bugatti",
+        "model": "Veyron",
+        "license_plate": "",
+        "picture_url": "https://webnews.bg/uploads/images/40/2740/222740/640x.jpg?_=1457704132"
+        },
+      },
     };
 
     this.startListening = this.props.listen.bind(this);
@@ -22,6 +37,11 @@ class Uber extends React.Component {
   }
 
   componentDidMount() {
+    axios.get('http://localhost:3000/current', {
+      params: { request_id: this.state.request_id }
+    }).then(resp => {
+      console.log('NEW DEETS', resp.data)
+    }).catch((err) => console.log('ERRRRROR', err))
     axios.get('http://localhost:3000/sandbox/drivers')
     .then(resp => {
       console.log('available drivers')
@@ -65,12 +85,6 @@ class Uber extends React.Component {
     if (obj.category === 'uber' && obj.params.uberService) {
       this.setState({ service: obj.params.uberService })
     }
-    // if (obj.category === 'uber' && obj.notFinished) {
-    //   this.startListening('UBER')
-    // }
-    // if (obj.category.startsWith('smalltalk') {
-    //   this.startListening('UBER')
-    // }
     if (obj.category !== 'uber') {
       this.state.socket.emit('invalid_request');
     }
@@ -78,62 +92,48 @@ class Uber extends React.Component {
 
   // logic for finished stt objects
   processFinishedRequest(obj) {
-    this.state.socket.emit('custom_msg', { resp: obj.response });
     if (obj.params.uberConfirmation === 'yes') {
       this.callUber();
+      this.state.socket.emit('custom_msg', { resp: "Will do!" });
     } else if (obj.params.uberConfirmation === 'no') {
       this.cancelUber();
+      this.state.socket.emit('custom_msg', { resp: "Uber cancelled" });
     }
   }
 
   callUber() {
-    console.log('uber called')
+    console.log('uber called');
+    this.setState({ request_id: 'hi' })
     // note: no driver details in sandbox mode
     // CREATE REQUEST
-    axios.post('http://localhost:3000/request')
+    axios.post('http://localhost:3000/request', {
+      home: this.state.home,
+      destination: this.state.destination
+    })
     .then(function(resp) {
       console.log('RIDE REQUEST RESPONSE', resp.data)
-      this.setState({ request_id: resp.data.request_id, eta: resp.data.eta })
+      const thisProduct = this.state.products.filter(car => (car.display_name === this.state.service))
+      this.setState({ products: thisProduct, request_id: resp.data.request_id, driverDetails: {
+        driver: {
+          "phone_number": "(415)555-1212",
+          "sms_number": "(415)555-1212",
+          "rating": 5,
+          "picture_url": "https://upload.wikimedia.org/wikipedia/en/1/13/Stick_figure.png",
+          "name": "Bob"
+        },
+        vehicle: {
+          "make": "Bugatti",
+          "model": "Veyron",
+          "license_plate": "I<3Uber",
+          "picture_url": "https://webnews.bg/uploads/images/40/2740/222740/640x.jpg?_=1457704132"
+        },
+      }
+      });
     })
     .catch(function(err) {
       console.log('something fucked up lol', err)
     });
   }
-
-//   axios.post('http://localhost:3000/request')
-//   .then(function(resp) {
-//     console.log('RIDE REQUEST RESPONSE', resp.data)
-//     this.setState({ request_id: resp.data.request_id })
-//     // SET RIDE STATUS TO ACCEPTED
-//     axios.put('http://localhost:3000/sandbox/status', {
-//       params: {
-//         'request_id': this.state.request_id,
-//         'status': accepted,
-//       }
-//     }).then(resp => {
-//         this.setState({ interval: setInterval(() => {
-//           // GET RIDE REQUEST DETAILS
-//           // note: no driver details in sandbox mode
-//           axios.get('http://localhost:3000/request', {
-//             params: {
-//               'request_id': this.state.request_id,
-//             }
-//           })
-//           .then(function(resp) {
-//             console.log('UPDATED RIDE REQUEST RESPONSE', resp.data)
-//             this.setState({ eta: resp.data.eta })
-//           })
-//           .catch(function(err) {
-//             console.log('something fucked up even more', err)
-//           });
-//         }, 10*1000)
-//       });
-//     });
-//   })
-//   .catch(function(err) {
-//     console.log('something fucked up lol', err)
-//   })
-// }
 
   cancelUber() {
     console.log('uber cancelled');
@@ -147,7 +147,7 @@ class Uber extends React.Component {
     .then(function(resp) {
       console.log(resp)
       this.setDestination('')
-      this.setState({ service: '', request_id: '' });
+      this.setState({ service: '', request_id: '', prices: [] });
     });
   }
 
@@ -170,7 +170,9 @@ class Uber extends React.Component {
   render() {
     return (
       <div className="uberDiv">
-      <div className="uberOptions" >
+      <div className="uberOptions">
+      {!this.state.request_id &&
+      <div>
       <img src="http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png"></img>
       {this.state.products
         .filter(car => (car.display_name === "POOL" || car.display_name === "uberX" || car.display_name === "uberXL"))
@@ -183,10 +185,21 @@ class Uber extends React.Component {
               .map(thisPrice => {return thisPrice.estimate})[0]}
           </div>
           </div>
-          })
-        }
+        })}
+      </div>}
+
+        {this.state.request_id &&
+          <div>
+          <img src={this.state.driverDetails.driver.picture_url} style={{height:70, width:60, borderRadius:3, margin:5}}></img>
+          <img src={this.state.driverDetails.vehicle.picture_url} style={{height:70, width:100, borderRadius:3, margin:5,}}></img>
+          <div> Your Uber is arriving soon!  </div>
+          <div>
+            Be on the lookout for {this.state.driverDetails.driver.name} in a {this.state.driverDetails.vehicle.make} {this.state.driverDetails.vehicle.model} </div>
+          <div> Rating: {this.state.driverDetails.driver.rating}/5 </div>
+        </div>
+          }
+        </div>
       </div>
-    </div>
     )
   }
 }
