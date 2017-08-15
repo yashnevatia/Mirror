@@ -10,7 +10,7 @@ class Uber extends React.Component {
       products: [],
       service: '',
       prices: [],
-      request_id: '',
+      request_id: '0c2efbd9-4c9e-4bc7-b320-a9e59112930e',
       socket: props.socket
     };
 
@@ -22,6 +22,10 @@ class Uber extends React.Component {
   }
 
   componentDidMount() {
+    axios.get('http://localhost:3000/sandbox/drivers')
+    .then(resp => {
+      console.log('available drivers')
+    })
     // GET AVAILABLE PRODUCTS
     axios.get('http://localhost:3000/products', {
       params: {
@@ -74,9 +78,10 @@ class Uber extends React.Component {
 
   // logic for finished stt objects
   processFinishedRequest(obj) {
-    if (obj.params.uberConfirmation === 'no') {
+    this.state.socket.emit('custom_msg', { resp: obj.response });
+    if (obj.params.uberConfirmation === 'yes') {
       this.callUber();
-    } else if (obj.params.uberConfirmation === 'yes') {
+    } else if (obj.params.uberConfirmation === 'no') {
       this.cancelUber();
     }
   }
@@ -84,7 +89,8 @@ class Uber extends React.Component {
   callUber() {
     console.log('uber called')
     // note: no driver details in sandbox mode
-    axios.get('http://localhost:3000/request')
+    // CREATE REQUEST
+    axios.post('http://localhost:3000/request')
     .then(function(resp) {
       console.log('RIDE REQUEST RESPONSE', resp.data)
       this.setState({ request_id: resp.data.request_id, eta: resp.data.eta })
@@ -93,6 +99,41 @@ class Uber extends React.Component {
       console.log('something fucked up lol', err)
     });
   }
+
+//   axios.post('http://localhost:3000/request')
+//   .then(function(resp) {
+//     console.log('RIDE REQUEST RESPONSE', resp.data)
+//     this.setState({ request_id: resp.data.request_id })
+//     // SET RIDE STATUS TO ACCEPTED
+//     axios.put('http://localhost:3000/sandbox/status', {
+//       params: {
+//         'request_id': this.state.request_id,
+//         'status': accepted,
+//       }
+//     }).then(resp => {
+//         this.setState({ interval: setInterval(() => {
+//           // GET RIDE REQUEST DETAILS
+//           // note: no driver details in sandbox mode
+//           axios.get('http://localhost:3000/request', {
+//             params: {
+//               'request_id': this.state.request_id,
+//             }
+//           })
+//           .then(function(resp) {
+//             console.log('UPDATED RIDE REQUEST RESPONSE', resp.data)
+//             this.setState({ eta: resp.data.eta })
+//           })
+//           .catch(function(err) {
+//             console.log('something fucked up even more', err)
+//           });
+//         }, 10*1000)
+//       });
+//     });
+//   })
+//   .catch(function(err) {
+//     console.log('something fucked up lol', err)
+//   })
+// }
 
   cancelUber() {
     console.log('uber cancelled');
@@ -105,7 +146,8 @@ class Uber extends React.Component {
     })
     .then(function(resp) {
       console.log(resp)
-      this.setState({ destination: '', prices: [], service: '', request_id: '' });
+      this.setDestination('')
+      this.setState({ service: '', request_id: '' });
     });
   }
 

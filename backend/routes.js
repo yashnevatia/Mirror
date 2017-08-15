@@ -95,8 +95,9 @@ router.get('/login', function(req, res) {
   res.redirect(url);
 });
 
+
 router.get('/callback', function(req, res) {
-  uber.authorizationAsync({authorization_code: req.query.code})
+  uber.authorizationAsync({ authorization_code: req.query.code })
   .spread(function(access_token, refresh_token, authorizedScopes, tokenExpiration) {
     // store the user id and associated access_token, refresh_token, scopes & token expiration date
     console.log('New access_token retrieved: ' + access_token);
@@ -137,7 +138,7 @@ router.get('/price', function(req, res) {
 })
 
 // POST A RIDE REQUEST
-router.get('/request', function(req, res) {
+router.post('/request', function(req, res) {
   uber.requests.createAsync({
     "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
     "start_latitude": 37.761492,
@@ -158,7 +159,7 @@ router.get('/request', function(req, res) {
 
 // PUT DRIVER STATUS
 // note: defaults to processing, then set to 'accepted', then 'arriving', then 'in_progress'
-router.get('/sandbox/status', function(req, res) {
+router.put('/sandbox/status', function(req, res) {
   uber.requests.setStatusByIDAsync(req.query.request_id, req.query.status)
   .then(function(resp) {
     console.log('CHANGED SANDBOX STATUS TO' + req.query.status);
@@ -171,17 +172,34 @@ router.get('/sandbox/status', function(req, res) {
   })
 })
 
-// GET CURRENT ROUTE BY ID (will change as you update status)
+router.get('/sandbox/drivers', function(req, res) {
+	uber.products.setDriversAvailabilityByIDAsync("26546650-e557-4a7b-86e7-6a3942445247", true)
+	.then(function(resp) {
+		console.log('drivers are available');
+	})
+})
+
+// GET CURRENT REQUEST BY ID (will change as you update status)
 router.get('/current', function(req, res) {
-  uber.requests.getByIDAsync(req.query.product_id);
+  uber.requests.getByIDAsync(req.query.product_id)
   .then(function(resp) {
     res.send(resp);
   })
   .error(function(err) {
-    console.error("could not get current request by ID", err);
+    console.error("could not GET current request by ID", err);
   });
 })
 
+// DELETE CURRENT REQUEST BY ID
+router.get('/delete', function(req, res) {
+  uber.requests.deleteByIDAsync(req.query.product_id)
+  .then(function(resp) {
+    res.send(resp);
+  })
+  .error(function(err) {
+    console.error("could not DELETE current request by ID", err);
+  });
+})
 
 
 /*------------------- News Routes -----------------------*/

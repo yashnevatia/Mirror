@@ -9,7 +9,7 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: active,
+      isActive: true,
 	    widgets: ['uber']
     }
   }
