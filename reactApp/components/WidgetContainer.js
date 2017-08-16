@@ -23,8 +23,6 @@ class WidgetContainer extends React.Component {
       currentResponse: '',
       socket: props.socket,
     };
-
-    this.startListening = this.props.listen.bind(this);
   }
 
   componentDidMount() {
@@ -73,21 +71,19 @@ class WidgetContainer extends React.Component {
     this.state.socket.emit('stt', widgetName.toUpperCase());
   }
 
-
   getWidget(widget) {
 
-	console.log('**********************************************************************************');
     switch (widget){
     	case 'radio':
-    		return <Radio key={widget} socket={this.state.socket} listen={this.startListening} />;
+    		return <Radio key={widget} socket={this.state.socket}  />;
     	case 'news':
-    		return <News key={widget} socket={this.state.socket} listen={this.startListening} />;
+    		return <News key={widget} socket={this.state.socket}  />;
     	case 'uber':
-    		return <Uber key={widget} socket={this.state.socket} listen={this.startListening} />;
+    		return <Uber key={widget} socket={this.state.socket} />;
     	case 'reminders':
-    		return <ToDo key={widget} socket={this.state.socket} listen={this.startListening} />
+    		return <ToDo key={widget} socket={this.state.socket}  />
       case 'spotify':
-      	return <SpotifyPlayer key={widget} socket={this.state.socket} listen={this.startListening} />
+      	return <SpotifyPlayer key={widget} socket={this.state.socket}  />
     	default:
     		return <div key={'empty'} ></div>;
     }

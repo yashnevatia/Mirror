@@ -38,7 +38,7 @@ class Radio extends React.Component {
 
   xlArtwork(url){
     console.log('URL', url);
-    return url.replace(/large/, 't500x500');
+    return url ? url.replace(/large/, 't500x500'): "";
   }
 
   togglePlay(){

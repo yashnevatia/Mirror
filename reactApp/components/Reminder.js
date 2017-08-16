@@ -10,7 +10,7 @@ class Reminder extends React.Component {
       socket: props.socket
     };
     console.log('todo constructed')
-    this.startListening = this.props.listen.bind(this);
+
   }
 
   componentDidMount() {
@@ -37,9 +37,7 @@ class Reminder extends React.Component {
 
     });
 
-    // start listening at mount of component
-    // this.startListening('TODO');
-    // this.startListening('TODO');
+
   }
 
   //function to add todo

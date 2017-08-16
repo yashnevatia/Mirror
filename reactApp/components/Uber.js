@@ -29,7 +29,7 @@ class Uber extends React.Component {
       },
     };
 
-    this.startListening = this.props.listen.bind(this);
+
     this.processContinuingRequest = this.processContinuingRequest.bind(this);
     this.processFinishedRequest = this.processFinishedRequest.bind(this);
     this.callUber = this.callUber.bind(this);

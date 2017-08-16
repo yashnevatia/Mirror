@@ -72,6 +72,10 @@ function listenHotword(socket) {
       console.log("cancel");
       socket.emit('cancel');
     }
+    else if(hotword === 'image'){
+      console.log('image');
+      function()
+    }
     else {
       socket.emit('widget', hotword);
     }
@@ -116,38 +120,5 @@ module.exports = function (io) {
       console.log('SERVER in custom message');
       io.to('W_CONTAINER').emit('custom_msg', msg);
     })
-
-    socket.on('getToken', refreshToken => {
-      console.log("reached backend for token");
-
-      /*let spotifyApi = new SpotifyWebApi({
-        clientId: "681448e7f283472184ea59961a28e830",
-        clientSecret: "40afeab55a564fe297d1c9a8bbdcfd55",
-        redirectUri: "http://localhost:3000"
-      });
-
-      spotifyApi.setRefreshToken(refreshToken);
-
-      spotifyApi.refreshAccessToken()
-      .then(data => {
-        console.log("have refreshed sending now");
-        spotifyApi.setAccessToken(data.body['access_token']);
-        socket.emit('setNewAccessToken', spotifyApi.getAccessToken());
-      })
-      .catch(error => {
-        console.log("error", error);
-      })*/
-
-
-
-	refresh(refreshToken, "681448e7f283472184ea59961a28e830", "40afeab55a564fe297d1c9a8bbdcfd55", function (err, res, body) {
-			if (err) return
-		//body = JSON.parse(body)
-		console.log("reached here", body);
-		//console.log(JSON.stringify(body)  );
-	})
-
-    })
-
   });
 }
