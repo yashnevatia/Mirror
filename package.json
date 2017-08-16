@@ -31,6 +31,8 @@
     "classnames": "^2.2.5",
     "concurrently": "^3.5.0",
     "express": "^4.15.4",
+    "google-auth-library": "^0.10.0",
+    "googleapis": "^20.1.0",
     "mongoose": "^4.11.6",
     "node-record-lpcm16": "^0.3.0",
     "node-uber": "^1.0.0",

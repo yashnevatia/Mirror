@@ -10,7 +10,7 @@ class Reminder extends React.Component {
       socket: props.socket
     };
     console.log('todo constructed')
-    this.startListening = this.props.listen.bind(this);
+    //SSSthis.startListening = this.props.listen.bind(this);
   }
 
   componentDidMount() {

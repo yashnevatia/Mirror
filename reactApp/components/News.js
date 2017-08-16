@@ -17,7 +17,7 @@ class News extends React.Component {
       socket: props.socket
     };
 
-    this.startListening = this.props.listen.bind(this);
+    // this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
     console.log('news rendered');
   }

@@ -7,20 +7,30 @@ const SpotifyWebApi = require('spotify-web-api-node');
 var refresh = require('spotify-refresh');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-// const myFilePath = '/home/pi/Public/'; // PI
+const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-const myFilePath = '/Users/amandahansen/' // AMANDA
+// const myFilePath = '/Users/amandahansen/' // AMANDA
 
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
 /* ***** STT -- LOCAL CODE ***** */
 function getCommand (widgetName, socket, io) {
-  console.log('reached {A}')
+  console.log('reached {A}', widgetName)
   return localGetCommand(widgetName)
     .then( respObj => {
-      console.log('reached {B}', respObj)
-      if (respObj.notFinished) {
+      console.log('reached {B}', respObj, !respObj.category.toUpperCase().startsWith(widgetName))
+
+  if (!respObj.category.toUpperCase().startsWith(widgetName)) {
+	  console.log('yash says not 1', respObj, widgetName);
+      io.to('W_CONTAINER').emit('invalid_request');
+      // io.to(widgetName).emit('stt_finished', respObj);
+      // io.to('W_CONTAINER').emit('stt_finished', respObj);
+      listenHotword(socket);
+      return;
+	} 
+	else if (respObj.notFinished) {
+		console.log('yash says not 2');
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
         io.to('W_CONTAINER').emit('stt_continuing', respObj );
@@ -28,7 +38,8 @@ function getCommand (widgetName, socket, io) {
       }
       else {
         console.log('reached {D}', widgetName);
-        io.to(widgetName.toUpperCase()).emit('stt_finished', respObj);
+        console.log('yash says not 3');
+        io.to(widgetName).emit('stt_finished', respObj);
         io.to('W_CONTAINER').emit('stt_finished', respObj);
         listenHotword(socket);
 
@@ -95,15 +106,12 @@ module.exports = function (io) {
 
     listenHotword(socket);
 
-    // socket listeners for STT
-    socket.room = 'DEFAULT';
-    console.log('DEFAULT ROOM SET:', socket.room);
-
     socket.on('join', widgetName => {
       console.log('SERVER in join', widgetName);
+      if(socket.room)socket.leave(socket.room);
       socket.room = widgetName;
-      socket.join(socket.room, () => {
-        console.log('WIDGET joined ', socket.room);
+      socket.join(widgetName, () => {
+        console.log('WIDGET joined ', widgetName);
       });
     });
 
@@ -111,8 +119,7 @@ module.exports = function (io) {
       if(py)py.kill();
       console.log('SERVER in stt', widgetName);
       // we are killing children
-	  py.kill();
-      getCommand(socket.room, socket, io);
+      getCommand(widgetName, socket, io);
     });
 
     socket.on('invalid_request', () => {
