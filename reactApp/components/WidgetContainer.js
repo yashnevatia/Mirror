@@ -62,13 +62,6 @@ class WidgetContainer extends React.Component {
         self.setState({currentResponse: ''})
       }, timeout)
     });
-    // END SOCKET LISTENERS
-  }
-
-  // FUNCTION FOR WIDGET START STT LISTNENING
-  startListening (widgetName) {
-    console.log('client emitting start listening');
-    this.state.socket.emit('stt', widgetName.toUpperCase());
   }
 
   getWidget(widget) {

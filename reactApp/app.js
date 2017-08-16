@@ -61,7 +61,8 @@ class Container extends React.Component {
 
       // TRYING TO FIX SPEECH:
       console.log('widget should startlistening');
-      self.startListening(widgetName.toUpperCase())
+      socket.emit('stt', widgetName.toUpperCase());
+      //self.startListening(widgetName.toUpperCase())
     });
   }
 

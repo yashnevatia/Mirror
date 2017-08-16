@@ -19,8 +19,13 @@ function getCommand (widgetName, socket, io) {
   console.log('reached {A}')
   return localGetCommand(widgetName)
     .then( respObj => {
-      console.log('reached {B}', respObj)
-      if (respObj.notFinished) {
+      console.log('reached {B}', respObj, respObj.category.toUpperCase, widgetName)
+      if(respObj.category.toUpperCase.indexOf(widgetName) === -1){
+        io.to('W_CONTAINER').emit('invalid_request');
+        listenHotword(socket);
+        return;
+      }
+      else if (respObj.notFinished) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
         io.to('W_CONTAINER').emit('stt_continuing', respObj );
@@ -30,7 +35,6 @@ function getCommand (widgetName, socket, io) {
         console.log('reached {D}');
         io.emit('stt_finished', respObj);
         listenHotword(socket);
-
         return respObj;
       }
     })
@@ -91,24 +95,26 @@ module.exports = function (io) {
 
     listenHotword(socket);
 
-    // socket listeners for STT
-    socket.room = 'DEFAULT';
-    console.log('DEFAULT ROOM SET:', socket.room);
-
     socket.on('join', widgetName => {
       console.log('SERVER in join', widgetName);
-      socket.room = widgetName;
-      socket.join(socket.room, () => {
-        console.log('WIDGET joined ', socket.room);
-      });
+      if(widgetName === 'W_CONTAINER'){
+        socket.join('W_CONTAINER', () => {
+          console.log('WIDGET joined ', 'W_CONTAINER');
+        });
+      }
+      else{
+        if(socket.room)socket.leave(socket.room);
+        socket.room = widgetName;
+        socket.join(socket.room, ()=>{
+          console.log('WIDGET joined ', socket.room);
+        })
+      }
     });
 
     socket.on('stt', widgetName => {
       if(py)py.kill();
       console.log('SERVER in stt', widgetName);
-      // we are killing children
-	  py.kill();
-      getCommand(socket.room, socket, io);
+      getCommand(widgetName, socket, io);
     });
 
     socket.on('invalid_request', () => {
@@ -120,5 +126,7 @@ module.exports = function (io) {
       console.log('SERVER in custom message');
       io.to('W_CONTAINER').emit('custom_msg', msg);
     })
+
   });
+
 }
