@@ -75,8 +75,6 @@ class WidgetContainer extends React.Component {
     		return <Uber key={widget} socket={this.state.socket} />;
     	case 'reminders':
     		return <ToDo key={widget} socket={this.state.socket}  />
-      case 'spotify':
-      	return <SpotifyPlayer key={widget} socket={this.state.socket}  />
     	default:
     		return <div key={'empty'} ></div>;
     }
