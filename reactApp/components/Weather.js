@@ -19,8 +19,7 @@ class Weather extends React.Component {
           current: (resp.data.main.temp-273.15).toFixed(0),
           icon: resp.data.weather[0].icon
         });
-        // console.log(this.state.icon);
-      });
+  });
   //update weather every two minutes
     this.setState({ interval: setInterval(() => {
       axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')

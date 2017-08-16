@@ -12,6 +12,8 @@ function imageProcessor(){
   var google = require('googleapis');
   var googleAuth = require('google-auth-library');
   var axios = require('axios');
+  var ImageModel = require('./models/models').ImageModel;
+  var axios = require('axios');
   // If modifying these scopes, delete your previously saved credentials
   // at ~/.credentials/drive-nodejs-quickstart.json
   var SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive/file'];
@@ -112,21 +114,19 @@ function imageProcessor(){
     */
     function listFiles(auth) {
 
-      //  var drive = google.drive({ version: 'v3', auth: auth });
       var drive = google.drive('v2');
-      // var service = google.drive('v3');
-      console.log('8.2');
       var fs = require('fs');
+
       var fileMetadata = {
         name: 'photo.jpg',
         mimeType: 'image/jpg'
       };
-      console.log('8.3');
+
       var media = {
         mimeType: 'image/jpg',
         body: fs.createReadStream('./test.jpg')
       };
-      console.log('8.4');
+
       drive.files.insert({
         resource: fileMetadata,
         media: media,
@@ -134,26 +134,26 @@ function imageProcessor(){
         fields: 'id',
         title: 'title.jpg'
       }, function(err, file) {
-        console.log('10');
-        if(err) {
-          // Handle error
-          console.log('9.5')
-          console.log(err);
-        } else {
-          console.log('9');
-          console.log('File: ', file);
+        if(err) console.log(err);
+        else {
           drive.files.get({
-            'fileId': file.id,
-            auth: auth,
+             fileId: file.id,
+             auth: auth,
           }, function (err, stuff) {
-            if(err) {
-              // Handle error
-              console.log('9.55')
-              console.log(err);
-            } else {
-              console.log('9.55');
+            if(err)console.log(err);
+            else {
               console.log('RESPONSE: ', stuff.selfLink);
               sendMessage(stuff.selfLink);
+              var image = new ImageModel({
+                link : stuff.selfLink
+              });
+              axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
+              .then( resp => {
+                image.description = resp.data.weather[0].description;
+                image.min =  resp.data.main.temp_min-273.15;
+                image.max =  resp.data.main.temp_max-273.15;
+              })
+              image.save();
             }
           });
         }
