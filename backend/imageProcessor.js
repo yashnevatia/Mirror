@@ -1,4 +1,5 @@
 function imageProcessor(){
+  var {sendMessage} = require('./sendMessage');
   var sys = require('sys');
   var exec = require('child_process').exec;
   function bashCallback(error, stdout, stderr){
@@ -152,6 +153,7 @@ function imageProcessor(){
             } else {
               console.log('9.55');
               console.log('RESPONSE: ', stuff.selfLink);
+              sendMessage(stuff.selfLink);
             }
           });
         }
