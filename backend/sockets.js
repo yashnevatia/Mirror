@@ -20,7 +20,7 @@ function getCommand (widgetName, socket, io) {
   return localGetCommand(widgetName)
     .then( respObj => {
       console.log('reached {B}', respObj, respObj.category.toUpperCase, widgetName)
-      if(respObj.category.toUpperCase.indexOf(widgetName) === -1){
+      if(respObj.category.toUpperCase().indexOf(widgetName) === -1){
         io.to('W_CONTAINER').emit('invalid_request');
         listenHotword(socket);
         return;
