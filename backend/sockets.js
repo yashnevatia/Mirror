@@ -7,9 +7,9 @@ const SpotifyWebApi = require('spotify-web-api-node');
 var refresh = require('spotify-refresh');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-// const myFilePath = '/home/pi/Public/'; // PI
+const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-const myFilePath = '/Users/amandahansen/' // AMANDA
+//const myFilePath = '/Users/amandahansen/' // AMANDA
 
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
@@ -78,7 +78,6 @@ function listenHotword(socket) {
     }
     else if(hotword === 'image'){
       console.log('image');
-      function()
     }
     else {
       socket.emit('widget', hotword);
