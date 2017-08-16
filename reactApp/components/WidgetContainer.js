@@ -10,9 +10,7 @@ import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import ToDo from './Reminder';
-import Spotify from './Spotify'
 import Response from './responseDiv';
-import SpotifyPlayer from './SpotifyPlayer';
 
 class WidgetContainer extends React.Component {
 
@@ -20,11 +18,9 @@ class WidgetContainer extends React.Component {
     super(props);
     this.state = {
       hasResponse: true,
-      currentResponse: '',
+      currentResponse: this.props.currentResponse || '',
       socket: props.socket,
     };
-
-    this.startListening = this.props.listen.bind(this);
   }
 
   componentDidMount() {
@@ -58,7 +54,7 @@ class WidgetContainer extends React.Component {
       const self = this;
 
       this.setState({currentResponse: respObj.response});
-      const timeout = (respObj.category === "news article") ? 6000 : 1000;
+      const timeout = (respObj.category === "news article") ? 6000 : 3000;
       setTimeout(() => {
         console.log('WC in timeout of stt finished');
         self.setState({currentResponse: ''})
@@ -67,35 +63,26 @@ class WidgetContainer extends React.Component {
     // END SOCKET LISTENERS
   }
 
-  // FUNCTION FOR WIDGET START STT LISTNENING
-  startListening (widgetName) {
-    console.log('client emitting start listening');
-    this.state.socket.emit('stt', widgetName.toUpperCase());
-  }
-
 
   getWidget(widget) {
+  	console.log('**********************************************************************************');
+    console.log(widget)
 
-	console.log('**********************************************************************************');
     switch (widget){
     	case 'radio':
-    		return <Radio key={widget} socket={this.state.socket} listen={this.startListening} />;
+    		return <Radio key={widget} socket={this.state.socket} />;
     	case 'news':
-    		return <News key={widget} socket={this.state.socket} listen={this.startListening} />;
+    		return <News key={widget} socket={this.state.socket} />;
     	case 'uber':
-    		return <Uber key={widget} socket={this.state.socket} listen={this.startListening} />;
+    		return <Uber key={widget} socket={this.state.socket} />;
     	case 'reminders':
-    		return <ToDo key={widget} socket={this.state.socket} listen={this.startListening} />
-      case 'spotify':
-      	return <SpotifyPlayer key={widget} socket={this.state.socket} listen={this.startListening} />
+    		return <ToDo key={widget} socket={this.state.socket} />;
     	default:
     		return <div key={'empty'} ></div>;
     }
-
   }
 
   render () {
-    console.log("ACTIVE", this.props.isActive, this.props.widgets);
     return(
       <div className="outerDiv" id="q">
 
@@ -108,7 +95,7 @@ class WidgetContainer extends React.Component {
            </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-          { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
+          { this.state.hasResponse && <Response display={this.props.currentResponse || this.state.currentResponse} /> }
         </div>
 
         <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>

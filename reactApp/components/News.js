@@ -17,7 +17,6 @@ class News extends React.Component {
       socket: props.socket
     };
 
-    this.startListening = this.props.listen.bind(this);
     this.selectSource = this.selectSource.bind(this);
     console.log('news rendered');
   }
@@ -44,7 +43,7 @@ class News extends React.Component {
       console.log('received stt finished', respObj);
       self.processRequest(respObj);
     });
-
+    
 
 
   }
@@ -55,20 +54,17 @@ class News extends React.Component {
     if (respObj.category === 'news' && respObj.params && respObj.params.newsSource) {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
-        .then(() => {
-			console.log('going to start listening again');
-          // for testing purposes only --- USE HOTWORD INSTEAD TO PROMPT THAT
-          //self.startListening('NEWS');
-          console.log("CHANGED THE ABOVE LINE");
-        })
-        .catch( err => {
-          console.log('ERROR :(', err);
-        });
+      .then(() => {
+        console.log('going to start listening again');
+      })
+      .catch( err => {
+        console.log('ERROR :(', err);
+      });
 
     } else if (respObj.category === 'news' && respObj.params && respObj.params.newsAction) {
       self.nextArticles();
     } else if (respObj.category === 'news article') {
-		console.log('in news article with article: ', respObj.params.number, respObj.params.ordinal);
+      console.log('in news article with article: ', respObj.params.number, respObj.params.ordinal);
       // user specifies number of article
       const articleNum = parseInt(respObj.params.number) || parseInt(respObj.params.ordinal) || 1;
       // twilio texts article to user
@@ -93,15 +89,15 @@ class News extends React.Component {
       });
 
       axios.get(`https://newsapi.org/v1/articles?source=${this.state.currentSource.id}&apiKey=${NEWS_API_KEY}`)
-        .then( resp => {
-          console.log('in set current articles')
-          self.setState({allArticles: [...resp.data.articles], currentArticles: resp.data.articles.slice(0,4)});
-          //   self.setState({image: resp.data.articles[0].urlToImage});
-          resolve('success');
-        })
-        .catch( err => {
-          reject('errrorrrrr', err);
-        });
+      .then( resp => {
+        console.log('in set current articles')
+        self.setState({allArticles: [...resp.data.articles], currentArticles: resp.data.articles.slice(0,4)});
+        //   self.setState({image: resp.data.articles[0].urlToImage});
+        resolve('success');
+      })
+      .catch( err => {
+        reject('errrorrrrr', err);
+      });
     });
   }
 
@@ -135,32 +131,30 @@ class News extends React.Component {
     const newsStyle = {
       width: '100%',
       height: '33%',
-    //   backgroundImage: `linear-gradient(
-    //     rgba(0, 0, 0, 0.7),
-    //     rgba(0, 0, 0, 0)
-    // ),   url({this.state.image})`
+      //   backgroundImage: `linear-gradient(
+      //     rgba(0, 0, 0, 0.7),
+      //     rgba(0, 0, 0, 0)
+      // ),   url({this.state.image})`
     };
-    // loop through articles for current source and list out article heaadlines
     return (
-      <div className="newsContainer" style={newsStyle}>
+      <div className="newsContainer right" style={newsStyle} style={{color: 'white'}}>
+        {/* <h3 id="newsTitle" style={{color: 'white'}}> News</h3> */}
 
-        {!this.state.currentArticles && <div className="newsList" style={{color: 'white'}}>
+
+        {!this.state.currentArticles.length && <div className="newsList" style={{color: 'white'}}>
           {this.state.allSources.map((source, i) => {
             // SET 4 TO BE HOW EVER MANY Sources YOU WANT TO SHOW // change if get scrolling
-            if(i < 4) {
-              return (<div className="newsListItem" key={i}>{source.name}</div>);
-            }
-              return null;
+            return (<div className="newsListItem" key={i}>{source.name}</div>);
           })}
         </div> }
 
-        {this.state.currentArticles && <div className="newsList" style={{color: 'white'}}>
+        {this.state.currentArticles.length && <div className="newsList" style={{color: 'white'}}>
           {this.state.currentArticles.map((article, i) => {
             // SET 4 TO BE HOW EVER MANY ARTICLES YOU WANT TO SHOW
             // if(i < 4) {
-              return (<div className="newsListItem" key={i}>{article.title}</div>);
+            return (<div className="newsListItem" key={i}>{article.title}</div>);
             // }
-              return null;
+            return null;
           })}
         </div> }
       </div>

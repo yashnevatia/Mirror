@@ -10,7 +10,6 @@ class Reminder extends React.Component {
       socket: props.socket
     };
     console.log('todo constructed')
-    this.startListening = this.props.listen.bind(this);
   }
 
   componentDidMount() {
@@ -36,10 +35,6 @@ class Reminder extends React.Component {
       });
 
     });
-
-    // start listening at mount of component
-    // this.startListening('TODO');
-    // this.startListening('TODO');
   }
 
   //function to add todo
@@ -80,9 +75,9 @@ class Reminder extends React.Component {
     if (respObj.category === 'todo') {
 
       if (!respObj.params) {   // if no params, keep listening
-        // self.startListening('TODO');
+        // do nothing
       } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
-        // self.startListening('TODO');
+        // do nothing
       } else if (respObj.verb === 'add') {   // command is to add task
         console.log('adding todo: ',respObj.params.task[0] )
         self.createToDo(respObj.params.task);
@@ -99,8 +94,6 @@ class Reminder extends React.Component {
       // command did not fall under todo --> ignore and start listening again
     } else {
 	     console.log('invalid request');
-      // self.state.socket.emit('invalid_request');
-      // self.startListening('TODO');
     }
   }
 
@@ -109,7 +102,7 @@ class Reminder extends React.Component {
     // loop through articles for current source and list out article heaadlines
     return (
       <div >
-        <h1 style={{color: 'white'}}> Reminders</h1>
+        <h3 className='right' style={{color: 'white'}}> Reminders</h3>
         <ol>
           {this.state.toDo.map((toDo)=> {
             return (<li className="remindersListItem">{toDo.task}</li>)

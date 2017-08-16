@@ -20,6 +20,12 @@ function getCommand (widgetName, socket, io) {
   return localGetCommand(widgetName)
     .then( respObj => {
       console.log('reached {B}', respObj)
+
+      if (respObj.category !== widgetName) {
+        return;
+      }
+
+
       if (respObj.notFinished) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
@@ -103,8 +109,8 @@ module.exports = function (io) {
       if(py)py.kill();
       console.log('SERVER in stt', widgetName);
       // we are killing children
-	  py.kill();
-      getCommand(socket.room, socket, io);
+	     py.kill();
+       getCommand(socket.room, socket, io);
     });
 
     socket.on('invalid_request', () => {

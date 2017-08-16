@@ -10,7 +10,13 @@ class Container extends React.Component {
     super();
     this.state = {
       isActive: true,
-	    widgets: ['uber']
+	    widgets: ['news'],
+      initialResponses: {
+        radio: 'Would you like to play, pause or search for songs?',
+        news: 'Which news source would you like to view?',
+        uber: "Prompt 'call me an Uber' to order a ride!",
+        reminders: '',
+      }
     }
   }
 
@@ -50,22 +56,31 @@ class Container extends React.Component {
 
     socket.on('widget', function(widgetName){
       console.log("widget", widgetName);
-      var temp = self.state.widgets.slice();
-      if(temp.length === 3)temp.pop();
-      if(temp.indexOf(widgetName) === -1){
-        temp.unshift(widgetName);
-        self.setState({
-          widgets: temp
-        })
+      // if widget is not already active, bring it to top of array
+      if (widgetName !== self.state.widgets[0]) {
+        var temp = self.state.widgets.slice();
+        if(temp.length === 3)temp.pop();
+        if(temp.indexOf(widgetName) === -1){
+          temp.unshift(widgetName);
+          self.setState({
+            widgets: temp
+          })
+        }
+        // show initial prompt for widget
+        self.setState({currentResponse: self.state.initialResponses[widgetName.toLowerCase()]})
+
+      // else if widget active, set current response to be empty
+      } else {
+        self.setState({currentResponse: null})
       }
 
-      // TRYING TO FIX SPEECH:
+      // START GOOGLE SPEECH AFTER HOTWORD CALLED:
       console.log('widget should startlistening');
       self.startListening(widgetName.toUpperCase())
     });
 
     // TESTING PURPOSES BUG
-    // this.startListening('UBER')
+    // this.startListening('NEWS')
   }
 
   // FUNCTION FOR WIDGET START STT LISTNENING
@@ -81,7 +96,7 @@ class Container extends React.Component {
         widgets={this.state.widgets}
         className="card2"
         socket={socket}
-        listen={this.startListening}
+        currentResponse={this.state.currentResponse}
       />
     );
   }
