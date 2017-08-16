@@ -80,13 +80,14 @@ class Container extends React.Component {
 
     // BUG TESTING BUG PURPOSES BUG
     // this.startListening('REMINDERS')
-    // BUG TESTING BUG PURPOSES BUG
-    setTimeout(() => {
-      const widgetName='uber'
-      self.setState({widgets: [widgetName]})
-      self.setState({currentResponse: self.state.initialResponses[widgetName.toLowerCase()]})
 
-    }, 3000)
+    // BUG TESTING BUG PURPOSES BUG
+    // setTimeout(() => {
+    //   const widgetName='uber'
+    //   self.setState({widgets: [widgetName]})
+    //   self.setState({currentResponse: self.state.initialResponses[widgetName.toLowerCase()]})
+    //
+    // }, 3000)
     // BUG TESTING BUG PURPOSES BUG
 
   }
