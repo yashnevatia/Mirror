@@ -10,9 +10,9 @@ import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import ToDo from './Reminder';
-import Spotify from './Spotify'
+
 import Response from './responseDiv';
-import SpotifyPlayer from './SpotifyPlayer';
+
 
 class WidgetContainer extends React.Component {
 
