@@ -5,6 +5,7 @@ const { localGetCommand } = require('./processHuman');
 const readline = require('readline');
 const SpotifyWebApi = require('spotify-web-api-node');
 var refresh = require('spotify-refresh');
+var {imageProcessor} = require('./imageProcessor')
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
 const myFilePath = '/home/pi/Public/'; // PI
@@ -67,6 +68,7 @@ function listenHotword(socket) {
     if(hotword === 'wakeup'){
       console.log("wakeup");
       socket.emit('wakeup');
+      imageProcessor()
     }
     else if(hotword === 'sleep'){
       console.log("sleep");
@@ -78,6 +80,7 @@ function listenHotword(socket) {
     }
     else if(hotword === 'image'){
       console.log('image');
+
     }
     else {
       socket.emit('widget', hotword);

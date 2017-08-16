@@ -4,7 +4,7 @@
 function analyzeRequest (data) {
   const resp = data.result;
   console.log('in analyze request with:', data.result);
-  
+
   return new Promise((resolve, reject) => {
     const notFinished = resp.actionIncomplete;
     const category = resp.metadata.intentName ? resp.metadata.intentName.toLowerCase() : '';
