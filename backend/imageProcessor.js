@@ -18,7 +18,7 @@ function imageProcessor(){
     process.env.USERPROFILE) + '/.credentials/';
     var TOKEN_PATH = TOKEN_DIR + 'drive-nodejs-quickstart.json';
     // Load client secrets from a local file.
-    fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+    fs.readFile('/home/pi/Public/Mirror/backend/client_secret.json', function processClientSecrets(err, content) {
       console.log('1');
       if (err) {
         console.log('Error loading client secret file: ' + err);

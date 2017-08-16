@@ -68,7 +68,9 @@ function listenHotword(socket) {
     if(hotword === 'wakeup'){
       console.log("wakeup");
       socket.emit('wakeup');
-      imageProcessor()
+      imageProcessor();
+      py.kill();
+      listenHotword(socket);
     }
     else if(hotword === 'sleep'){
       console.log("sleep");
