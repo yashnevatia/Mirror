@@ -44,13 +44,13 @@ function streamingMicRecognize (/*encoding, sampleRateHertz, languageCode*/) {
       .on('data', (data) => {
           // return of 0 represents that reached transcription time limit
           // if reach this point, need to press 'Ctrl+C'
-        const returnScript = (data.results[0] && data.results[0].alternatives[0])
+        const returnScript = (data.results && data.results[0] && data.results[0].alternatives[0])
             ? data.results[0].alternatives[0].transcript
             : 0;
         console.log(returnScript);
 
         //STOP AT A SILENCE
-        if (data.results[0].isFinal) {
+        if (data.results && data.results[0] && data.results[0].isFinal) {
           record.stop();
           console.log('stopped listening');
         }

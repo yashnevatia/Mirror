@@ -104,7 +104,11 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
 
+          <button onClick={() => this.props.listen('REMINDERS')}> go outside </button>
+
+
         </div>
+
       </div>
     );
   }

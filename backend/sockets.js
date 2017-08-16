@@ -21,11 +21,6 @@ function getCommand (widgetName, socket, io) {
     .then( respObj => {
       console.log('reached {B}', respObj)
 
-      if (respObj.category !== widgetName) {
-        return;
-      }
-
-
       if (respObj.notFinished) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container

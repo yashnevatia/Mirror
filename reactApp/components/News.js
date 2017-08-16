@@ -43,7 +43,7 @@ class News extends React.Component {
       console.log('received stt finished', respObj);
       self.processRequest(respObj);
     });
-    
+
 
 
   }

@@ -10,7 +10,7 @@ class Container extends React.Component {
     super();
     this.state = {
       isActive: true,
-	    widgets: ['news'],
+	    widgets: ['reminders'],
       initialResponses: {
         radio: 'Would you like to play, pause or search for songs?',
         news: 'Which news source would you like to view?',
@@ -21,7 +21,6 @@ class Container extends React.Component {
   }
 
   componentDidMount(){
-
     const self =this;
 
     console.log("this app was mounted.");
@@ -79,8 +78,17 @@ class Container extends React.Component {
       self.startListening(widgetName.toUpperCase())
     });
 
-    // TESTING PURPOSES BUG
-    // this.startListening('NEWS')
+    // BUG TESTING BUG PURPOSES BUG
+    // this.startListening('REMINDERS')
+    // BUG TESTING BUG PURPOSES BUG
+    setTimeout(() => {
+      const widgetName='uber'
+      self.setState({widgets: [widgetName]})
+      self.setState({currentResponse: self.state.initialResponses[widgetName.toLowerCase()]})
+
+    }, 3000)
+    // BUG TESTING BUG PURPOSES BUG
+
   }
 
   // FUNCTION FOR WIDGET START STT LISTNENING
@@ -96,13 +104,12 @@ class Container extends React.Component {
         widgets={this.state.widgets}
         className="card2"
         socket={socket}
+        listen={this.startListening}
         currentResponse={this.state.currentResponse}
       />
     );
   }
-
 }
-
 
 ReactDOM.render(
   <Container />,
