@@ -9,7 +9,7 @@ var {imageProcessor} = require('./imageProcessor');
 var {suggestion} = require('./suggestion');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
- const myFilePath = '/home/pi/Public/'; // PI
+const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
 // const myFilePath = '/Users/amandahansen/' // AMANDA
 
@@ -43,10 +43,14 @@ function getCommand (widgetName, socket, io) {
       }
       else {
         console.log('reached {D}');
-        console.log('EMITTING to widget', widgetName, 'finished', respObj)
-        io.to(widgetName).emit('stt_finished', respObj);
         console.log('EMITTING to WC', widgetName, 'finished', respObj)
         io.to('W_CONTAINER').emit('stt_finished', respObj);
+
+        if (widgetName !== 'REMINDERS') {
+          console.log('EMITTING to widget', widgetName, 'finished', respObj)
+          io.to(widgetName).emit('stt_finished', respObj);
+        }
+
         listenHotword(socket);
       }
     })
@@ -99,6 +103,8 @@ function listenHotword(socket) {
     }
     else if(hotword === 'outfits'){
       console.log("outfits");
+      const msg = 'Great! Outfit suggestions will be sent to your phone!';
+      io.to('W_CONTAINER').emit('custom_msg', {resp: msg});
       suggestion();
       py.kill();
       listenHotword(socket);
