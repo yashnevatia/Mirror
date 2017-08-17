@@ -19,7 +19,7 @@ class WidgetContainer extends React.Component {
     super(props);
     this.state = {
         hasResponse: true,
-        currentResponse: '',
+        currentResponse: 'this is the current response',
         socket: props.socket,
     };
   }
@@ -99,7 +99,7 @@ class WidgetContainer extends React.Component {
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
             { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
         </div>
-        
+
         <div style={{ animation: 'bounce' }} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
           {this.props.widgets.map((widget) => {
   				return this.getWidget(widget);

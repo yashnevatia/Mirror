@@ -130,6 +130,8 @@ class News extends React.Component {
         rgba(0, 0, 0, 0)
     ),   url({this.state.image})`
     };
+
+    console.log('news rendering with', this.state.allSources, this.state.currentArticles)
     // loop through articles for current source and list out article heaadlines
     return (
       <div className="newsContainer" style={newsStyle}>
@@ -137,7 +139,7 @@ class News extends React.Component {
           {this.state.allSources && !this.state.currentArticles &&
             <div id="crawl">
               {this.state.allSources.map(source => (
-                <div className="newsListItem" key={i}>{source.name}</div>
+                <div key={source} className="newsListItem" key={i}>{source.name}</div>
               ))}
             </div>
           }
