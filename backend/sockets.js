@@ -16,11 +16,13 @@ const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
 /* ***** STT -- LOCAL CODE ***** */
 function getCommand (widgetName, socket, io) {
-  console.log('reached {A}', widgetName)
+  console.log('reached {A}', widgetName, 'EMITTING w container start listen')
+  io.to('W_CONTAINER').emit('listening', true);
+
   return localGetCommand(widgetName)
     .then( respObj => {
-      console.log('reached {B}', respObj, !respObj.category.toUpperCase().startsWith(widgetName))
-
+      console.log('reached {B}', respObj, 'EMITTING w container stop listen')
+      io.to('W_CONTAINER').emit('listening', false);
     // BUG AMANDA TESTING WITH THIS COMMENTED OUT BUG
 /*  if (!respObj.category.toUpperCase().startsWith(widgetName)) {
 	  console.log('yash says not 1', respObj, widgetName);
