@@ -62,7 +62,7 @@ class Container extends React.Component {
         if(temp.length === 3)temp.pop();
         if(temp.indexOf(widgetName) === -1){
           temp.unshift(widgetName);
-          console.log('new widget order', widgets);
+          console.log('new widget order', temp);
           self.setState({
             widgets: temp
           })
