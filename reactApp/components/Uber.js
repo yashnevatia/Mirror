@@ -26,7 +26,7 @@ class Uber extends React.Component {
   componentDidMount() {
 
     // axios.put('http://localhost:3000/sandbox/status', {
-    //     request_id: 'b8e54e17-07c0-4d79-9820-840713104467',
+    //     request_id: 'ae6f6f3e-3f68-4c86-96b0-bd5f5910e90f',
     //     status: 'driver_canceled',
     //   }).then(resp => console.log('CANCELED', resp))
 
@@ -49,21 +49,21 @@ class Uber extends React.Component {
     //////////////////////////// START SOCKETS ///////////////////////////////// don't touch this works
     const self = this;
     console.log('going to connect to socket', self.state.socket);
-    self.state.socket.on('connect', function() {
-      console.log("connected news");
+    // self.state.socket.on('connect', function() {
+    console.log("connected news");
 
-      self.state.socket.emit('join', 'UBER');
+    self.state.socket.emit('join', 'UBER');
 
-      self.state.socket.on('stt_continuing', obj => {
-        console.log('STT OBJ continuing', obj)
-        self.processContinuingRequest(obj);
-      })
+    self.state.socket.on('stt_continuing', obj => {
+      console.log('STT OBJ continuing', obj)
+      self.processContinuingRequest(obj);
+    })
 
-      self.state.socket.on('stt_finished', respObj => {
-        console.log('received stt finished', respObj);
-        self.processFinishedRequest(respObj)
-      });
+    self.state.socket.on('stt_finished', respObj => {
+      console.log('received stt finished', respObj);
+      self.processFinishedRequest(respObj)
     });
+    // });
     ////////////////////////////// END SOCKETS /////////////////////////////////
   }
 
@@ -149,11 +149,11 @@ class Uber extends React.Component {
     }).then((respDriverDetails) => {
       console.log('WE MADE IT TO THE END!! SUCCESS!!!', respDriverDetails)
       self.setState({ driverComing: true, driverDetails: respDriverDetails.data })
-      return self.sleep(10000);
+      return self.sleep(120000);
     })
-    // .then(() => {
-    //   return self.clearUber();
-    // })
+    .then(() => {
+      return self.clearUber();
+    })
     .catch((err) => {
     console.log('something fucked up lol', err)
     });
