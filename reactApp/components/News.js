@@ -40,9 +40,9 @@ class News extends React.Component {
 
     // listen for end of stt
     self.state.socket.on('stt_finished', respObj => {
-      const cat = respObj.params.category.indexOf('news') || respObj.params.category || respObj.params;
+      const cat = respObj.category.indexOf('news');
       console.log('NEWS NEWS NEWS received stt finished', respObj, cat);
-      if (respObj.params && respObj.params.category && respObj.params.category.indexOf('news') >= 0) {
+      if (respObj.params && respObj.category && respObj.category.indexOf('news') >= 0) {
         self.processRequest(respObj);
       } else {
         console.log('invalid news request')
