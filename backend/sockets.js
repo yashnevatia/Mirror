@@ -39,7 +39,6 @@ function getCommand (widgetName, socket, io) {
       }
       else {
         console.log('reached {D}', widgetName);
-        console.log('yash says not 3');
         io.to(widgetName).emit('stt_finished', respObj);
         io.to('W_CONTAINER').emit('stt_finished', respObj);
         listenHotword(socket);

@@ -94,19 +94,13 @@ class WidgetContainer extends React.Component {
            </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-          { this.state.hasResponse && <Response display={this.props.currentResponse || this.state.currentResponse} /> }
+          { this.state.hasResponse && <Response display={this.state.currentResponse || this.props.currentResponse} /> }
         </div>
 
         <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
-
           {this.props.widgets.map((widget) => {
             return this.getWidget(widget);
           })}
-
-          {/* BUG button for testing only BUG */}
-          <button onClick={() => this.props.listen('REMINDERS')}> listen again </button>
-          {/* BUG button for testing only BUG */}
-
         </div>
 
       </div>
