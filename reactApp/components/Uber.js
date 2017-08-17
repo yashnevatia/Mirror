@@ -6,46 +6,36 @@ class Uber extends React.Component {
     super(props);
     this.state = {
       home: '1412 Market St, San Francisco, CA 94103, US',
-      destination: '1080 Folsom St, San Francisco, CA 94103, US',
+      destination: '',
       products: [],
       service: '',
       prices: [],
-      request_id: 'd3eead6b-e996-4ba2-a2d5-d7149485af64',
+      request_id: '',
+      driverComing: false,
       socket: props.socket,
-      driverDetails: {
-        "driver": {
-        "phone_number": "690-040-1939",
-        "sms_number": "",
-        "rating": 5,
-        "picture_url": "https://upload.wikimedia.org/wikipedia/en/1/13/Stick_figure.png",
-        "name": "Bob"
-        },
-      "vehicle": {
-        "make": "Bugatti",
-        "model": "Veyron",
-        "license_plate": "",
-        "picture_url": "https://webnews.bg/uploads/images/40/2740/222740/640x.jpg?_=1457704132"
-        },
-      },
+      driverDetails: {},
     };
-
 
     this.processContinuingRequest = this.processContinuingRequest.bind(this);
     this.processFinishedRequest = this.processFinishedRequest.bind(this);
     this.callUber = this.callUber.bind(this);
     this.cancelUber = this.cancelUber.bind(this);
+    this.setState = this.setState.bind(this);
   }
 
   componentDidMount() {
-    axios.get('http://localhost:3000/current', {
-      params: { request_id: this.state.request_id }
-    }).then(resp => {
-      console.log('NEW DEETS', resp.data)
-    }).catch((err) => console.log('ERRRRROR', err))
-    axios.get('http://localhost:3000/sandbox/drivers')
-    .then(resp => {
-      console.log('available drivers')
-    })
+
+    // axios.put('http://localhost:3000/sandbox/status', {
+    //     request_id: 'b8e54e17-07c0-4d79-9820-840713104467',
+    //     status: 'driver_canceled',
+    //   }).then(resp => console.log('CANCELED', resp))
+
+    // axios.get('http://localhost:3000/current1').then(resp => {
+    //   // console.log('DATA DATA DATA', resp)
+    //   this.setState({ request_id: resp.data.request_id })
+    //   console.log( this.state.request_id );
+    // });
+
     // GET AVAILABLE PRODUCTS
     axios.get('http://localhost:3000/products', {
       params: {
@@ -56,9 +46,9 @@ class Uber extends React.Component {
       this.setState({ products: resp.data });
     })
 
-    //////////////////////////// START SOCKETS /////////////////////////////////
+    //////////////////////////// START SOCKETS ///////////////////////////////// don't touch this works
     const self = this;
-    console.log('going to connect to socket', this.state.socket);
+    console.log('going to connect to socket', self.state.socket);
     self.state.socket.on('connect', function() {
       console.log("connected news");
 
@@ -83,7 +73,13 @@ class Uber extends React.Component {
       this.setDestination(obj.params.uberDestination)
     }
     if (obj.category === 'uber' && obj.params.uberService) {
-      this.setState({ service: obj.params.uberService })
+      this.setState({ service: obj.params.uberService });
+      console.log(obj.params.uberService)
+      console.log('products', this.state.products)
+      const thisProduct = this.state.products.filter(car => (car.display_name === obj.params.uberService))
+      console.log(thisProduct)
+      this.setState({ products: thisProduct });
+      console.log('UPDATED PRODUCT', this.state.product);
     }
     if (obj.category !== 'uber') {
       this.state.socket.emit('invalid_request');
@@ -102,101 +98,163 @@ class Uber extends React.Component {
   }
 
   callUber() {
-    console.log('uber called');
-    this.setState({ request_id: 'hi' })
+    const self = this
+    console.log('CALLING UBER');
     // note: no driver details in sandbox mode
     // CREATE REQUEST
     axios.post('http://localhost:3000/request', {
+      product_id: this.state.products.product_id,
       home: this.state.home,
-      destination: this.state.destination
+      destination: this.state.destination,
     })
-    .then(function(resp) {
-      console.log('RIDE REQUEST RESPONSE', resp.data)
-      const thisProduct = this.state.products.filter(car => (car.display_name === this.state.service))
-      this.setState({ products: thisProduct, request_id: resp.data.request_id, driverDetails: {
-        driver: {
-          "phone_number": "(415)555-1212",
-          "sms_number": "(415)555-1212",
-          "rating": 5,
-          "picture_url": "https://upload.wikimedia.org/wikipedia/en/1/13/Stick_figure.png",
-          "name": "Bob"
-        },
-        vehicle: {
-          "make": "Bugatti",
-          "model": "Veyron",
-          "license_plate": "I<3Uber",
-          "picture_url": "https://webnews.bg/uploads/images/40/2740/222740/640x.jpg?_=1457704132"
-        },
-      }
+    .then((resp) => {
+      console.log('RIDE REQUEST RESPONSE', resp.data);
+      self.setState({ request_id: resp.data.request_id });
+      // SET REQUEST STATUS TO ACCEPTED
+      return axios.put('http://localhost:3000/sandbox/status', {
+        request_id: self.state.request_id,
+        status: 'accepted',
       });
+    }).then((respAccepted) => {
+      console.log('ACCEPTED RESPONSE', respAccepted)
+      // EMIT 'ACCEPTED' MESSAGE
+      self.state.socket.emit('custom_msg', { resp: respAccepted.data });
+      // PAUSE FOR 5 SECONDS WHILE MESSAGE SHOWS
+      return self.sleep(3000);
+    }).then(() => {1
+      // CHECK REQUEST DETAILS & GET ETA
+      return axios.get('http://localhost:3000/current', {
+        params: { request_id: self.state.request_id }
+      });
+    }).then((respETA) => {
+      console.log('ETA RESPONSE', respETA.data.eta);
+      // SET ETA IN STATE
+      self.setState({ eta: respETA.data.eta });
+      // SET REQUEST STATUS TO ARRIVING
+      return axios.put('http://localhost:3000/sandbox/status', {
+        request_id: self.state.request_id,
+        status: 'arriving',
+      });
+    }).then((respArriving) => {
+      console.log('ARRIVING RESPONSE', respArriving);
+      // EMIT 'ARRIVING' MESSAGE
+      self.state.socket.emit('custom_msg', {resp: respArriving.data });
+      // PAUSE FOR 5 SECONDS WHILE MESSAGE SHOWS
+      return self.sleep(3000);
+    }).then(() => {
+      // GET FINAL RESPONSE & DRIVER DETAILS
+      return axios.get('http://localhost:3000/current', {
+        params: { request_id: self.state.request_id }
+      });
+    }).then((respDriverDetails) => {
+      console.log('WE MADE IT TO THE END!! SUCCESS!!!', respDriverDetails)
+      self.setState({ driverComing: true, driverDetails: respDriverDetails.data })
+      return self.sleep(10000);
     })
-    .catch(function(err) {
-      console.log('something fucked up lol', err)
+    // .then(() => {
+    //   return self.clearUber();
+    // })
+    .catch((err) => {
+    console.log('something fucked up lol', err)
     });
   }
 
-  cancelUber() {
-    console.log('uber cancelled');
-    // DELETE REQUEST BY ID
-    this.state.socket.emit('custom_msg', {resp: 'Okay, I will cancel your Uber'});
-    axios.get('http://localhost:3000/delete', {
+
+sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+clearUber() {
+  const self = this;
+  console.log('CLEARING')
+  axios.put('http://localhost:3000/sandbox/status', {
+    request_id: self.state.request_id,
+    status: 'driver_canceled',
+  }).then(resp => {
+    console.log('REQUEST CANCELED', resp)
+    return axios.get('http://localhost:3000/products', {
       params: {
-        request_id: this.state.request_id
+        pickup: self.state.home
+      }
+    });
+  }).then(resetProducts => {
+    self.state.socket.emit('custom_msg', {resp: ' ' });
+    self.setState({ products: resetProducts.data, driverComing: false, service: '', request_id: '', prices: [] });
+    self.setDestination('')
+  });
+}
+
+cancelUber() {
+  const self = this
+  console.log('uber cancelled');
+  // DELETE REQUEST BY ID
+  // this.state.socket.emit('custom_msg', {resp: 'Okay, I will cancel your Uber'});
+  axios.get('http://localhost:3000/delete', {
+    params: {
+      request_id: self.state.request_id
+    }
+  }).then((resp) => {
+    console.log('DELETE RESPONSE', resp)
+    self.setDestination('')
+    self.setState({ driverComing: false, service: '', request_id: '', prices: [] });
+  }).then(() => {
+    return axios.get('http://localhost:3000/products', {
+      params: {
+        pickup: self.state.home
       }
     })
-    .then(function(resp) {
-      console.log(resp)
-      this.setDestination('')
-      this.setState({ service: '', request_id: '', prices: [] });
-    });
-  }
+  }).then(resetProducts => {
+    self.setState({ products: resetProducts.data });
+  });
+}
 
-  setDestination(destination) {
-    this.setState({ destination });
-    console.log("DESTINATION WAS SET IN STATE")
-    // GET PRICE ESTIMATE FOR EACH PRODUCT
-    axios.get('http://localhost:3000/price', {
-      params: {
-        pickup: this.state.home,
-        destination: this.state.destination
-      }
-    })
-    .then(resp => {
-      console.log('price estimate', resp.data.prices)
-      this.setState({ prices: resp.data.prices })
-    });
-  }
+setDestination(destination) {
+  this.setState({ destination });
+  console.log("DESTINATION WAS SET IN STATE", this.state.destination);
+  // GET PRICE ESTIMATE FOR EACH PRODUCT
+  axios.get('http://localhost:3000/price', {
+    params: {
+      pickup: this.state.home,
+      destination: this.state.destination
+    }
+  })
+  .then(resp => {
+    this.setState({ prices: resp.data.prices })
+    console.log('price estimate', this.state.prices)
+  });
+}
 
-  render() {
-    return (
-      <div className="uberDiv">
+render() {
+  return (
+    <div className="uberDiv right">
       <div className="uberOptions">
-      {!this.state.request_id &&
-      <div>
-      <img src="http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png"></img>
-      {this.state.products
-        .filter(car => (car.display_name === "POOL" || car.display_name === "uberX" || car.display_name === "uberXL"))
-        .sort((a, b) => (a.capacity - b.capacity))
-        .map((car, i) => {
-        return <div key={i} style={{color:"white"}}>
-          {car.display_name}, {car.capacity} {car.capacity === 1 ? "seat" : "seats"}
+        {!this.state.driverComing &&
           <div>
-            {this.state.prices.filter(price => (price.display_name === car.display_name))
-              .map(thisPrice => {return thisPrice.estimate})[0]}
-          </div>
-          </div>
-        })}
-      </div>}
+            <img src="https://img.ibxk.com.br///2016/12/16/16151324258090-t1200x480.jpg" style={{height: 70}}></img>
+            {this.state.products
+              .filter(car => (car.display_name === "POOL" || car.display_name === "uberX" || car.display_name === "uberXL"))
+              .sort((a, b) => (a.capacity - b.capacity))
+              .map((car, i) => {
+                return <div key={i} className='uberType' style={{marginBottom:15, marginRight:30, color:'white'}}>
+                  {car.display_name}, {car.capacity} {car.capacity === 1 ? "seat" : "seats"}
+                  <div>
+                    {this.state.prices.filter(price => (price.display_name === car.display_name))
+                      .map(thisPrice => {return thisPrice.estimate})[0]}
+                  </div>
+                </div>
+            })}
+          </div>}
 
-        {this.state.request_id &&
-          <div>
-          <img src={this.state.driverDetails.driver.picture_url} style={{height:70, width:60, borderRadius:3, margin:5}}></img>
-          <img src={this.state.driverDetails.vehicle.picture_url} style={{height:70, width:100, borderRadius:3, margin:5,}}></img>
-          <div> Your Uber is arriving soon!  </div>
-          <div>
-            Be on the lookout for {this.state.driverDetails.driver.name} in a {this.state.driverDetails.vehicle.make} {this.state.driverDetails.vehicle.model} </div>
-          <div> Rating: {this.state.driverDetails.driver.rating}/5 </div>
-        </div>
+          {this.state.driverComing &&
+            <div className='uberText'>
+              <img src={this.state.driverDetails.driver.picture_url} style={{height:90, width:111, borderRadius:3, margin:10}}></img>
+              <img src={this.state.driverDetails.vehicle.picture_url} style={{height:90, width:200, borderRadius:3, marginBottom:10, marginRight:30}}></img>
+              <div style={{marginBottom:15, marginRight:30, color:'white'}}>
+                Look for {this.state.driverDetails.driver.name} in a {this.state.driverDetails.vehicle.make} {this.state.driverDetails.vehicle.model}! </div>
+                <div style={{marginBottom:15, marginRight:30, color:'white'}}>
+                  Rating: {this.state.driverDetails.driver.rating}/5
+                </div>
+            </div>
           }
         </div>
       </div>
