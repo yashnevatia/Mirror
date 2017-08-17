@@ -142,16 +142,17 @@ function imageProcessor(){
           }, function (err, stuff) {
             if(err)console.log(err);
             else {
-              console.log('RESPONSE: ', stuff);
-              sendMessage(stuff.selfLink);
+              // console.log('RESPONSE: ', stuff);
+              sendMessage(stuff.embedLink);
               var image = new ImageModel({
-                link : stuff.selfLink
+                link : stuff.embedLink
               });
               axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
               .then( resp => {
                 image.description = resp.data.weather[0].description;
                 image.min =  resp.data.main.temp_min-273.15;
                 image.max =  resp.data.main.temp_max-273.15;
+                console.log('IMAGE', image, 'RESPONSE', resp);
               })
               image.save();
             }
