@@ -111,7 +111,7 @@ class WidgetContainer extends React.Component {
           { this.state.hasResponse && <Response display={this.state.currentResponse || this.props.currentResponse} /> }
         </div>
 
-        <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+        <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
           {this.props.widgets.map((widget) => {
             return this.getWidget(widget);
           })}
