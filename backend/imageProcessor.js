@@ -152,7 +152,7 @@ function imageProcessor(){
                 image.description = resp.data.weather[0].description;
                 image.min =  resp.data.main.temp_min-273.15;
                 image.max =  resp.data.main.temp_max-273.15;
-                console.log('IMAGE', image, 'RESPONSE', resp);
+                
                 image.save();
               })
               .catch(err => {
