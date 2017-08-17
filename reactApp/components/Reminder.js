@@ -70,7 +70,7 @@ class Reminder extends React.Component {
     console.log('in process request with ', respObj)
 
     // command is under todo category --> process it
-    if (respObj.category === 'todo') {
+    if (respObj.category === 'reminders') {
 
       if (!respObj.params) {   // if no params, keep listening
         // do nothing
