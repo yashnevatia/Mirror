@@ -21,19 +21,16 @@ class Reminder extends React.Component {
 
     // START SOCKETS STUFF:
     const self = this;
-    // this.state.socket.on('connect', () => {
-      // join socket as ToDo
-      console.log('CLIENT todo connected to sockets');
-      self.state.socket.emit('join', 'REMINDERS');
+    // join socket as ToDo
+    console.log('CLIENT todo connected to sockets');
+    self.state.socket.emit('join', 'REMINDERS');
 
-      // listen for end of stt
-      self.state.socket.on('stt_finished', respObj => {
+    // listen for end of stt
+    self.state.socket.on('stt_finished', respObj => {
 
-        console.log('TODO received stt finished', respObj);
-        self.processRequest(respObj);
-      });
-
-    // });
+      console.log('TODO received stt finished', respObj);
+      self.processRequest(respObj);
+    });
   }
 
   //function to add todo
@@ -80,6 +77,7 @@ class Reminder extends React.Component {
       } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
         // do nothing
       } else if (respObj.verb === 'add') {   // command is to add task
+        console.log('adding task', respObj.params.task)
         self.createToDo(respObj.params.task);
       } else if (respObj.params.verb === 'delete') {   // command is to delete task
         // user can specify task number
@@ -87,16 +85,19 @@ class Reminder extends React.Component {
           const num = respObj.params.number || respObj.params.ordinal;
           let taskToDelete = [];
           taskToDelete.push(self.state.toDo[num-1].task);
+          console.log('deleting task', taskToDelete)
           self.deleteToDo(taskToDelete);
         // or user can specify task name
         } else {
+          console.log('deleting task', respObj.params.task)
           self.deleteToDo(respObj.params.task)
         }
-      } else if (respObj.params.verb === 'add') {   // command is to add task
-        self.createToDo(respObj.params.task);
-      } else if (respObj.params.verb === 'delete') {   // command is to delete task
-        self.deleteToDo(respObj.params.task);
       }
+      // } else if (respObj.params.verb === 'add') {   // command is to add task
+      //   self.createToDo(respObj.params.task);
+      // } else if (respObj.params.verb === 'delete') {   // command is to delete task
+      //   self.deleteToDo(respObj.params.task);
+      // }
 
       // need an else statement here ?
 
