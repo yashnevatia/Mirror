@@ -44,7 +44,7 @@ class News extends React.Component {
       if (respObj.params && respObj.params.category && respObj.params.category.indexOf('news') >= 0) {
         self.processRequest(respObj);
       } else {
-        console.log('invalid news request')
+        console.log('invalid news request', respObj.params.category.indexOf('new') >= 0)
       }
     });
 
