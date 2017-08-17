@@ -130,7 +130,6 @@
   color: #fff;
   white-space: nowrap;
   /*overflow: hidden;*/
-  /*animation: type 4s steps(60, end);*/
 }
 
 
@@ -446,6 +445,7 @@ ol {
   text-align: right;
   padding-right: 3%;
 }
+
 @keyframes crawl {
   0% {
     transform: rotateX(20deg) translateZ(-800px);

@@ -225,7 +225,7 @@ setDestination(destination) {
 
 render() {
   return (
-    <div className="uberDiv right">
+    <div className="uberDiv right widget">
       <div className="uberOptions">
         {!this.state.driverComing &&
           <div>
