@@ -149,11 +149,11 @@ class Uber extends React.Component {
     }).then((respDriverDetails) => {
       console.log('WE MADE IT TO THE END!! SUCCESS!!!', respDriverDetails)
       self.setState({ driverComing: true, driverDetails: respDriverDetails.data })
-      return self.sleep(10000);
+      return self.sleep(120000);
     })
-    // .then(() => {
-    //   return self.clearUber();
-    // })
+    .then(() => {
+      return self.clearUber();
+    })
     .catch((err) => {
     console.log('something fucked up lol', err)
     });
