@@ -25,10 +25,10 @@ class Uber extends React.Component {
 
   componentDidMount() {
 
-    axios.put('http://localhost:3000/sandbox/status', {
-        request_id: '54b93c53-1253-47c2-b97b-7832c8451ec9',
-        status: 'driver_canceled',
-      }).then(resp => console.log('CANCELED', resp))
+    // axios.put('http://localhost:3000/sandbox/status', {
+    //     request_id: '54b93c53-1253-47c2-b97b-7832c8451ec9',
+    //     status: 'driver_canceled',
+    //   }).then(resp => console.log('CANCELED', resp))
 
     // axios.get('http://localhost:3000/current1').then(resp => {
     //   console.log('CURRENT UBER REQUEST ID', resp.data.request_id);
