@@ -1,142 +1,157 @@
 #root {
-    height: 100vh;
-    display: flex;
+  height: 100vh;
+  display: flex;
 }
 .example-appear {
-   opacity: 0.01;
+  opacity: 0.01;
 }
 
 .example-appear.example-appear-active {
-   opacity: 1;
-   transition: opacity 1000ms ease-in;
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
 }
 .isActiveC {
-    display: inline-table;
-    float: right;
-    padding-left: 10px;
+  display: inline-table;
+  float: right;
+  padding-left: 10px;
 }
 .isActiveCurrent {
-    font-size: 50%;
+  font-size: 50%;
 }
 .isActiveDiv {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    min-width: 30%;
-    padding-left: 0%;
-    padding-top: 2%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  min-width: 30%;
+  padding-left: 0%;
+  padding-top: 2%;
 
 
-    width: 28vw;
+  width: 15vw;
 }
 
 .outerDiv {
-    display: flex;
+  display: flex;
 }
 
 
 .isActiveDiv span {
-    width: 100%;
+  width: 100%;
 }
 
 .isActiveDescription {
-    font-size: 50%;
+  font-size: 50%;
 }
 .isActiveMinMax {
-    font-size: 50%;
+  font-size: 50%;
 }
 .isActiveTime {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 60px;
-    color: #fff;
-    margin: 0 !important;
-    width: 100%;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 60px;
+  color: #fff;
+  margin: 0 !important;
+  width: 100%;
 
 }
 .isStandbyTime {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 40px;
-    color: #fff;
-    margin: 0 !important;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 40px;
+  color: #fff;
+  margin: 0 !important;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 .isActiveWeather {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 40px;
-    color: #fff;
-    margin: 0 !important;
-    padding-bottom: 10%;
-    display: flex;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 40px;
+  color: #fff;
+  margin: 0 !important;
+  padding-bottom: 10%;
+  display: flex;
 
 }
 .isStandbyWeather {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 100;
-    font-size: 20px;
-    color: #fff;
-    margin: 0 !important;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+  color: #fff;
+  margin: 0 !important;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 .isStandbyDiv {
-    display: flex;
-    align-items: right;
-    flex-direction: column-reverse;
-    width: 300px;
-    padding-bottom: 20%;
+  display: flex;
+  align-items: right;
+  flex-direction: column-reverse;
+  width: 300px;
+  padding-bottom: 20%;
 }
 .newsContainer {
-    width: 100%;
+  width: 100%;
+  /*height: 30vh;*/
+  z-index: -50;
+  overflow: hidden;
+}
+#newsTitle {
+  background-color: black;
+  z-index: 1;
 }
 .newsList {
-    margin: 0;
-    padding-top: 7%;
+  margin: 0;
+}
+.newsAnimation {
+  animation: crawl 18s linear infinite;
+  /*animation-delay: 2s;*/
+  height: 30vh;
+  padding-top: 2%;
+}
+.newsListArticles {
+  overflow: hidden;
 }
 .newsListItem {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 120%;
-    padding-top: 2%;
-    padding-left: 0.1%
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 100%;
+  padding-top: 2%;
+  padding-left: 0.1%;
 }
 
 .remindersListItem {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 120%;
-    padding-top: 2%;
-    padding-left: 0.1%;
-    color: #fff;
-    white-space: nowrap;
-    /*overflow: hidden;*/
-    /*animation: type 4s steps(60, end);*/
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 120%;
+  padding-top: 2%;
+  padding-left: 0.1%;
+  color: #fff;
+  white-space: nowrap;
+  /*overflow: hidden;*/
+  /*animation: type 4s steps(60, end);*/
 }
 
 
 .timeDiv {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .widgetsActive {
-    float: right;
-    height: 100%;
-    width: 33%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding-top: 1.5%;
+  float: right;
+  height: 100%;
+  width: 30vw;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-top: 1.5%;
 }
 
 .widgetsStandby {
-    display: none;
+  display: none;
 }
 
 /* RADIO STYLING */
@@ -153,19 +168,20 @@ body{
 
 }
 .response{
-    font-family: 'Josefin Sans', sans-serif;
-    color: #fff;
-    font-weight: 400;
-    font-size: 200%;
-    padding-top: 2%;
-    padding-left: 0.1%
+  font-family: 'Josefin Sans', sans-serif;
+  color: #fff;
+  font-weight: 400;
+  font-size: 175%;
+  padding-top: 2%;
+  padding-left: 0.1%;
+  width: 100%;
 }
 .responseDiv {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-left:0%;
-    padding-top: 0%;
+  width: 53vw;
+  display: flex;
+  justify-content: center;
+  margin-left: 2vw;
+  padding-top: 0%;
 }
 .scotch_music{
   position: relative;
@@ -174,29 +190,44 @@ body{
   justify-content: space-between;
 }
 .remindersListItem {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 120%;
-    padding-top: 1%;
-    padding-left: 0.1%;
-    color: #fff;
-    white-space: nowrap;
-    /*overflow: hidden;*/
-    animation: type 4s steps(60, end);
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 120%;
+  padding-top: 1%;
+  padding-left: 0.1%;
+  color: #fff;
+  white-space: nowrap;
+  /*overflow: hidden;*/
+  animation: type 4s steps(60, end);
 }
+.uberDiv {
+  z-index: 4;
+  padding: 2%;
+  margin: 20;
+}
+.uberText {
+  background-color: black;
+}
+/*.uberType {
+  margin: 30;
+  color: white;
+}*/
 .uberOptions {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 150%;
-    padding-top: 1%;
-    padding-left: 0.1%;
-    color: #fff;
-    white-space: nowrap;
-    padding-top: 2%;
-    animation: type 4s steps(60, end);
-    font-size: 130%;
-    display: inline-block;
-    flex-direction: column-reverse;
+  /* start amanda additions */
+  /* end amanda additions */
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 150%;
+  padding-top: 1%;
+  padding-left: 0.1%;
+  color: #fff;
+  white-space: nowrap;
+  padding-top: 2%;
+  margin: 20;
+  /*animation: type 4s steps(60, end);*/
+  font-size: 130%;
+  display: inline-block;
+  flex-direction: column-reverse;
 }
 
 .search div, .search input {
@@ -274,13 +305,13 @@ body{
 .progress{
   text-align: center;
   margin-top: 10px;
-    color: white;
+  color: white;
 }
 
 .progress progress[value] {
   /* Reset the default appearance */
   -webkit-appearance: none;
-   appearance: none;
+  appearance: none;
 
   width: 50%;
   height: 20px;
@@ -295,17 +326,17 @@ body{
 }
 
 .progress progress[value]::-webkit-progress-value {
-    background-color: rgb(243, 139, 114);
-    border-radius: 2px;
-    background-size: 35px 20px, 100% 100%, 100% 100%;
+  background-color: rgb(243, 139, 114);
+  border-radius: 2px;
+  background-size: 35px 20px, 100% 100%, 100% 100%;
 }
 
 /*.slide-fade li {
-  transition: all 0.4s ease-out;
-  opacity: 0;
+transition: all 0.4s ease-out;
+opacity: 0;
 }
 .slide-fade li.show {
-  opacity: 1;
+opacity: 1;
 }*/
 
 li {
@@ -339,7 +370,7 @@ li {
 /* ANIMATION STYLING */
 
 /* END ANIMATION STYLING */
-h1 {
+h1, h3 {
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
   color: #4f4f4f;
@@ -353,14 +384,14 @@ h2 {
   margin-left: 30px;
 }
 p {
-    color: #fff;
-    font-family: 'Courier'
-    font-size: 20px;
-    margin: 10px 0 0 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 30em;
-    /*animation: type 1s steps(20, end);*/
+  color: #fff;
+  font-family: 'Courier'
+  font-size: 20px;
+  margin: 10px 0 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  /*width: 30em;*/
+  /*animation: type 1s steps(20, end);*/
 }
 
 a {
@@ -408,4 +439,23 @@ ol {
   font-size: 25px;
   color: #b2b2b2;
   margin-right: 15px;
+}
+
+/* amanda's added styles */
+.right {
+  text-align: right;
+  padding-right: 3%;
+}
+@keyframes crawl {
+  0% {
+    transform: rotateX(20deg) translateZ(-800px);
+  }
+  100% {
+    transform: rotateX(25deg) translateZ(+3100px);
+  }
+}
+.widget {
+  border: 0.5px dotted white;
+  border-radius: 0.5em;
+  padding: 1vw;
 }

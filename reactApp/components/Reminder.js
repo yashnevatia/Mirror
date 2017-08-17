@@ -73,11 +73,9 @@ class Reminder extends React.Component {
     console.log('in process request with ', respObj)
 
     // command is under todo category --> process it
-    if (respObj.category === 'todo') {
+    if (respObj.category === 'reminders') {
 
-      if (!respObj.params) {   // if no params, keep listening
-        // do nothing
-      } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
+      if (!respObj.params || !respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
         // do nothing
       } else if (respObj.verb === 'add') {   // command is to add task
         self.createToDo(respObj.params.task);
@@ -92,17 +90,10 @@ class Reminder extends React.Component {
         } else {
           self.deleteToDo(respObj.params.task)
         }
-      } else if (respObj.params.verb === 'add') {   // command is to add task
-        self.createToDo(respObj.params.task);
-      } else if (respObj.params.verb === 'delete') {   // command is to delete task
-        self.deleteToDo(respObj.params.task);
       }
-
-      // need an else statement here ?
-
       // command did not fall under todo --> ignore and start listening again
     } else {
-         console.log('invalid request');
+	     console.log('invalid request');
     }
   }
 

@@ -14,7 +14,7 @@ function sendMessage(link){
     from: FROM_NUMBER // From a valid Twilio number
   })
   .then( msg => {
-    console.log('SERVER sent msg:', msg);
+    console.log('SERVER sent msg');
   })
 	.catch( err => {
 		console.log ('THIS IS WHERE YOU SEE THE ERR', err);

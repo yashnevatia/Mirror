@@ -10,7 +10,6 @@ import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
 import ToDo from './Reminder';
-
 import Response from './responseDiv';
 
 
@@ -20,7 +19,7 @@ class WidgetContainer extends React.Component {
     super(props);
     this.state = {
       hasResponse: true,
-      currentResponse: '',
+      currentResponse: this.props.currentResponse || '',
       socket: props.socket,
     };
   }
@@ -56,7 +55,7 @@ class WidgetContainer extends React.Component {
       const self = this;
 
       this.setState({currentResponse: respObj.response});
-      const timeout = (respObj.category === "news article") ? 6000 : 1000;
+      const timeout = (respObj.category === "news article") ? 6000 : 3000;
       setTimeout(() => {
         console.log('WC in timeout of stt finished');
         self.setState({currentResponse: ''})
@@ -65,6 +64,8 @@ class WidgetContainer extends React.Component {
   }
 
   getWidget(widget) {
+  	console.log('**********************************************************************************');
+    console.log(widget)
 
     switch (widget){
     	case 'radio':
@@ -78,11 +79,9 @@ class WidgetContainer extends React.Component {
     	default:
     		return <div key={'empty'} ></div>;
     }
-
   }
 
   render () {
-    console.log("ACTIVE", this.props.isActive, this.props.widgets);
     return(
       <div className="outerDiv" id="q">
 
@@ -95,7 +94,7 @@ class WidgetContainer extends React.Component {
            </ReactCSSTransitionGroup>
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-          { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
+          { this.state.hasResponse && <Response display={this.props.currentResponse || this.state.currentResponse} /> }
         </div>
 
         <div style={{'animation': 'bounce'}} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
@@ -104,7 +103,12 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
 
+          {/* BUG button for testing only BUG */}
+          <button onClick={() => this.props.listen('REMINDERS')}> listen again </button>
+          {/* BUG button for testing only BUG */}
+
         </div>
+
       </div>
     );
   }

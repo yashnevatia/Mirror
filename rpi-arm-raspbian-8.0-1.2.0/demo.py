@@ -17,7 +17,8 @@ def interrupt_callback():
 def mirror():
 	print("snowboy")
 
-model = "/home/pi/Public/web-smart-mirror/rpi-arm-raspbian-8.0-1.2.0/resources/snowboy.umdl"
+modelpath = "/Users/amandahansen/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/snowboy.umdl"
+# model = "/home/pi/Public/web-smart-mirror/rpi-arm-raspbian-8.0-1.2.0/resources/snowboy.umdl"
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)

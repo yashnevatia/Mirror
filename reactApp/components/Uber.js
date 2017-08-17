@@ -252,7 +252,7 @@ render() {
               <div style={{marginBottom:15, marginRight:30, color:'white'}}>
                 Look for {this.state.driverDetails.driver.name} in a {this.state.driverDetails.vehicle.make} {this.state.driverDetails.vehicle.model}! </div>
                 <div style={{marginBottom:15, marginRight:30, color:'white'}}>
-                  Rating: {this.state.driverDetails.driver.rating}/5
+                Rating: {this.state.driverDetails.driver.rating}/5
                 </div>
             </div>
           }

@@ -52,14 +52,17 @@ router.post('/deltodo', (req, res) => {
 
   Reminder.remove({task: req.body.task})
   .then(() =>{
-        console.log('2 in POST route DELETE todo')
+		console.log('2 in POST route DELETE todo')
     return Reminder.find()
   })
-    .then((resp) => {
-        console.log('3 in POST route DELETE todo')
-        console.log("deleted and sending back", resp);
-        res.send(resp)
-    })
+	.then((resp) => {
+		console.log('3 in POST route DELETE todo')
+		console.log("deleted and sending back", resp);
+		res.send(resp)
+	})
+	.catch( err => {
+		console.log('ERROR deleting task: ',err);
+	})
 
 });
 
@@ -209,9 +212,7 @@ router.get('/delete', function(req, res) {
 
 //use twilio to send article link to phone via text
 router.post('/sendArticle', (req, res) => {
-
 	sendMessage(req.body.link);
-
 })
 
 module.exports = router;

@@ -1,4 +1,4 @@
-function imageProcessor(){
+function imageProcessor() {
   var {sendMessage} = require('./sendMessage');
   var sys = require('sys');
   var exec = require('child_process').exec;
@@ -16,6 +16,8 @@ function imageProcessor(){
   var axios = require('axios');
   // If modifying these scopes, delete your previously saved credentials
   // at ~/.credentials/drive-nodejs-quickstart.json
+  const MY_PICTURE_FOLDER = '0B7knwYcCq901X2l1NXZZblB0blU';
+
   var SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive/file'];
   var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/';
@@ -29,7 +31,7 @@ function imageProcessor(){
       }
       // Authorize a client with the loaded credentials, then call the
       // Drive API.
-      setTimeout(function(){authorize(JSON.parse(content), listFiles)}, 10000);
+      setTimeout(function(){authorize(JSON.parse(content), insertPicture)}, 10000);
     });
     /**
     * Create an OAuth2 client with the given credentials, and then execute the
@@ -112,14 +114,16 @@ function imageProcessor(){
     *
     * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
     */
-    function listFiles(auth) {
+    function insertPicture(auth) {
 
       var drive = google.drive('v2');
       var fs = require('fs');
 
       var fileMetadata = {
         name: 'photo.jpg',
-        mimeType: 'image/jpg'
+        mimeType: 'image/jpg',
+        title: 'title21.png',
+        parents: MY_PICTURE_FOLDER ? [{id: MY_PICTURE_FOLDER}] : []
       };
 
       var media = {
@@ -142,18 +146,22 @@ function imageProcessor(){
           }, function (err, stuff) {
             if(err)console.log(err);
             else {
-              console.log('RESPONSE: ', stuff);
-              sendMessage(stuff.selfLink);
+              // console.log('RESPONSE: ', stuff);
+              sendMessage(stuff.embedLink);
               var image = new ImageModel({
-                link : stuff.selfLink
+                link : stuff.embedLink
               });
               axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
               .then( resp => {
                 image.description = resp.data.weather[0].description;
                 image.min =  resp.data.main.temp_min-273.15;
                 image.max =  resp.data.main.temp_max-273.15;
+
+                image.save();
               })
-              image.save();
+              .catch( err => {
+                console.log (':( error', err);
+              })
             }
           });
         }

@@ -1,6 +1,8 @@
 public/build/
 build/
 
+client_secret.json
+
 # Logs
 logs
 *.log

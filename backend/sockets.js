@@ -18,7 +18,7 @@ const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
 /* ***** STT -- LOCAL CODE ***** */
 function getCommand (widgetName, socket, io) {
-  console.log('reached {A}')
+  console.log('reached {A}', widgetName)
   return localGetCommand(widgetName)
     .then( respObj => {
       console.log('reached {B}', respObj, respObj.category.toUpperCase(), widgetName)
@@ -34,8 +34,10 @@ function getCommand (widgetName, socket, io) {
         return getCommand(widgetName, socket, io);
       }
       else {
-        console.log('reached {D}');
-        io.emit('stt_finished', respObj);
+        console.log('reached {D}', widgetName);
+        console.log('yash says not 3');
+        io.to(widgetName).emit('stt_finished', respObj);
+        io.to('W_CONTAINER').emit('stt_finished', respObj);
         listenHotword(socket);
         //return respObj;
       }
@@ -52,7 +54,7 @@ let rl;
 
 function listenHotword(socket) {
 
-	console.log("python file is listening again");
+  console.log("python file is listening again");
 
   py = spawn('python', ['-u', fp1],{
     stdio: ['pipe', 'pipe', 'ignore'],
@@ -78,6 +80,7 @@ function listenHotword(socket) {
       console.log("cancel");
       socket.emit('cancel');
     }
+<<<<<<< HEAD
     else if(hotword === 'iris'){
       console.log("iris");
     }
@@ -93,6 +96,15 @@ function listenHotword(socket) {
       py.kill();
       listenHotword(socket);
     }
+=======
+    else if(hotword === 'click'){
+
+		py1 = spawn('python', ['-u', '/home/pi/test_image.py'],{
+			stdio: ['pipe', 'pipe', 'ignore'],
+			wd: '/home/pi'
+		});
+	}
+>>>>>>> upToDate
     else {
       socket.emit('widget', hotword);
     }
@@ -110,6 +122,7 @@ module.exports = function (io) {
 
     socket.on('join', widgetName => {
       console.log('SERVER in join', widgetName);
+<<<<<<< HEAD
       if(widgetName === 'W_CONTAINER'){
         socket.join('W_CONTAINER', () => {
           console.log('WIDGET joined ', 'W_CONTAINER');
@@ -126,6 +139,18 @@ module.exports = function (io) {
 
     socket.on('stt', widgetName => {
       if(py)py.kill();
+=======
+      if(socket.room)socket.leave(socket.room);
+      socket.room = widgetName;
+      socket.join(widgetName, () => {
+        console.log('WIDGET joined ', widgetName);
+      });
+    });
+
+    socket.on('stt', widgetName => {
+      // we are killing children
+      if(py) py.kill();
+>>>>>>> upToDate
       console.log('SERVER in stt', widgetName);
       getCommand(widgetName, socket, io);
     });
@@ -140,6 +165,10 @@ module.exports = function (io) {
       io.to('W_CONTAINER').emit('custom_msg', msg);
     })
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upToDate
   });
 
 }
