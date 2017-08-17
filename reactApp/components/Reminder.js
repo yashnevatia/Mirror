@@ -22,8 +22,10 @@ class Reminder extends React.Component {
     // START SOCKETS STUFF:
     const self = this;
     // join socket as ToDo
-    console.log('CLIENT todo connected to sockets');
-    self.state.socket.emit('join', 'REMINDERS');
+    self.state.socket.on('connect', () => {
+      console.log('CLIENT todo connected to sockets');
+      self.state.socket.emit('join', 'REMINDERS');
+    });
 
     // listen for end of stt
     self.state.socket.on('stt_finished', respObj => {
@@ -103,11 +105,11 @@ class Reminder extends React.Component {
     return (
       <div className='widget'>
         <h2 className='right uberOptions' style={{color: 'white'}}> Reminders</h2>
-        <ol>
+        <div>
           {this.state.toDo.map((toDo)=> {
-            return (<li className="remindersListItem">{toDo.task}</li>)
+            return (<p className="remindersListItem right">{toDo.task}</p>)
           })}
-        </ol>
+        </div>
       </div>
     );
   }
