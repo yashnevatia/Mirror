@@ -30,6 +30,9 @@ function getCommand (widgetName, socket, io) {
       else if (respObj.notFinished) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
+        if (widgetName.toUpperCase() === 'UBER') {
+          io.to('UBER').emit('stt_continuing', respObj);
+        }
         io.to('W_CONTAINER').emit('stt_continuing', respObj );
         return getCommand(widgetName, socket, io);
       }
