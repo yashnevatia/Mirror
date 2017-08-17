@@ -102,6 +102,7 @@ class News extends React.Component {
   }
 
   nextArticles () {
+    console.log('in scroll down', this.state.currentArticles, this.state.allArticles);
     // set next starting position within all articles array
     const nextPos = this.state.allArticles.indexOf(this.state.allArticles[this.state.currentArticles.length]) + 1;
     this.setState({currentArticles: this.state.currentArticles.slice(nextPos, nextPos+5)})

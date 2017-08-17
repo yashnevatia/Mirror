@@ -9,8 +9,8 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: false,
-	    widgets: [],
+      isActive: true,
+	    widgets: ['news'],
       initialResponses: {
         radio: 'Would you like to play, pause or search for songs?',
         news: 'Which news source would you like to view?',
