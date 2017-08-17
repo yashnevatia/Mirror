@@ -10,9 +10,11 @@ const Reminder = require('./models/models').Reminder;
 // twilio imports
 const {sendMessage} = require('./sendMessage');
 
+router.use('/', (req, res) => {
+	res.redirect('/login');
+})
 
-
-router.get('/',(req,res) => {
+router.get('/home',(req,res) => {
 	console.log("thanks");
 	res.send(200);
 })
@@ -96,7 +98,7 @@ router.get('/callback', function(req, res) {
     console.log('... token is valid until: ' + tokenExpiration);
     console.log('... after token expiration, re-authorize using refresh_token: ' + refresh_token);
     // redirect the user back to actual app
-    res.redirect('/');
+    res.redirect('/home');
   })
   .error(function(err) {
     console.error('ERROR:', err);
