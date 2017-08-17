@@ -459,3 +459,22 @@ ol {
   border-radius: 0.5em;
   padding: 1vw;
 }
+
+#one {
+  flex: 1;
+  font-size: 95px;
+  margin-bottom: 0;
+  margin-top: -11vh;
+  padding-left: 1vw;
+
+  animation-iteration-count: infinite;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-name: one;
+}
+@keyframes one {
+  0% { color: white; }
+  33% { color: #4b4b4b; }
+  66% { color: white; }
+  100% { color: white; }
+}

@@ -21,6 +21,7 @@ class WidgetContainer extends React.Component {
       hasResponse: true,
       currentResponse: this.props.currentResponse || '',
       socket: props.socket,
+      isListening: false
     };
   }
 
@@ -61,6 +62,16 @@ class WidgetContainer extends React.Component {
         self.setState({currentResponse: ''})
       }, timeout)
     });
+<<<<<<< HEAD
+=======
+
+    // new
+    this.state.socket.on('listening', isListening => {
+      console.log('chaning is listening to be', isListening);
+      self.setState({isListening});
+    })
+    // END SOCKET LISTENERS
+>>>>>>> upToDate
   }
 
   getWidget(widget) {
@@ -82,6 +93,7 @@ class WidgetContainer extends React.Component {
   }
 
   render () {
+    console.log('isActive', this.props.isActive, 'isListening', this.state.isListening)
     return(
       <div className="outerDiv" id="q">
 
@@ -91,7 +103,13 @@ class WidgetContainer extends React.Component {
              transitionEnter = {false} transitionLeave = {false}>
              <Time timeState={this.props.isActive}/>
              <Weather weatherState={this.props.isActive}/>
+             {this.props.isActive && this.state.isListening &&
+               <div id="ellipsis">
+                 <h5 id="one"> •</h5>
+               </div>
+             }
            </ReactCSSTransitionGroup>
+
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
           { this.state.hasResponse && <Response display={this.state.currentResponse || this.props.currentResponse} /> }
