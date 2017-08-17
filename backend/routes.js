@@ -89,7 +89,7 @@ const uber = new Uber({
   sandbox: true // optional, defaults to false
 });
 
-// CONFIG & AUTH FOR UBER (do this on each new computer to log in)
+// CONFIG & AUTH FOR UBER (!!!! do this EVERY TIME YOU RELOAD/REFRESH THE PAGE !!!!)
 router.get('/login', function(req, res) {
   var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
   res.redirect(url);
@@ -122,7 +122,7 @@ router.get('/products', function(req, res) {
     uber.products.setDriversAvailabilityByIDAsync("26546650-e557-4a7b-86e7-6a3942445247", true);
   })
   .error(function(err) {
-    console.error("could not get available products", err);
+    console.error("COULD NOT GET AVAILABLE PRODUCTS");
   });
 })
 
@@ -134,18 +134,14 @@ router.get('/price', function(req, res) {
     res.send(resp);
   })
   .error(function(err) {
-    console.error("could not get price estimate", err);
+    console.error("COULD NOT GET PRICE ESTIMATES");
   });
 })
 
 // POST A RIDE REQUEST
 router.post('/request', function(req, res) {
   uber.requests.createAsync({
-    "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
-    // "start_latitude": 37.761492,
-    // "start_longitude": -122.423941,
-    // "end_latitude": 37.775393,
-    // "end_longitude": -122.417546
+    "product_id": req.body.product_id,
     "startAddress": req.body.home,
     "endAddress": req.body.destination,
   })
@@ -154,7 +150,7 @@ router.post('/request', function(req, res) {
     res.send(resp)
   })
   .error(function(err) {
-    console.error('could not process your request rn', err);
+    console.error('COULD NOT PROCESS YOUR REQUEST RN', err);
   });
 })
 
@@ -163,14 +159,20 @@ router.post('/request', function(req, res) {
 router.put('/sandbox/status', function(req, res) {
   uber.requests.setStatusByIDAsync(req.body.request_id, req.body.status)
   .then(function(resp) {
-    console.log('CHANGED SANDBOX STATUS TO' + req.body.status);
-    if (req.body.status === 'accepted') {
-      res.send('Your request has been accepted and a driver is en route to your location.')
-    }
-    if (req.body.status === 'arriving') {
-      res.send('Your ride will be arriving soon.')
-    }
+    console.log('CHANGED SANDBOX STATUS TO ' + req.body.status);
+		if (req.body.status === 'accepted') {
+    	res.send('A driver is en route to your location.')
+		} else if (req.body.status === 'arriving') {
+			res.send('Your ride will be arriving soon.')
+    } else if (req.body.status === 'driver_canceled') {
+			res.send('Your request has been canceled by the driver.')
+		} else {
+			throw "that's not a legit command"
+		}
   })
+	.error(function(err) {
+		console.error("Could not change status", err)
+	})
 })
 
 router.get('/sandbox/drivers', function(req, res) {
@@ -180,6 +182,7 @@ router.get('/sandbox/drivers', function(req, res) {
 	})
 })
 
+
 // GET CURRENT REQUEST BY ID (will change as you update status)
 router.get('/current', function(req, res) {
   uber.requests.getByIDAsync(req.query.request_id)
@@ -187,9 +190,20 @@ router.get('/current', function(req, res) {
     res.send(resp);
   })
   .error(function(err) {
-    console.error("could not GET current request by ID", err);
+    console.error("Could not GET current request by ID.");
   });
 })
+
+router.get('/current1', function(req, res) {
+  uber.requests.getCurrentAsync()
+  .then(function(resp) {
+    res.send(resp);
+  })
+  .error(function(err) {
+    console.error("Could not GET current request.");
+  });
+})
+
 
 // DELETE CURRENT REQUEST BY ID
 router.get('/delete', function(req, res) {
@@ -198,7 +212,7 @@ router.get('/delete', function(req, res) {
     res.send(resp);
   })
   .error(function(err) {
-    console.error("could not DELETE current request by ID", err);
+    console.error("Could not DELETE current request by ID.");
   });
 })
 

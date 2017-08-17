@@ -37,8 +37,9 @@ def uber():
 
 def cancel():
     print("cancel")
-    
-modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda/"
+
+modelpath = "/Users/amandahansen/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda"
+# modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda/"
 
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",

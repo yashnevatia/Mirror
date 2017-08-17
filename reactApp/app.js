@@ -10,7 +10,7 @@ class Container extends React.Component {
     super();
     this.state = {
       isActive: true,
-	    widgets: ['reminders'],
+	    widgets: ['uber'],
       initialResponses: {
         radio: 'Would you like to play, pause or search for songs?',
         news: 'Which news source would you like to view?',
@@ -79,7 +79,7 @@ class Container extends React.Component {
     });
 
     // BUG TESTING BUG PURPOSES BUG
-    // this.startListening('REMINDERS')
+    this.startListening('UBER')
 
     // BUG TESTING BUG PURPOSES BUG
     // setTimeout(() => {

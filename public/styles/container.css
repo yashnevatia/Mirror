@@ -198,10 +198,15 @@ body{
 .uberDiv {
   z-index: 4;
   padding: 2%;
+  margin: 20;
 }
 .uberText {
   background-color: black;
 }
+/*.uberType {
+  margin: 30;
+  color: white;
+}*/
 .uberOptions {
   /* start amanda additions */
   /* end amanda additions */
@@ -213,6 +218,7 @@ body{
   color: #fff;
   white-space: nowrap;
   padding-top: 2%;
+  margin: 20;
   /*animation: type 4s steps(60, end);*/
   font-size: 130%;
   display: inline-block;
