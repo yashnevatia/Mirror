@@ -103,11 +103,11 @@ class Reminder extends React.Component {
     return (
       <div className='widget'>
         <h2 className='right uberOptions' style={{color: 'white'}}> Reminders</h2>
-        <ol>
+        <div>
           {this.state.toDo.map((toDo)=> {
-            return (<li className="remindersListItem right">{toDo.task}</li>)
+            return (<p className="remindersListItem right">{toDo.task}</p>)
           })}
-        </ol>
+        </div>
       </div>
     );
   }
