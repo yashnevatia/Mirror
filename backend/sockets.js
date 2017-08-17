@@ -37,7 +37,7 @@ function getCommand (widgetName, socket, io) {
         console.log('reached {D}');
         io.emit('stt_finished', respObj);
         listenHotword(socket);
-        return respObj;
+        //return respObj;
       }
     })
     .catch( err => {
