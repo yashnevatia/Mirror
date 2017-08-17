@@ -54,13 +54,15 @@ class Container extends React.Component {
     })
 
     socket.on('widget', function(widgetName){
-      console.log("widget", widgetName);
+      console.log("widget", widgetName, 'called');
       // if widget is not already active, bring it to top of array
       if (widgetName !== self.state.widgets[0]) {
+        console.log('bringing widget to top place')
         var temp = self.state.widgets.slice();
         if(temp.length === 3)temp.pop();
         if(temp.indexOf(widgetName) === -1){
           temp.unshift(widgetName);
+          console.log('new widget order', widgets);
           self.setState({
             widgets: temp
           })
@@ -70,6 +72,7 @@ class Container extends React.Component {
 
       // else if widget active, set current response to be empty
       } else {
+        console.log('not bringing widget to top', widgetName, self.state.widgets);
         self.setState({currentResponse: null})
       }
 
