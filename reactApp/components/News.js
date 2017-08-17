@@ -53,9 +53,9 @@ class News extends React.Component {
   processRequest(respObj) {
     const self = this;
 
-    if (respObj.category === 'news' && respObj.params && respObj.params.newsAction) {
+    if (respObj.category === 'news' && respObj.params.newsAction && respObj.params.newsAction==='scroll down' ) {
       self.nextArticles();
-    } else if (respObj.category === 'news' && respObj.params && respObj.params.newsSource) {
+    } else if (respObj.category === 'news' && respObj.params.newsSource) {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
       .then(() => {
@@ -74,7 +74,7 @@ class News extends React.Component {
       self.pinArticle(articleNum - 1);
 
     }
-    
+
   }
 
   // function for user to select specific news source
