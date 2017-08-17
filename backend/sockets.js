@@ -9,7 +9,7 @@ var {imageProcessor} = require('./imageProcessor');
 var {suggestion} = require('./suggestion');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-const myFilePath = '/home/pi/Public/'; // PI
+ const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
 // const myFilePath = '/Users/amandahansen/' // AMANDA
 
