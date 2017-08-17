@@ -132,19 +132,9 @@ class Radio extends React.Component {
     const scotchStyle = {
       width: '100%',
       height: '33%',
-      backgroundImage: `linear-gradient(
-      rgba(0, 0, 0, 0.7),
-      rgba(0, 0, 0, 0)
-    ),   url(${this.xlArtwork(this.state.track.artwork_url)})`
     };
     return (
       <div className="scotch_music" style={scotchStyle}>
-        <Search
-          clientId={this.state.client_id}
-          autoCompleteValue={this.state.autoCompleteValue}
-          tracks={this.state.tracks}
-          handleSelect={this.handleSelect.bind(this)}
-          handleChange={this.handleChange.bind(this)}/>
         <Details
           title={this.state.track.title}/>
         <Sound
@@ -152,18 +142,21 @@ class Radio extends React.Component {
            playStatus={this.state.playStatus}
            onPlaying={this.handleSongPlaying.bind(this)}
            playFromPosition={this.state.playFromPosition}
-           onFinishedPlaying={this.handleSongFinished.bind(this)}/>
+           onFinishedPlaying={this.handleSongFinished.bind(this)}
+          />
        <div className="controlDiv">
            <Progress
              elapsed={this.state.elapsed}
              total={this.state.total}
-             position={this.state.position}/>
+             position={this.state.position}
+            />
             <Player
               togglePlay={this.togglePlay.bind(this)}
               playStatus={this.state.playStatus}
               forward={this.forward.bind(this)}
               backward={this.backward.bind(this)}
-              random={this.randomTrack.bind(this)}/>
+              random={this.randomTrack.bind(this)}
+             />
       </div>
 
       </div>
