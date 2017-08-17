@@ -82,7 +82,7 @@ class WidgetContainer extends React.Component {
     	case 'uber':
     		return <Uber key={widget} socket={this.state.socket} />;
     	case 'reminders':
-    		return <ToDo key={widget} socket={this.state.socket}  />
+    		return <ToDo key={widget}   />
     	default:
     		return <div key={'empty'} ></div>;
     }
@@ -116,7 +116,7 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
           {/* BUG button for testing only BUG */}
-          {/* <button onClick={() => this.props.listen('REMINDERS')}> listen again </button> */}
+          <button onClick={() => this.props.listen('REMINDERS')}> listen again </button>
           {/* BUG button for testing only BUG */}
         </div>
       </div>

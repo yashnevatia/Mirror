@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
+const socket = io('http://localhost:3000');
 
 class Reminder extends React.Component {
   constructor (props) {
@@ -7,7 +9,7 @@ class Reminder extends React.Component {
 
     this.state = {
       toDo: [],
-      socket: props.socket
+      socket: socket
     };
   }
 
@@ -111,7 +113,7 @@ class Reminder extends React.Component {
     // loop through articles for current source and list out article heaadlines
     return (
       <div className='widget'>
-        <h2 className='right uberOptions' style={{color: 'white'}}> Reminders</h2>
+        <h2 className='uberOptions right'>Reminders</h2>
         <div>
           {this.state.toDo.map((toDo)=> {
             return (<p className="remindersListItem right">{toDo.task}</p>)
