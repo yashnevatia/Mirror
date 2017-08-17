@@ -27,9 +27,12 @@ class Reminder extends React.Component {
 
     // listen for end of stt
     self.state.socket.on('stt_finished', respObj => {
-
       console.log('TODO received stt finished', respObj);
-      self.processRequest(respObj);
+      if (respObj.category === 'reminders'){
+        self.processRequest(respObj);
+      }else {
+        console.log("invalid request");
+      }
     });
   }
 
@@ -67,17 +70,16 @@ class Reminder extends React.Component {
 
   processRequest(respObj) {
     const self = this;
-    console.log('in process request with ', respObj)
-
-    // command is under todo category --> process it
-    if (respObj.category === 'reminders') {
+    console.log('in process request with ', respObj);
 
       if (!respObj.params || !respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
         // do nothing
-      } else if (respObj.params.verb === 'add') {   // command is to add task
+      }
+      else if (respObj.params.verb === 'add') {   // command is to add task
         console.log('adding task', respObj.params.task)
         self.createToDo(respObj.params.task);
-      } else if (respObj.params.verb === 'delete') {   // command is to delete task
+      }
+      else if (respObj.params.verb === 'delete') {   // command is to delete task
         // user can specify task number
         if (respObj.params.number || respObj.params.ordinal) {
           const num = respObj.params.number || respObj.params.ordinal;
@@ -92,9 +94,7 @@ class Reminder extends React.Component {
         }
       }
       // command did not fall under todo --> ignore and start listening again
-    } else {
-	     console.log('invalid request');
-    }
+
   }
 
 

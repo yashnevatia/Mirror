@@ -30,11 +30,11 @@ class Uber extends React.Component {
     //     status: 'driver_canceled',
     //   }).then(resp => console.log('CANCELED', resp))
 
-    // axios.get('http://localhost:3000/current1').then(resp => {
-    //   // console.log('DATA DATA DATA', resp)
-    //   this.setState({ request_id: resp.data.request_id })
-    //   console.log( this.state.request_id );
-    // });
+    axios.get('http://localhost:3000/current1').then(resp => {
+      // console.log('DATA DATA DATA', resp)
+      this.setState({ request_id: resp.data.request_id })
+      console.log( this.state.request_id );
+    });
 
     // GET AVAILABLE PRODUCTS
     axios.get('http://localhost:3000/products', {
@@ -61,7 +61,8 @@ class Uber extends React.Component {
 
     self.state.socket.on('stt_finished', respObj => {
       console.log('received stt finished', respObj);
-      self.processFinishedRequest(respObj)
+      if(respObj.category === 'uber')self.processFinishedRequest(respObj)
+      else console.log("invalid request");
     });
     // });
     ////////////////////////////// END SOCKETS /////////////////////////////////

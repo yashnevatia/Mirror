@@ -42,7 +42,6 @@ function getCommand (widgetName, socket, io) {
         io.to(widgetName).emit('stt_finished', respObj);
         io.to('W_CONTAINER').emit('stt_finished', respObj);
         listenHotword(socket);
-        //return respObj;
       }
     })
     .catch( err => {
