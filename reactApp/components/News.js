@@ -138,7 +138,7 @@ class News extends React.Component {
 
         {!(this.state.currentArticles.length===0) && <div className="newsList newsArticles" style={{color: 'white'}}>
           {this.state.currentArticles.map((article, i) => {
-            return (<div className="newsListItem" key={i}>{article.title}</div>);
+            return (<div className="newsListItem right" key={i}>{article.title}</div>);
           })}
         </div> }
       </div>

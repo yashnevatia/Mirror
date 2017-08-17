@@ -245,7 +245,7 @@ render() {
           </div>}
 
           {this.state.driverComing &&
-            <div className='uberText'>
+            <div className='uberText right'>
               <img src={this.state.driverDetails.driver.picture_url} style={{height:90, width:111, borderRadius:3, margin:10}}></img>
               <img src={this.state.driverDetails.vehicle.picture_url} style={{height:90, width:200, borderRadius:3, marginBottom:10, marginRight:30}}></img>
               <div style={{marginBottom:15, marginRight:30, color:'white'}}>
