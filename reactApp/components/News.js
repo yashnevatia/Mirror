@@ -41,7 +41,11 @@ class News extends React.Component {
     // listen for end of stt
     self.state.socket.on('stt_finished', respObj => {
       console.log('received stt finished', respObj);
-      self.processRequest(respObj);
+      if (respObj.params && respObj.params.category && respObj.params.category.indexOf('news') >= 0) {
+        self.processRequest(respObj);
+      } else {
+        console.log('invalid news request')
+      }
     });
 
   }
@@ -49,7 +53,9 @@ class News extends React.Component {
   processRequest(respObj) {
     const self = this;
 
-    if (respObj.category === 'news' && respObj.params && respObj.params.newsSource) {
+    if (respObj.category === 'news' && respObj.params && respObj.params.newsAction) {
+      self.nextArticles();
+    } else if (respObj.category === 'news' && respObj.params && respObj.params.newsSource) {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
       .then(() => {
@@ -58,9 +64,6 @@ class News extends React.Component {
       .catch( err => {
         console.log('ERROR :(', err);
       });
-
-    } else if (respObj.category === 'news' && respObj.params && respObj.params.newsAction) {
-      self.nextArticles();
     } else if (respObj.category === 'news article') {
       console.log('in news article with article: ', respObj.params.number, respObj.params.ordinal);
       // user specifies number of article
@@ -70,9 +73,8 @@ class News extends React.Component {
       // twilio texts article to user
       self.pinArticle(articleNum - 1);
 
-    } else {
-      // self.state.socket.emit('invalid_request');
     }
+    
   }
 
   // function for user to select specific news source
