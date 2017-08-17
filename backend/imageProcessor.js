@@ -142,7 +142,7 @@ function imageProcessor(){
           }, function (err, stuff) {
             if(err)console.log(err);
             else {
-              console.log('RESPONSE: ', stuff.selfLink);
+              console.log('RESPONSE: ', stuff);
               sendMessage(stuff.selfLink);
               var image = new ImageModel({
                 link : stuff.selfLink
