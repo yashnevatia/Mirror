@@ -25,16 +25,16 @@ class Uber extends React.Component {
 
   componentDidMount() {
 
-    // axios.put('http://localhost:3000/sandbox/status', {
-    //     request_id: 'ae6f6f3e-3f68-4c86-96b0-bd5f5910e90f',
-    //     status: 'driver_canceled',
-    //   }).then(resp => console.log('CANCELED', resp))
+    axios.put('http://localhost:3000/sandbox/status', {
+        request_id: 'ae6f6f3e-3f68-4c86-96b0-bd5f5910e90f',
+        status: 'driver_canceled',
+      }).then(resp => console.log('CANCELED', resp))
 
-    axios.get('http://localhost:3000/current1').then(resp => {
-      // console.log('DATA DATA DATA', resp)
-      this.setState({ request_id: resp.data.request_id })
-      console.log( this.state.request_id );
-    });
+    // axios.get('http://localhost:3000/current1').then(resp => {
+    //   // console.log('DATA DATA DATA', resp)
+    //   this.setState({ request_id: resp.data.request_id })
+    //   console.log( this.state.request_id );
+    // });
 
     // GET AVAILABLE PRODUCTS
     axios.get('http://localhost:3000/products', {
