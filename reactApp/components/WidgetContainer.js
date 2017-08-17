@@ -62,16 +62,12 @@ class WidgetContainer extends React.Component {
         self.setState({currentResponse: ''})
       }, timeout)
     });
-<<<<<<< HEAD
-=======
-
-    // new
+    // shows listening style
     this.state.socket.on('listening', isListening => {
       console.log('chaning is listening to be', isListening);
       self.setState({isListening});
     })
     // END SOCKET LISTENERS
->>>>>>> upToDate
   }
 
   getWidget(widget) {
