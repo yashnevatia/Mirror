@@ -84,7 +84,6 @@ function listenHotword(socket) {
       console.log("cancel");
       socket.emit('cancel');
     }
-<<<<<<< HEAD
     else if(hotword === 'iris'){
       console.log("iris");
     }
@@ -100,15 +99,6 @@ function listenHotword(socket) {
       py.kill();
       listenHotword(socket);
     }
-=======
-    else if(hotword === 'click'){
-
-		py1 = spawn('python', ['-u', '/home/pi/test_image.py'],{
-			stdio: ['pipe', 'pipe', 'ignore'],
-			wd: '/home/pi'
-		});
-	}
->>>>>>> upToDate
     else {
       socket.emit('widget', hotword);
     }
@@ -126,7 +116,6 @@ module.exports = function (io) {
 
     socket.on('join', widgetName => {
       console.log('SERVER in join', widgetName);
-<<<<<<< HEAD
       if(widgetName === 'W_CONTAINER'){
         socket.join('W_CONTAINER', () => {
           console.log('WIDGET joined ', 'W_CONTAINER');
@@ -134,7 +123,7 @@ module.exports = function (io) {
       }
       else{
         console.log('leave room', socket.room, 'join', widgetName)
-        if(socket.room)socket.leave(socket.room);
+        if(socket.room) socket.leave(socket.room);
         socket.room = widgetName;
         socket.join(socket.room, ()=>{
           console.log('WIDGET joined ', socket.room);
@@ -144,18 +133,6 @@ module.exports = function (io) {
 
     socket.on('stt', widgetName => {
       if(py)py.kill();
-=======
-      if(socket.room)socket.leave(socket.room);
-      socket.room = widgetName;
-      socket.join(widgetName, () => {
-        console.log('WIDGET joined ', widgetName);
-      });
-    });
-
-    socket.on('stt', widgetName => {
-      // we are killing children
-      if(py) py.kill();
->>>>>>> upToDate
       console.log('SERVER in stt', widgetName);
       getCommand(widgetName, socket, io);
     });
@@ -169,11 +146,6 @@ module.exports = function (io) {
       console.log('SERVER in custom message');
       io.to('W_CONTAINER').emit('custom_msg', msg);
     })
-
-<<<<<<< HEAD
-=======
-
->>>>>>> upToDate
   });
 
 }
