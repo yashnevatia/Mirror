@@ -102,7 +102,7 @@ class Reminder extends React.Component {
     // loop through articles for current source and list out article heaadlines
     return (
       <div >
-        <h3 className='right' style={{color: 'white'}}> Reminders</h3>
+        <h2 className='right' style={{color: 'white'}}> Reminders</h2>
         <ol>
           {this.state.toDo.map((toDo)=> {
             return (<li className="remindersListItem right">{toDo.task}</li>)
