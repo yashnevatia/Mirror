@@ -3,7 +3,7 @@ import React from 'react';
 //Sound component
 import Sound from 'react-sound';
 //Axios for Ajax
-import Axios from 'axios';
+import axios from 'axios';
 //Custom components
 import Details from './radio/details.component';
 import Player from './radio/player.component';
@@ -23,22 +23,52 @@ class Radio extends React.Component {
       total: '00:00',
       position: 0,
       playFromPosition: 0,
-      autoCompleteValue: ''
+      autoCompleteValue: '',
+      socket: props.socket
     };
   }
 
   componentDidMount() {
     this.randomTrack();
+    var self = this;
+    self.state.socket.emit('join', 'RADIO');
+    self.state.socket.on('stt_finished',respObj => {
+      console.log("reached radio after processed request", respObj);
+      self.processRequest(respObj);
+    })
+  }
+
+  processRequest(respObj){
+    var self = this;
+    if(respObj.category === 'radio'){
+      if(!respObj.params || ){
+        return;
+      }
+      else if(respObj.params.radioAction === 'play' && !respObj.params.radioSong){
+        this.setState({playStatus: Sound.status.PLAYING});
+      }
+      //else if(respObj.params.radioAction === 'play' && respObj.params.radioSong){
+        axios.get(`https://api.soundcloud.com/tracks?client_id=${this.client_id}&q=${respObj.params.radioSong}`)
+        .then(resp => {
+          console.log(resp);
+          self.setState({
+            tracks: response.data
+          })
+        })
+        this.setState({playStatus: Sound.status.PLAYING});
+      }
+      else if(respObj.params.radioAction === 'pause'){
+        this.setState({playStatus: Sound.status.PAUSED});
+      }
+      // else if(respObj.params.radioAction === 'search'){
+      //   this.setState({playStatus: Sound.status.PAUSED});
+      // }
+    }
   }
 
   prepareUrl(url) {
     //Attach client id to stream url
     return `${url}?client_id=${this.client_id}`;
-  }
-
-  xlArtwork(url){
-    console.log('URL', url);
-    return url ? url.replace(/large/, 't500x500'): "";
   }
 
   togglePlay(){
@@ -64,26 +94,6 @@ class Radio extends React.Component {
   backward(){
     this.setState({playFromPosition: this.state.playFromPosition-=1000*10});
   }
-
-  handleSelect(value, item){
-    this.setState({ autoCompleteValue: value, track: item });
-  }
-
-  handleChange(event, value){
-    // Update input box
-    this.setState({autoCompleteValue: event.target.value});
-    let _this = this;
-    //Search for song with entered value
-    Axios.get(`https://api.soundcloud.com/tracks?client_id=${this.client_id}&q=${value}`)
-      .then(function (response) {
-        // Update track state
-        _this.setState({tracks: response.data});
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  }
-
 
   formatMilliseconds(milliseconds) {
     // uncomment the following line if we decide we want hours
@@ -113,7 +123,7 @@ class Radio extends React.Component {
   randomTrack () {
     let _this = this;
     //Request for a playlist via Soundcloud using a client id
-    Axios.get(`https://api.soundcloud.com/playlists/209262931?client_id=${this.client_id}`)
+    axios.get(`https://api.soundcloud.com/playlists/209262931?client_id=${this.client_id}`)
       .then(function (response) {
         // Store the length of the tracks
         const trackLength = response.data.tracks.length;
@@ -132,19 +142,9 @@ class Radio extends React.Component {
     const scotchStyle = {
       width: '100%',
       height: '33%',
-      backgroundImage: `linear-gradient(
-      rgba(0, 0, 0, 0.7),
-      rgba(0, 0, 0, 0)
-    ),   url(${this.xlArtwork(this.state.track.artwork_url)})`
     };
     return (
       <div className="scotch_music" style={scotchStyle}>
-        <Search
-          clientId={this.state.client_id}
-          autoCompleteValue={this.state.autoCompleteValue}
-          tracks={this.state.tracks}
-          handleSelect={this.handleSelect.bind(this)}
-          handleChange={this.handleChange.bind(this)}/>
         <Details
           title={this.state.track.title}/>
         <Sound
