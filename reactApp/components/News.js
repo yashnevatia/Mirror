@@ -44,8 +44,6 @@ class News extends React.Component {
       self.processRequest(respObj);
     });
 
-
-
   }
 
   processRequest(respObj) {
@@ -67,8 +65,10 @@ class News extends React.Component {
       console.log('in news article with article: ', respObj.params.number, respObj.params.ordinal);
       // user specifies number of article
       const articleNum = parseInt(respObj.params.number) || parseInt(respObj.params.ordinal) || 1;
+      // send wContainer back message
+      self.state.socket.emit('custom_msg', { resp: "Great! Article link sent to your phone" })
       // twilio texts article to user
-      self.pinArticle(articleNum - 1)
+      self.pinArticle(articleNum - 1);
 
     } else {
       // self.state.socket.emit('invalid_request');
@@ -91,7 +91,7 @@ class News extends React.Component {
       axios.get(`https://newsapi.org/v1/articles?source=${this.state.currentSource.id}&apiKey=${NEWS_API_KEY}`)
       .then( resp => {
         console.log('in set current articles')
-        self.setState({allArticles: [...resp.data.articles], currentArticles: resp.data.articles.slice(0,4)});
+        self.setState({allArticles: [...resp.data.articles], currentArticles: resp.data.articles.slice(0,5)});
         //   self.setState({image: resp.data.articles[0].urlToImage});
         resolve('success');
       })
@@ -116,13 +116,9 @@ class News extends React.Component {
 
       const linkToSend = this.state.currentSource.url;
       console.log('LINK', linkToSend);
-
-      // send link
       axios.post('/sendArticle', {link: linkToSend});
 
     } else {
-      // self.state.socket.emit('invalid_request');
-      // resolve('did nothing');
       console.log('this is here in the else of pin article');
     }
   }
@@ -130,31 +126,19 @@ class News extends React.Component {
   render () {
     const newsStyle = {
       width: '100%',
-      height: '33%',
-      //   backgroundImage: `linear-gradient(
-      //     rgba(0, 0, 0, 0.7),
-      //     rgba(0, 0, 0, 0)
-      // ),   url({this.state.image})`
     };
     return (
-      <div className="newsContainer right" style={newsStyle} style={{color: 'white'}}>
-        {/* <h3 id="newsTitle" style={{color: 'white'}}> News</h3> */}
+      <div className="newsContainer right widget" style={newsStyle} style={{color: 'white'}}>
 
-
-        {!this.state.currentArticles.length && <div className="newsList" style={{color: 'white'}}>
+        {!this.state.currentArticles.length && <div className="newsList newsAnimation" style={{color: 'white'}}>
           {this.state.allSources.map((source, i) => {
-            // SET 4 TO BE HOW EVER MANY Sources YOU WANT TO SHOW // change if get scrolling
             return (<div className="newsListItem" key={i}>{source.name}</div>);
           })}
         </div> }
 
-        {this.state.currentArticles.length && <div className="newsList" style={{color: 'white'}}>
+        {this.state.currentArticles.length && <div className="newsList newsArticles" style={{color: 'white'}}>
           {this.state.currentArticles.map((article, i) => {
-            // SET 4 TO BE HOW EVER MANY ARTICLES YOU WANT TO SHOW
-            // if(i < 4) {
             return (<div className="newsListItem" key={i}>{article.title}</div>);
-            // }
-            return null;
           })}
         </div> }
       </div>

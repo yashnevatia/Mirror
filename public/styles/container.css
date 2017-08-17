@@ -93,7 +93,7 @@
 }
 .newsContainer {
   width: 100%;
-  height: 30vh;
+  /*height: 30vh;*/
   z-index: -50;
   overflow: hidden;
 }
@@ -103,10 +103,15 @@
 }
 .newsList {
   margin: 0;
-  padding-top: 2%;
+}
+.newsAnimation {
   animation: crawl 18s linear infinite;
   /*animation-delay: 2s;*/
   height: 30vh;
+  padding-top: 2%;
+}
+.newsListArticles {
+  overflow: hidden;
 }
 .newsListItem {
   font-family: 'Josefin Sans', sans-serif;
@@ -448,4 +453,9 @@ ol {
   100% {
     transform: rotateX(25deg) translateZ(+3100px);
   }
+}
+.widget {
+  border: 0.5px dotted white;
+  border-radius: 0.5em;
+  padding: 1vw;
 }
