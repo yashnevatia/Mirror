@@ -6,7 +6,7 @@ class ToDo extends React.Component {
     super(props);
 
     this.state = {
-      toDo: [{task:'clean'},{task:'jump'}],
+      toDo: [{task: 'string'}],
       socket: props.socket
     };
 
@@ -15,7 +15,11 @@ class ToDo extends React.Component {
 
   componentDidMount() {
     // get request to retrive all existing todos
-    axios.get('http://localhost:3000/todo').then((resp) => this.setState({toDo: resp}));
+    axios.get('http://localhost:3000/todo')
+      .then((resp) => {
+        console.log('receives todos in :', resp);
+        this.setState({toDo: resp.data});
+      });
 
     // START SOCKETS STUFF:
     const self = this;
@@ -31,16 +35,25 @@ class ToDo extends React.Component {
       });
 
     });
+
+    // start listening at mount of component
+    // this.startListening('TODO');
   }
 
   //function to add todo
   createToDo(task){
+    console.log('in create todo task');
     //axios post request with given task
     axios.post('http://localhost:3000/todo', {task})
     //returns the Reminder object, push to this.state.toDo and update state
-    .then((resp) => {
-      newToDo = [...this.state.toDo,resp]
+    .then( resp => {
+      let newToDo = [...this.state.toDo, {task: resp.data.task}]
+      console.log('creating new todo list', newToDo)
       this.setState({toDo: newToDo})
+    })
+    .catch( err => {
+      console.log('ERROR: ', err);
+      this.state.emit('invalid request')
     })
   };
 
@@ -56,15 +69,29 @@ class ToDo extends React.Component {
 
   processRequest(respObj) {
     const self = this;
+    console.log('in process request with ', respObj)
 
+    // command is under todo category --> process it
     if (respObj.category === 'todo') {
-      // // if add task
-      // this.createToDo(respObj.params.NAME)
-      // // if remove task
-      // this.deleteToDo(respObj.params.NAME)
 
+      if (!respObj.params) {   // if no params, keep listening
+        self.startListening('TODO');
+      } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
+        self.startListening('TODO');
+      } else if (respObj.verb === 'add') {   // command is to add task
+        console.log('adding todo: ',respObj.params.task[0] )
+        self.createToDo(respObj.params.task);
+      } else if (respObj.params.verb === 'delete') {   // command is to delete task
+        console.log('deleting todo: ',respObj.params.task[0] )
+        self.deleteToDo(respObj.params.task);
+      }
+
+      // need an else statement here ?
+
+      // command did not fall under todo --> ignore and start listening again
     } else {
       self.state.socket.emit('invalid_request');
+      self.startListening('TODO');
     }
   }
 
@@ -74,9 +101,11 @@ class ToDo extends React.Component {
     return (
       <div >
         <h1 style={{color: 'white'}}> Reminders</h1>
+        <ol>
         {this.state.toDo.map((toDo)=> {
-          return (<li className='remindersListItem' style={{color: 'white'}}>{toDo.task}</li>)
+          return (<li className="remindersListItem">{toDo.task}</li>)
         })}
+      </ol>
       </div>
     );
   }
