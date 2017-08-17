@@ -31,6 +31,7 @@ function getCommand (widgetName, socket, io) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
         if (widgetName.toUpperCase() === 'UBER') {
+          console.log('!!!!!! emitting continuing to uber !!!!!!')
           io.to('UBER').emit('stt_continuing', respObj);
         }
         io.to('W_CONTAINER').emit('stt_continuing', respObj );
