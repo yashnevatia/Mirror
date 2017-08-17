@@ -96,7 +96,7 @@ class Container extends React.Component {
         widgets={this.state.widgets}
         className="card2"
         socket={socket}
-        //listen={this.startListening}
+        listen={this.startListening}
         currentResponse={this.state.currentResponse}
       />
     );
