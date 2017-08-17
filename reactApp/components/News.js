@@ -103,8 +103,8 @@ class News extends React.Component {
 
   nextArticles () {
     // set next starting position within all articles array
-    const nextPos = this.state.allArticles.indexOf(this.state.currentArticles[this.state.currentArticles.length]) + 1;
-    this.setState({currentArticles: this.state.currentArticles.slice(nextPos, nextPos+4)})
+    const nextPos = this.state.allArticles.indexOf(this.state.allArticles[this.state.currentArticles.length]) + 1;
+    this.setState({currentArticles: this.state.currentArticles.slice(nextPos, nextPos+5)})
   }
 
   // function that texts user with link to article of their choosing
