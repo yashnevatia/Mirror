@@ -78,15 +78,20 @@ function listenHotword(socket) {
       console.log("cancel");
       socket.emit('cancel');
     }
-    else if(hotword === 'image'){
-      console.log('image');
+    else if(hotword === 'iris'){
+      console.log("iris");
+    }
+    else if(hotword === 'picture'){
+      console.log('picture');
       imageProcessor();
       py.kill();
       listenHotword(socket);
     }
-    else if(hotword === 'suggestion'){
-      console.log("suggestion");
+    else if(hotword === 'outfits'){
+      console.log("outfits");
       suggestion();
+      py.kill();
+      listenHotword(socket);
     }
     else {
       socket.emit('widget', hotword);
