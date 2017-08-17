@@ -16,7 +16,8 @@ class Container extends React.Component {
         news: 'Which news source would you like to view?',
         uber: "Prompt 'call me an Uber' to order a ride!",
         reminders: '',
-      }
+      },
+      currentResponse: ''
     }
   }
 
@@ -30,11 +31,14 @@ class Container extends React.Component {
     });
 
     socket.on('wakeup', function(){
+      let currentResp = (new Date()).getHours() > 12 ? 'Good Afternoon' : 'Good Morning!';
+      currentResp = (new Date()).getHours() > 18 ? 'Good Evening' : currentResp;
       console.log("wakeup");
       self.setState({
         isActive: true,
+        currentResponse: currentResp
       });
-    })
+    });
 
     socket.on('sleep', function(){
       console.log("sleep");

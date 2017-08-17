@@ -47,7 +47,6 @@ class Reminder extends React.Component {
     .then( resp => {
       return axios.get('http://localhost:3000/gettodo')
 
-
       // let newToDo = [...this.state.toDo, {task: resp.data.task}]
       // console.log('creating new todo list', newToDo)
       // this.setState({toDo: newToDo})
@@ -103,9 +102,7 @@ class Reminder extends React.Component {
         }
       }
       // command did not fall under todo --> ignore and start listening again
-
   }
-
 
   render () {
     // loop through articles for current source and list out article heaadlines
