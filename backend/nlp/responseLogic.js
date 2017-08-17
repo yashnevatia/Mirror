@@ -3,7 +3,7 @@
 // Exported Function
 function analyzeRequest (data) {
   const resp = data.result;
-  console.log('in analyze request with:', data.result);
+  console.log('in analyze request');
 
   return new Promise((resolve, reject) => {
     const notFinished = resp.actionIncomplete;

@@ -30,7 +30,7 @@ function getCommand (widgetName, socket, io) {
       else if (respObj.notFinished) {
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container
-        if (widgetName.toUpperCase() === 'UBER') {
+        if (widgetName === 'UBER') {
           console.log('!!!!!! emitting continuing to uber !!!!!!')
           io.to('UBER').emit('stt_continuing', respObj);
         }
@@ -120,6 +120,7 @@ module.exports = function (io) {
         });
       }
       else{
+        console.log('leave room', socket.room, 'join', widgetName)
         if(socket.room)socket.leave(socket.room);
         socket.room = widgetName;
         socket.join(socket.room, ()=>{

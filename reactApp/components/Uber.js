@@ -49,21 +49,21 @@ class Uber extends React.Component {
     //////////////////////////// START SOCKETS ///////////////////////////////// don't touch this works
     const self = this;
     console.log('going to connect to socket', self.state.socket);
-    self.state.socket.on('connect', function() {
-      console.log("connected news");
+    // self.state.socket.on('connect', function() {
+    console.log("connected news");
 
-      self.state.socket.emit('join', 'UBER');
+    self.state.socket.emit('join', 'UBER');
 
-      self.state.socket.on('stt_continuing', obj => {
-        console.log('STT OBJ continuing', obj)
-        self.processContinuingRequest(obj);
-      })
+    self.state.socket.on('stt_continuing', obj => {
+      console.log('STT OBJ continuing', obj)
+      self.processContinuingRequest(obj);
+    })
 
-      self.state.socket.on('stt_finished', respObj => {
-        console.log('received stt finished', respObj);
-        self.processFinishedRequest(respObj)
-      });
+    self.state.socket.on('stt_finished', respObj => {
+      console.log('received stt finished', respObj);
+      self.processFinishedRequest(respObj)
     });
+    // });
     ////////////////////////////// END SOCKETS /////////////////////////////////
   }
 
