@@ -21,7 +21,8 @@ function getCommand (widgetName, socket, io) {
     .then( respObj => {
       console.log('reached {B}', respObj, !respObj.category.toUpperCase().startsWith(widgetName))
 
-  if (!respObj.category.toUpperCase().startsWith(widgetName)) {
+    // BUG AMANDA TESTING WITH THIS COMMENTED OUT BUG
+/*  if (!respObj.category.toUpperCase().startsWith(widgetName)) {
 	  console.log('yash says not 1', respObj, widgetName);
       io.to('W_CONTAINER').emit('invalid_request');
       // io.to(widgetName).emit('stt_finished', respObj);
@@ -29,7 +30,7 @@ function getCommand (widgetName, socket, io) {
       listenHotword(socket);
       return;
 	}
-	else if (respObj.notFinished) {
+	else */if (respObj.notFinished) {
 		console.log('yash says not 2');
         console.log('reached {C}')
         // cycle incomplete, send new prompt to container

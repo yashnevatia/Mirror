@@ -53,25 +53,18 @@ router.post('/todo', (req, res) => {
 })
 
 router.post('/deltodo', (req, res) => {
+  console.log('1 in POST route DELETE todo', req.body.task);
 
-  console.log('in post route remove todo');
-	// CHECK WHETHER THIS WORKS
-  /*Reminder.find()
-  .then((resp) =>{
-    newResp = resp.slice(parseInt(req.body.task), 1)
-    console.log("mounting",resp);
-    res.send(newResp)
+  Reminder.remove({task: req.body.task})
+  .then(() =>{
+		console.log('2 in POST route DELETE todo')
+    return Reminder.find()
   })
-});*/
-	// OR IF THIS WORKS
-    Reminder.remove({task: req.body.task})
-    .then(() =>{
-        Remider.find()
-        .then((resp) => {
-            console.log("deleted", resp);
-            res.send(resp)
-        })
-    })
+	.then((resp) => {
+		console.log('3 in POST route DELETE todo')
+		console.log("deleted and sending back", resp);
+		res.send(resp)
+	})
 
 });
 

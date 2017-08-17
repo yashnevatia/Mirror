@@ -105,7 +105,7 @@ class WidgetContainer extends React.Component {
           })}
 
           {/* BUG button for testing only BUG */}
-          {/* <button onClick={() => this.props.listen('REMINDERS')}> go outside </button> */}
+          <button onClick={() => this.props.listen('REMINDERS')}> listen again </button>
           {/* BUG button for testing only BUG */}
 
         </div>

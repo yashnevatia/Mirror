@@ -9,7 +9,6 @@ class Reminder extends React.Component {
       toDo: [],
       socket: props.socket
     };
-    console.log('todo constructed')
   }
 
   componentDidMount() {
@@ -22,19 +21,19 @@ class Reminder extends React.Component {
 
     // START SOCKETS STUFF:
     const self = this;
-    this.state.socket.on('connect', () => {
+    // this.state.socket.on('connect', () => {
       // join socket as ToDo
       console.log('CLIENT todo connected to sockets');
       self.state.socket.emit('join', 'REMINDERS');
 
       // listen for end of stt
       self.state.socket.on('stt_finished', respObj => {
+
         console.log('TODO received stt finished', respObj);
-        console.log('calling process request')
         self.processRequest(respObj);
       });
 
-    });
+    // });
   }
 
   //function to add todo
@@ -56,11 +55,13 @@ class Reminder extends React.Component {
 
   //funciton to delete todo
   deleteToDo(task){
+    console.log('111 in deleting ')
     // post request to delete
     axios.post('http://localhost:3000/deltodo', {task})
     //return array of reminders in database without deleted reminder
     .then((resp) => {
-      this.setState({toDo: resp})
+      console.log('222 setting state todo as', resp)
+      this.setState({toDo: resp.data})
     })
     .catch( err => {
       console.log('ERORRRR: ', err);
@@ -79,10 +80,18 @@ class Reminder extends React.Component {
       } else if (!respObj.params.verb || !respObj.params.task) {   // keep listening if missing params
         // do nothing
       } else if (respObj.verb === 'add') {   // command is to add task
-        console.log('adding todo: ',respObj.params.task[0] )
         self.createToDo(respObj.params.task);
       } else if (respObj.params.verb === 'delete') {   // command is to delete task
-        console.log('deleting todo: ',respObj.params.task[0] )
+        // user can specify task number
+        if (respObj.params.number || respObj.params.ordinal) {
+          const num = respObj.params.number || respObj.params.ordinal;
+          let taskToDelete = [];
+          taskToDelete.push(self.state.toDo[num-1].task);
+          self.deleteToDo(taskToDelete);
+        // or user can specify task name
+        } else {
+          self.deleteToDo(respObj.params.task)
+        }
       } else if (respObj.params.verb === 'add') {   // command is to add task
         self.createToDo(respObj.params.task);
       } else if (respObj.params.verb === 'delete') {   // command is to delete task
