@@ -28,7 +28,7 @@ function getCommand (widgetName, socket, io) {
 
       if(respObj.category.toUpperCase().indexOf(widgetName) === -1){
         io.to('W_CONTAINER').emit('invalid_request');
-        listenHotword(socket);
+        listenHotword(socket, io);
         return;
       }
       else if (respObj.notFinished) {
@@ -51,7 +51,7 @@ function getCommand (widgetName, socket, io) {
           io.to(widgetName).emit('stt_finished', respObj);
         }
 
-        listenHotword(socket);
+        listenHotword(socket, io);
       }
     })
     .catch( err => {
@@ -64,7 +64,7 @@ function getCommand (widgetName, socket, io) {
 let py;
 let rl;
 
-function listenHotword(socket) {
+function listenHotword(socket, io) {
 
   console.log("python file is listening again");
 
@@ -99,7 +99,7 @@ function listenHotword(socket) {
       console.log('picture');
       imageProcessor();
       py.kill();
-      listenHotword(socket);
+      listenHotword(socket, io);
     }
     else if(hotword === 'outfits'){
       console.log("outfits");
@@ -107,7 +107,7 @@ function listenHotword(socket) {
       io.to('W_CONTAINER').emit('custom_msg', {resp: msg});
       suggestion();
       py.kill();
-      listenHotword(socket);
+      listenHotword(socket, io);
     }
     else {
       socket.emit('widget', hotword);
@@ -122,7 +122,7 @@ module.exports = function (io) {
 
   	console.log("SOCKETS CODE compiled");
 
-    listenHotword(socket);
+    listenHotword(socket, io);
 
     socket.on('join', widgetName => {
       console.log('SERVER in join', widgetName);
