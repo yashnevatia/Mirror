@@ -75,8 +75,8 @@ class WidgetContainer extends React.Component {
     console.log(widget)
 
     switch (widget){
-    	case 'radio':
-    		return <Radio key={widget} />;
+    	// case 'radio':
+    	// 	return <Radio key={widget} />;
     	case 'news':
     		return <News key={widget} />;
     	case 'uber':
@@ -116,7 +116,7 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
           {/* BUG button for testing only BUG */}
-          <button onClick={() => this.props.listen('UBER')}> listen again </button>
+          {/* <button onClick={() => this.props.listen('UBER')}> listen again </button> */}
           {/* BUG button for testing only BUG */}
         </div>
       </div>
