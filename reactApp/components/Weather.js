@@ -6,7 +6,7 @@ class Weather extends React.Component {
     super();
     this.state = {
       interval: () => '',
-      forecast: {},
+      forecast: [],
       city: 'SanFrancisco'
     };
 
@@ -17,6 +17,7 @@ class Weather extends React.Component {
     const self=this;
     // set weather at component mount
     self.getWeather();
+    self.getForecast();
     //update weather every two minutes
     self.setState({ interval: setInterval(() => {
       self.getWeather()
@@ -30,7 +31,7 @@ componentWillUnmount() {
 }
 
 getWeather () {
-  axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&units=imperial&APPID=89fdd5afd3758c1feb06e06a64c55260`)
+  axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&units=imperial&APPID=09f1cb63107ddcebcf4b07eca5d86cc0`)
   .then(resp => {
     this.setState({
       description: resp.data.weather[0].description,
@@ -41,6 +42,15 @@ getWeather () {
     });
     // console.log(this.state.icon);
   });
+}
+
+getForecast () {
+  axios.get(`http://samples.openweathermap.org/data/2.5/forecast?q=${this.state.city},us&APPID=09f1cb63107ddcebcf4b07eca5d86cc0`)
+  .then(resp => {
+    const fiveDay = resp.data.list.filter(elt => (elt.dt_text.split(' ')[1] === '12:00:00'))
+    this.setState({ forecast: fiveDay })
+    console.log('FORECAST', this.state.forecast)
+  })
 }
 
 render() {
@@ -58,6 +68,18 @@ render() {
         </div>
         <div className={this.props.weatherState ? 'isActiveMinMax' : 'min-max'}>
           {this.state.min}˚F  |  {this.state.max}˚F
+        </div>
+      </div>
+    </div>
+    {/*heyyyyyyyo*/}
+    <div className={this.props.weatherState ? 'isActiveWeather' : 'isStandbyWeather'}>
+      <img src={icon} height="75" width="75"></img>
+      <div className={this.props.weatherState ? 'isActiveC' : 'null'}>
+        <div className={this.props.weatherState ? 'isActiveCurrent' : 'current'}>
+          currently {this.state.current}˚F
+        </div>
+        <div className={this.props.weatherState ? 'isActiveDescription' : 'description'}>
+          {this.state.description}
         </div>
       </div>
     </div>
