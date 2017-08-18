@@ -18,7 +18,7 @@ router.get('/',(req,res) => {
 
 /*------------------- Reminder Routes -----------------------*/
 
-router.get('/todo', (req, res) => {
+router.get('/gettodo', (req, res) => {
     //get all the ToDo's from database and return them when pushed into an array --> set this.setState with it
     Reminder.find()
     .then((resp) =>{
@@ -28,7 +28,7 @@ router.get('/todo', (req, res) => {
 
 })
 
-router.post('/todo', (req, res) => {
+router.post('/addtodo', (req, res) => {
   //create new Reminder form model and store it in DB
   console.log('in post route add todo');
   var r = new Reminder({

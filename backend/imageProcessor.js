@@ -119,10 +119,13 @@ function imageProcessor() {
       var drive = google.drive('v2');
       var fs = require('fs');
 
+      const now = new Date();
+      const thisPicName = now.getYear()'/'+(now.getMonth()+1)+'/'+now.getDate()+'.png';
+
       var fileMetadata = {
         name: 'photo.jpg',
         mimeType: 'image/jpg',
-        title: 'title21.png',
+        title: thisPicName,
         parents: MY_PICTURE_FOLDER ? [{id: MY_PICTURE_FOLDER}] : []
       };
 

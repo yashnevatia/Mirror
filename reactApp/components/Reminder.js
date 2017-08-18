@@ -13,7 +13,7 @@ class Reminder extends React.Component {
 
   componentDidMount() {
     // get request to retrive all existing todos
-    axios.get('http://localhost:3000/todo')
+    axios.get('http://localhost:3000/gettodo')
       .then((resp) => {
         console.log('receives todos in :', resp);
         this.setState({toDo: resp.data});
@@ -42,12 +42,18 @@ class Reminder extends React.Component {
   createToDo(task){
     console.log('in create todo task');
     //axios post request with given task
-    axios.post('http://localhost:3000/todo', {task})
+    axios.post('http://localhost:3000/addtodo', {task})
     //returns the Reminder object, push to this.state.toDo and update state
     .then( resp => {
-      let newToDo = [...this.state.toDo, {task: resp.data.task}]
-      console.log('creating new todo list', newToDo)
-      this.setState({toDo: newToDo})
+      return axios.get('http://localhost:3000/gettodo')
+
+      // let newToDo = [...this.state.toDo, {task: resp.data.task}]
+      // console.log('creating new todo list', newToDo)
+      // this.setState({toDo: newToDo})
+    })
+    .then( resp2 => {
+      console.log('receives NEW TODOS in :', resp2);
+      this.setState({toDo: resp2.data});
     })
     .catch( err => {
       console.log('ERROR: ', err);
@@ -96,9 +102,7 @@ class Reminder extends React.Component {
         }
       }
       // command did not fall under todo --> ignore and start listening again
-
   }
-
 
   render () {
     // loop through articles for current source and list out article heaadlines
