@@ -9,9 +9,9 @@ var {imageProcessor} = require('./imageProcessor');
 var {suggestion} = require('./suggestion');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 // the following will change for different computers.
-const myFilePath = '/home/pi/Public/'; // PI
+// const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-// const myFilePath = '/Users/amandahansen/' // AMANDA
+const myFilePath = '/Users/amandahansen/' // AMANDA
 
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
@@ -46,11 +46,9 @@ function getCommand (widgetName, socket, io) {
         console.log('EMITTING to WC', widgetName, 'finished', respObj)
         io.to('W_CONTAINER').emit('stt_finished', respObj);
 
-        if (widgetName !== 'REMINDERS') {
-          console.log('EMITTING to widget', widgetName, 'finished', respObj)
-          io.to(widgetName).emit('stt_finished', respObj);
-        }
-
+        console.log('EMITTING to widget', widgetName, 'finished', respObj)
+        io.to(widgetName).emit('stt_finished', respObj);
+        
         listenHotword(socket);
       }
     })

@@ -1,6 +1,9 @@
 import React from 'react';
 const axios = require('axios');
 
+import io from 'socket.io-client';
+const socket = io('http://localhost:3000');
+
 class Uber extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +15,7 @@ class Uber extends React.Component {
       prices: [],
       request_id: '',
       driverComing: false,
-      socket: props.socket,
+      socket: socket,
       driverDetails: {},
     };
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
+import io from 'socket.io-client';
+const socket = io('http://localhost:3000');
+
 const NEWS_API_KEY = 'f6c882d2ff2c4c949ffc69ba6d5c0dac';
 
 class News extends React.Component {
@@ -14,7 +17,7 @@ class News extends React.Component {
       currentSource: {},
       currentArticles: [],
       image: '',
-      socket: props.socket
+      socket: socket
     };
 
     this.selectSource = this.selectSource.bind(this);
