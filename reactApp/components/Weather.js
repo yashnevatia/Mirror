@@ -71,18 +71,6 @@ render() {
         </div>
       </div>
     </div>
-    
-    <div className={this.props.weatherState ? 'isActiveWeather' : 'isStandbyWeather'}>
-      <img src={icon} height="75" width="75"></img>
-      <div className={this.props.weatherState ? 'isActiveC' : 'null'}>
-        <div className={this.props.weatherState ? 'isActiveCurrent' : 'current'}>
-          currently {this.state.current}˚F
-        </div>
-        <div className={this.props.weatherState ? 'isActiveDescription' : 'description'}>
-          {this.state.description}
-        </div>
-      </div>
-    </div>
   );
 }
 }
