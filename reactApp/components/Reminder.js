@@ -109,12 +109,19 @@ class Reminder extends React.Component {
 
   render () {
     // loop through articles for current source and list out article heaadlines
+
+    let className = 'remindersListItem center';
+
+    setTimeout(() => {
+      className = 'remindersListItem right'
+    }, 2000)
+
     return (
-      <div className='widget'>
-        <h2 className='right uberOptions' style={{color: 'white'}}> Reminders</h2>
+      <div className='widget right'>
+        <h2 className='uberOptions widgetTitle' style={{color: 'white'}}> Reminders</h2>
         <div>
           {this.state.toDo.map((toDo)=> {
-            return (<p className="remindersListItem right">{toDo.task}</p>)
+            return (<p className={className} >{toDo.task}</p>)
           })}
         </div>
       </div>

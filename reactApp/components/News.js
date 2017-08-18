@@ -134,11 +134,11 @@ class News extends React.Component {
     };
     return (
       <div className="newsContainer right widget" style={newsStyle} style={{color: 'white'}}>
-	     <h2 className='right uberOptions' style={{color: 'white'}}> News</h2>
+	     <h2 className='right uberOptions widgetTitle' style={{color: 'white'}}> News</h2>
 
         {(this.state.currentArticles.length===0) && <div className="newsList newsAnimation" style={{color: 'white'}}>
           {this.state.allSources.map((source, i) => {
-            return (<div className="newsListItem" key={i}>{source.name}</div>);
+            return (<div className="newsListItem center" key={i}>{source.name}</div>);
           })}
         </div> }
 
