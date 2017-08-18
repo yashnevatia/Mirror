@@ -53,8 +53,8 @@ def reminders():
 def uber():
     print("uber")
 
-modelpath = "/Users/JFH/horizons/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda2/"
-# modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda2/"
+# modelpath = "/Users/JFH/horizons/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda2/"
+modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda2/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
           modelpath + "cancel.pmdl", modelpath + "iris.pmdl",
