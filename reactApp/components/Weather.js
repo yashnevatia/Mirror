@@ -71,7 +71,7 @@ render() {
         </div>
       </div>
     </div>
-    {/*heyyyyyyyo*/}
+    
     <div className={this.props.weatherState ? 'isActiveWeather' : 'isStandbyWeather'}>
       <img src={icon} height="75" width="75"></img>
       <div className={this.props.weatherState ? 'isActiveC' : 'null'}>
