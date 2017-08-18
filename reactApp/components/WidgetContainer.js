@@ -98,7 +98,7 @@ class WidgetContainer extends React.Component {
              transitionAppear = {true} transitionAppearTimeout = {2000}
              transitionEnter = {false} transitionLeave = {false}>
              <Time timeState={this.props.isActive}/>
-             <Weather weatherState={this.props.isActive}/>
+             {/*<Weather weatherState={this.props.isActive}/>*/}
              {this.props.isActive && this.state.isListening &&
                <div id="ellipsis">
                  <h5 id="one"> •</h5>
