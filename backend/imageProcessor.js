@@ -120,7 +120,7 @@ function imageProcessor() {
       var fs = require('fs');
 
       const now = new Date();
-      const thisPicName = now.getYear()'/'+(now.getMonth()+1)+'/'+now.getDate()+'.png';
+      const thisPicName = now.getYear()+'/'+(now.getMonth()+1)+'/'+now.getDate()+'.png';
 
       var fileMetadata = {
         name: 'photo.jpg',
