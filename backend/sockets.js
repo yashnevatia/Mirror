@@ -120,7 +120,7 @@ module.exports = function (io) {
 
   	console.log("SOCKETS CODE compiled");
 
-    listenHotword(socket);
+    if (!py) listenHotword(socket);
 
     socket.on('join', widgetName => {
       console.log('SERVER in join', widgetName);
