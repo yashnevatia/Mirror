@@ -1,4 +1,4 @@
-function sendMessage(link){
+function sendMessage(link, sendToMom){
 
   const accountSid = process.env.TWILIO_SID; // Account SID from www.twilio.com/console
   const authToken = process.env.TWILIO_AUTH_TOKEN; // Auth Token from www.twilio.com/console
@@ -14,8 +14,32 @@ function sendMessage(link){
     from: FROM_NUMBER // From a valid Twilio number
   })
   .then( msg => {
+
+    /* NEW CHANGES - PROBABLY DELETE */
+    if (sendToMom) {
+      console.log('hit send to mom')
+      return client.messages.create({
+        body: link,
+        to: '+17024960456',  // Text this number
+        from: FROM_NUMBER // From a valid Twilio number
+      })
+    }
+    else {
+      return 'NO'
+    }
+    /* END NEW CHANGES */
+
     console.log('SERVER sent msg');
   })
+  /* NEW CHANGES - PROBABLY DELETE */
+  .then ( again => {
+    if (again && again === 'NO') {
+      console.log('server not send to mom')
+    } else {
+      console.log('SERVER SENT TO MOM')
+    }
+  })
+  /* END NEW CHANGES */
 	.catch( err => {
 		console.log ('THIS IS WHERE YOU SEE THE ERR', err);
 	})

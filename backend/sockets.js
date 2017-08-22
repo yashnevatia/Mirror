@@ -7,16 +7,22 @@ const SpotifyWebApi = require('spotify-web-api-node');
 var refresh = require('spotify-refresh');
 var {imageProcessor} = require('./imageProcessor');
 var {suggestion} = require('./suggestion');
+
+
 /* ***** HOTWORD -- LOCAL CODE ***** */
-// the following will change for different computers.
-const myFilePath = '/home/pi/Public/'; // PI
+
+/* TODO: MAKE myFilePath THE PATH OF YOUR COMPUTER TO THE MIRROR PROJECT FOLDER TODO */
+// const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-// const myFilePath = '/Users/amandahansen/' // AMANDA
+const myFilePath = '/Users/amandahansen/' // AMANDA
+
 
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';
 
-/* ***** STT -- LOCAL CODE ***** */
+
+/* ***** STT -- LOCAL FUNCTION ***** */
+
 function getCommand (widgetName, socket, io) {
   console.log('reached {A}', widgetName, 'EMITTING w container start listen')
   io.to('W_CONTAINER').emit('listening', true);
@@ -46,7 +52,7 @@ function getCommand (widgetName, socket, io) {
         console.log('EMITTING to WC', widgetName, 'finished', respObj)
         io.to('W_CONTAINER').emit('stt_finished', respObj);
 
-        if (widgetName !== 'REMINDERS') {
+        if (widgetName !== 'REMINDERS' && widgetName !== 'NEWS') {
           console.log('EMITTING to widget', widgetName, 'finished', respObj)
           io.to(widgetName).emit('stt_finished', respObj);
         }
@@ -59,7 +65,7 @@ function getCommand (widgetName, socket, io) {
     });
 }
 
-/**** child process function ***/
+/**** HOTWORD child process function ***/
 
 let py;
 let rl;
@@ -105,7 +111,11 @@ function listenHotword(socket, io) {
       console.log("outfits");
       const msg = 'Great! Outfit suggestions will be sent to your phone!';
       io.to('W_CONTAINER').emit('custom_msg', {resp: msg});
-      suggestion();
+
+      /*  NEW CHANGES */
+      suggestion(true);
+
+      // suggestion();
       py.kill();
       listenHotword(socket, io);
     }

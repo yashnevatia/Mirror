@@ -1,0 +1,4 @@
+module.exports = {
+  WEATHER_API_ID: '89fdd5afd3758c1feb06e06a64c55260',
+  NEWS_API_KEY: 'f6c882d2ff2c4c949ffc69ba6d5c0dac'
+}

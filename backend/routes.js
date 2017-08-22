@@ -211,7 +211,7 @@ router.get('/delete', function(req, res) {
 
 //use twilio to send article link to phone via text
 router.post('/sendArticle', (req, res) => {
-	sendMessage(req.body.link);
+	sendMessage(req.body.link, false);
 })
 
 module.exports = router;

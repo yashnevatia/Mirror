@@ -26,7 +26,7 @@ class WidgetContainer extends React.Component {
   }
 
   componentDidMount() {
-    // START SOCKET LISTENERS
+    // SOCKET LISTENERS
     const self = this;
 
     this.state.socket.on('connect', () => {
@@ -116,7 +116,7 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
           {/* BUG button for testing only BUG */}
-          {/* <button onClick={() => this.props.listen('REMINDERS')}> listen again </button> */}
+          <button onClick={() => this.props.listen('NEWS')}> listen again </button>
           {/* BUG button for testing only BUG */}
         </div>
       </div>

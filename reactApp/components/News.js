@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-const NEWS_API_KEY = 'f6c882d2ff2c4c949ffc69ba6d5c0dac';
+/* TODO GET PERSONALIZED NEWS API KEY https://newsapi.org/ AND PUT IN personalConfig.js TODO */
+import config from '../.././backend/config/personalConfig.js';
+const NEWS_API_KEY = config.NEWS_API_KEY || '';
 
 class News extends React.Component {
 
@@ -24,13 +26,15 @@ class News extends React.Component {
   componentDidMount () {
     const self = this;
 
-    //api call
+    // api call to get a list of all sources: display rolling list
     axios.get('https://newsapi.org/v1/sources?language=en')
     .then(resp => {
       const newSources = [...resp.data.sources];
       this.setState({allSources: newSources});
     })
-    .catch(console.log);
+    .catch( err => {
+      console.log('ERROR getting news sources: ', err);
+    });
 
     // called only once
     self.state.socket.on('connect', () => {
@@ -53,8 +57,10 @@ class News extends React.Component {
 
   processRequest(respObj) {
     const self = this;
+    console.log('in process news request')
 
     if (respObj.category === 'news' && respObj.params.newsAction && respObj.params.newsAction==='scroll down' ) {
+      console.log('calling scroll down');
       self.nextArticles();
     } else if (respObj.category === 'news' && respObj.params.newsSource) {
       // change state of news here from respObj params
@@ -94,8 +100,9 @@ class News extends React.Component {
       axios.get(`https://newsapi.org/v1/articles?source=${this.state.currentSource.id}&apiKey=${NEWS_API_KEY}`)
       .then( resp => {
         console.log('in set current articles')
-        self.setState({allArticles: [...resp.data.articles], currentArticles: resp.data.articles.slice(0,5)});
+        self.setState({allArticles: resp.data.articles, currentArticles: resp.data.articles.slice(0,5)});
         //   self.setState({image: resp.data.articles[0].urlToImage});
+        console.log('set all articles to be', self.state.allArticles)
         resolve('success');
       })
       .catch( err => {
@@ -105,11 +112,16 @@ class News extends React.Component {
   }
 
   nextArticles () {
-    // set next starting position within all articles array
-    const nextPos = this.state.allArticles.indexOf(this.state.allArticles[this.state.currentArticles.length]) + 1;
-    console.log('in scroll down', this.state.currentArticles, nextPos, this.state.currentArticles.slice(nextPos, nextPos+5));
+    setTimeout(() => {
+      // set next starting position within all articles array
+      let nextPos = this.state.allArticles.indexOf(this.state.currentArticles[this.state.currentArticles.length-1])+1;
+      console.log('in scroll down', this.state.allArticles, this.state.currentArticles, 'and', nextPos, 'and', nextPos >= this.state.allArticles.length);
 
-    this.setState({currentArticles: this.state.currentArticles.slice(nextPos, nextPos+5)})
+      nextPos = (nextPos >= this.state.allArticles.length) ? 0 : nextPos; // bring back to start if seen all articles
+
+      this.setState({currentArticles: this.state.allArticles.slice(nextPos, nextPos+5)})
+      console.log('after set state in scroll down', this.state.currentArticles, nextPos)
+    },4000);
   }
 
   // function that texts user with link to article of their choosing
@@ -132,6 +144,8 @@ class News extends React.Component {
     const newsStyle = {
       width: '100%',
     };
+
+    console.log('news rendering with', this.state.currentArticles);
     return (
       <div className="newsContainer right widget" style={newsStyle} style={{color: 'white'}}>
 	     <h2 className='right uberOptions widgetTitle' style={{color: 'white'}}> News</h2>
@@ -144,7 +158,7 @@ class News extends React.Component {
 
         {!(this.state.currentArticles.length===0) && <div className="newsList newsArticles" style={{color: 'white'}}>
           {this.state.currentArticles.map((article, i) => {
-            return (<div className="newsListItem right" key={i}>{article.title}</div>);
+            return (<div className="newsListItem right" key={i}>"{article.title}"</div>);
           })}
         </div> }
       </div>
