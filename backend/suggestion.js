@@ -14,8 +14,9 @@ function suggestion(sendToMom){
   .then(resp => {
     ImageModel.find({description: resp.data.weather[0].description})
     .then(images => {
-      if(!images)sendMessage("Sorry no available suggestions", false);
-      else{
+      if(!images || !images.length) {
+        sendMessage("Sorry no available suggestions", false);
+      } else {
         // sendMessage(images[0].link);
 
         /* NEW CHANGES */
