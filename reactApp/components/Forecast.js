@@ -12,7 +12,7 @@ class Forecast extends React.component {
   }
 
   componentDidMount () {
-    
+
   }
 
   render () {

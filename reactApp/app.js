@@ -9,11 +9,11 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: true,
-      widgets: ['news'/*, 'uber', 'reminders'*/],
+      // isActive: true,
+      // widgets: ['news'/*, 'uber', 'reminders'*/],
 
-      // isActive: false,
-	    // widgets: [],
+      isActive: false,
+	    widgets: [],
       initialResponses: {
         radio: 'Would you like to play, pause or search for songs?',
         news: 'Which news source would you like to view?',
@@ -99,7 +99,7 @@ class Container extends React.Component {
         widgets={this.state.widgets}
         className="card2"
         socket={socket}
-        listen={this.startListening}
+        // listen={this.startListening}
         currentResponse={this.state.currentResponse}
       />
     );

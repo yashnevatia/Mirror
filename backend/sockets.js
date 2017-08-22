@@ -12,9 +12,9 @@ var {suggestion} = require('./suggestion');
 /* ***** HOTWORD -- LOCAL CODE ***** */
 
 /* TODO: MAKE myFilePath THE PATH OF YOUR COMPUTER TO THE MIRROR PROJECT FOLDER TODO */
-// const myFilePath = '/home/pi/Public/'; // PI
+const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-const myFilePath = '/Users/amandahansen/' // AMANDA
+// const myFilePath = '/Users/amandahansen/' // AMANDA
 
 
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
