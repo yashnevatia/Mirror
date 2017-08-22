@@ -459,7 +459,7 @@ ol {
     transform: rotateX(20deg) translateZ(-800px);
   }
   100% {
-    transform: rotateX(25deg) translateZ(+3100px);
+    transform: rotateX(25deg) translateZ(+3450px);
   }
 }
 .widget {
