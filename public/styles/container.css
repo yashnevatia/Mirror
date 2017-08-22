@@ -96,6 +96,7 @@
   /*height: 30vh;*/
   z-index: -50;
   overflow: hidden;
+  color: white;
 }
 #newsTitle {
   background-color: black;
@@ -488,4 +489,5 @@ ol {
 .widgetTitle {
   font-weight: 900;
   font-size: 27;
+  color: white;
 }

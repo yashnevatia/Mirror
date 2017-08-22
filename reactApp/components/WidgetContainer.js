@@ -3,7 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 import { bounce } from 'react-animations';
 
-
+// widgets imports
 import Time from './Time';
 import Weather from './Weather';
 import Radio from './Radio';
@@ -37,6 +37,18 @@ class WidgetContainer extends React.Component {
     this.state.socket.on('invalid_request', () => {
       console.log('WC in invalid request')
       this.setState({currentResponse: "I'm sorry, I did not understand that"});
+    });
+
+    this.state.socket.on('other_category', respObj => {
+      console.log('WC in NOT RELEVANT', respObj)
+      // if small talk category, show response
+      if (respObj.category.startsWith('smalltalk') && respObj.response) {
+        this.setState({currentResponse: respObj.response});
+
+      // else is not understandable request
+      } else {
+        this.setState({currentResponse: "I'm sorry, I did not understand that"});
+      }
     });
 
     this.state.socket.on('custom_msg', ({ resp }) => {
@@ -116,7 +128,7 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
           {/* BUG button for testing only BUG */}
-          <button onClick={() => this.props.listen('NEWS')}> listen again </button>
+          <button onClick={() => this.props.listen('RADIO')}> listen again </button>
           {/* BUG button for testing only BUG */}
         </div>
       </div>

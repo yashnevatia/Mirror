@@ -1,9 +1,20 @@
+// NEWS component uses https://newsapi.org/ to allow user to pick from 60 news sources,
+// see 5 articles at a time, scroll down to the next 5, and send a text to themselves
+// with links to articles of their choosing
+
+// COMMANDS:
+// -- bring up [insert news source]   // gets & shows articles of that source
+// -- show all                        // shows all available sources
+// -- scroll down                     // shows next 5 articles of current source
+// -- send me article ##              // sends via text the #nth article displayed
+
 import React from 'react';
 import axios from 'axios';
 
 /* TODO GET PERSONALIZED NEWS API KEY https://newsapi.org/ AND PUT IN personalConfig.js TODO */
 import config from '../.././backend/config/personalConfig.js';
 const NEWS_API_KEY = config.NEWS_API_KEY || '';
+
 
 class News extends React.Component {
 
@@ -55,13 +66,18 @@ class News extends React.Component {
 
   }
 
-  processRequest(respObj) {
+  processRequest (respObj) {
     const self = this;
     console.log('in process news request')
 
-    if (respObj.category === 'news' && respObj.params.newsAction && respObj.params.newsAction==='scroll down' ) {
+    if (respObj.category === 'news' && respObj.params.newsAction && respObj.params.newsAction==='show all' ) {
+      console.log('calling show all');
+      self.allSources();
+
+    } else if (respObj.category === 'news' && respObj.params.newsAction && respObj.params.newsAction==='scroll down' ) {
       console.log('calling scroll down');
       self.nextArticles();
+
     } else if (respObj.category === 'news' && respObj.params.newsSource) {
       // change state of news here from respObj params
       self.selectSource(respObj.params.newsSource)
@@ -71,6 +87,7 @@ class News extends React.Component {
       .catch( err => {
         console.log('ERROR :(', err);
       });
+
     } else if (respObj.category === 'news article') {
       console.log('in news article with article: ', respObj.params.number, respObj.params.ordinal);
       // user specifies number of article
@@ -112,16 +129,25 @@ class News extends React.Component {
   }
 
   nextArticles () {
-    setTimeout(() => {
-      // set next starting position within all articles array
-      let nextPos = this.state.allArticles.indexOf(this.state.currentArticles[this.state.currentArticles.length-1])+1;
-      console.log('in scroll down', this.state.allArticles, this.state.currentArticles, 'and', nextPos, 'and', nextPos >= this.state.allArticles.length);
+    // quit if no source currently chosen
+    if (!this.state.currentSource) {
+      return;
+    }
 
-      nextPos = (nextPos >= this.state.allArticles.length) ? 0 : nextPos; // bring back to start if seen all articles
+    // set next starting position within allArticles array
+    let nextPos = this.state.allArticles.indexOf(this.state.currentArticles[this.state.currentArticles.length-1])+1;
+    console.log('in scroll down', this.state.allArticles, this.state.currentArticles, 'and', nextPos, 'and', nextPos >= this.state.allArticles.length);
 
-      this.setState({currentArticles: this.state.allArticles.slice(nextPos, nextPos+5)})
-      console.log('after set state in scroll down', this.state.currentArticles, nextPos)
-    },4000);
+    // if have reached end of allArticles array, circle back to start of allArticles
+    nextPos = (nextPos >= this.state.allArticles.length) ? 0 : nextPos;
+
+    // set state to be these articles
+    this.setState({currentArticles: this.state.allArticles.slice(nextPos, nextPos+5)})
+    console.log('after set state in scroll down', this.state.currentArticles, nextPos)
+  }
+
+  allSources () {
+    this.setState({currentSource: '', currentArticles: [], allArticles: []})
   }
 
   // function that texts user with link to article of their choosing
@@ -141,26 +167,25 @@ class News extends React.Component {
   }
 
   render () {
-    const newsStyle = {
-      width: '100%',
-    };
-
-    console.log('news rendering with', this.state.currentArticles);
+    console.log('news rendered');
     return (
-      <div className="newsContainer right widget" style={newsStyle} style={{color: 'white'}}>
-	     <h2 className='right uberOptions widgetTitle' style={{color: 'white'}}> News</h2>
+      <div className="newsContainer right widget">
+	     <h2 className='right uberOptions widgetTitle'> News</h2>
 
-        {(this.state.currentArticles.length===0) && <div className="newsList newsAnimation" style={{color: 'white'}}>
+       {/* if no current source chosen, show all articles */}
+       {(this.state.currentArticles.length===0) && <div className="newsList newsAnimation">
           {this.state.allSources.map((source, i) => {
             return (<div className="newsListItem center" key={i}>{source.name}</div>);
           })}
         </div> }
 
-        {!(this.state.currentArticles.length===0) && <div className="newsList newsArticles" style={{color: 'white'}}>
+        {/* if there exists a current source chosen, show articles of it */}
+        {!(this.state.currentArticles.length===0) && <div className="newsList newsArticles">
           {this.state.currentArticles.map((article, i) => {
             return (<div className="newsListItem right" key={i}>"{article.title}"</div>);
           })}
         </div> }
+
       </div>
     );
   }

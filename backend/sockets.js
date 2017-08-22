@@ -33,7 +33,8 @@ function getCommand (widgetName, socket, io) {
       io.to('W_CONTAINER').emit('listening', false);
 
       if(respObj.category.toUpperCase().indexOf(widgetName) === -1){
-        io.to('W_CONTAINER').emit('invalid_request');
+        // io.to('W_CONTAINER').emit('invalid_request');
+        io.to('W_CONTAINER').emit('other_category', respObj);
         listenHotword(socket, io);
         return;
       }
@@ -49,7 +50,7 @@ function getCommand (widgetName, socket, io) {
       }
       else {
         console.log('reached {D}');
-        console.log('EMITTING to WC', widgetName, 'finished', respObj)
+        console.log('EMITTING to WC w/', widgetName, 'finished', respObj)
         io.to('W_CONTAINER').emit('stt_finished', respObj);
 
         if (widgetName !== 'REMINDERS' && widgetName !== 'NEWS') {
