@@ -213,8 +213,6 @@ body{
   color: white;
 }*/
 .uberOptions {
-  /* start amanda additions */
-  /* end amanda additions */
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
   font-size: 150%;
@@ -462,11 +460,7 @@ ol {
     transform: rotateX(25deg) translateZ(+3450px);
   }
 }
-.widget {
-  border: 0.5px dotted white;
-  border-radius: 0.5em;
-  padding: 1vw;
-}
+
 
 #one {
   flex: 1;
@@ -491,25 +485,41 @@ ol {
   font-size: 27;
   color: white;
 
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 150%;
+
+  margin: 0;
+
   text-align: right;
 }
 .forecast_day {
   text-align: center;
   display: inline-block;
-  width: 8vw;
-  overflow: hidden;
+  width: 6vw;
+  /*height: 100%;*/
+
+  /*overflow: hidden;*/
 
   border: 0.2px dashed lightgrey;
   border-radius: 1em;
 
-  margin: 1vh 0.5vw;
-  padding: 1vh 0;
+  /*margin: 1vh 1vw;*/
+  padding: 1vh 1vw;
+
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .forecast_part {
-  padding: 0vh 0.2vw;
-  display: inline-block;
-  margin: 0.6vh 0;
+  /*display: inline-block;*/
+  /*margin: 0.6vh 0;*/
   /*width: 18vw;*/
+
+  flex: 1;
 }
 #days {
   display: flex;
@@ -517,5 +527,21 @@ ol {
   flex-wrap: wrap;
 }
 #forecastContainer {
-  padding: 0;
+  /*padding: 0;*/
+  width: 30vw;
+  height: 350px;
+
+  /*margin-left: 5vw;*/
+}
+
+.widget {
+  border: 0.5px dotted white;
+  border-radius: 0.5em;
+  padding: 1vw;
+}
+.flex_center {
+  /*display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;*/
 }

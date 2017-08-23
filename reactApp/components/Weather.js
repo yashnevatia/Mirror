@@ -13,7 +13,7 @@ class Weather extends React.Component {
     this.state = {
       interval: () => '',
 
-      /* TODO FIND CITY ID FROM backend/config/city.list.json TODO */
+      /* TODO FIND CITY ID FROM city.list.json FROM http://bulk.openweathermap.org/sample/ TODO */
       /* eg: this id is for Las Vegas, NV */
       cityId: '5506956'
 

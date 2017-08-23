@@ -17,10 +17,9 @@ class Forecast extends React.Component {
       dates: [],
       ready: false,
 
-      /* TODO FIND CITY ID FROM backend/config/city.list.json TODO */
+      /* TODO FIND YOUR CITY ID FROM city.list.json FROM http://bulk.openweathermap.org/sample/ TODO */
       /* eg: this id is for Las Vegas, NV */
       cityId: '5506956',
-
     };
   }
 
@@ -47,7 +46,7 @@ class Forecast extends React.Component {
 
     } else if (dayNum === 5) {
       // return 'Friday';
-      return 'FRI';
+      return 'FRI ';
 
     } else {
       // return 'Saturday';
@@ -65,6 +64,10 @@ class Forecast extends React.Component {
       this.setState({ready: false});
       // let dates = [];
       resp.data.list.map(itm => {
+        if (this.state.dates.length && this.state.dates.length >= 4 && this.state.dates[3].night) {
+          return;
+        }
+
         const dt = new Date(itm.dt_txt);
         const hrs = dt.getHours();
         if (hrs === 9 ) {
@@ -102,20 +105,27 @@ class Forecast extends React.Component {
           console.log('added day icon', changeDate, this.state.dates)
         }
       })
+    })
+    .then(() => {
+      console.log('DATES', this.state.dates);
+      this.setState({ready: true})
+    })
+    .catch( err => {
+      console.log('errorr ', err);
+    })
 
       // if (this.state.dates.length > 4) {
       //   this.setState({dates: this.state.dates(0,3)});
       // }
 
-      console.log('DATES', this.state.dates);
-      this.setState({ready: true})
-    })
+
+
   }
 
   render () {
     return (
       <div id="forecastContainer" className='widget'>
-        <h2 className='uberOptions widgetTitle'> Forecast</h2>
+        <h2 className='widgetTitle'> Forecast</h2>
           {/* on {this.state.days[0].}˚F */}
         <div id='days' style={{color: 'white'}}>
           {this.state.ready && this.state.dates.map(day => {
@@ -124,8 +134,8 @@ class Forecast extends React.Component {
             const dt = this.getDay(day.date);
 
             const winds = (day.morn.wind > day.night.wind) ?
-              day.night.wind + '-' + day.morn.wind + 'mph' :
-              day.morn.wind + '-' + day.night.wind + 'mph' ;
+              day.night.wind + '-' + day.morn.wind + ' mph' :
+              day.morn.wind + '-' + day.night.wind + ' mph' ;
 
             const humid = (day.morn.humidity > day.night.humidity) ?
               day.night.humidity + '% to ' + day.morn.humidity + '%' :
@@ -136,25 +146,23 @@ class Forecast extends React.Component {
 
             const dayScript1 = day.morn.temp+'˚ F | '+day.night.temp+'˚ F';
             const dayScript2 = descrip;
-            const dayScript3 = /*'h: '+humid+*/' w: '+winds;
+            const dayScript3 = 'h: '+humid+' w: '+winds;
 
             return (
-              <div key={dt} className='forecast_day'>{dt}
-                <div className='forecast_part'>
-                  <p>{dayScript1}</p>
-                  {/* <p>{dayScript2}</p> */}
-                  <img src={weatherIcon(day.icon)} height="40" width="40"></img>
-                  <p>{dayScript3}</p>
+              <div key={dt} className='forecast_day'>
+                <div className='forecast_part'>{dt}</div>
+                <br/>
+                <div className='forecast_part'> {day.morn.temp} ˚ F | {day.night.temp} ˚ F</div>
+                <br/>
 
-                </div>
+                <img className='forecast_part' src={weatherIcon(day.icon)} height="50" width="50"></img>
+                <div className='forecast_part flex_center'>{dayScript2}</div>
+                <div className='forecast_part'>{dayScript3}</div>
               </div>
             )
           })}
         </div>
-        {/* <div className='min-max'> */}
-          .
-          {/* {this.state.min}˚F  |  {this.state.max}˚F */}
-        {/* </div> */}
+
       </div>
     )
   }
