@@ -490,4 +490,32 @@ ol {
   font-weight: 900;
   font-size: 27;
   color: white;
+
+  text-align: right;
+}
+.forecast_day {
+  text-align: center;
+  display: inline-block;
+  width: 8vw;
+  overflow: hidden;
+
+  border: 0.2px dashed lightgrey;
+  border-radius: 1em;
+
+  margin: 1vh 0.5vw;
+  padding: 1vh 0;
+}
+.forecast_part {
+  padding: 0vh 0.2vw;
+  display: inline-block;
+  margin: 0.6vh 0;
+  /*width: 18vw;*/
+}
+#days {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+#forecastContainer {
+  padding: 0;
 }

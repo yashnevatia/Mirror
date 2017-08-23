@@ -11,6 +11,7 @@ import News from './News';
 import Uber from './Uber';
 import ToDo from './Reminder';
 import Response from './responseDiv';
+import Forecast from './Forecast';
 
 
 class WidgetContainer extends React.Component {
@@ -102,7 +103,9 @@ class WidgetContainer extends React.Component {
     	case 'uber':
     		return <Uber key={widget} socket={this.state.socket} />;
     	case 'reminders':
-    		return <ToDo key={widget} socket={this.state.socket}  />
+    		return <ToDo key={widget} socket={this.state.socket}  />;
+      case 'forecast':
+    		return <Forecast key={widget} socket={this.state.socket}  />
     	default:
     		return <div key={'empty'} ></div>;
     }
@@ -118,7 +121,8 @@ class WidgetContainer extends React.Component {
         <div className={this.props.isActive ? 'isActiveDiv' : 'isStandbyDiv'}>
            <ReactCSSTransitionGroup transitionName = "example"
              transitionAppear = {true} transitionAppearTimeout = {2000}
-             transitionEnter = {false} transitionLeave = {false}>
+             transitionEnter = {false} transitionLeave = {false}
+             style={{width: '90%'}}>
              <Time timeState={this.props.isActive}/>
              <Weather weatherState={this.props.isActive}/>
              {this.props.isActive && this.state.isListening &&

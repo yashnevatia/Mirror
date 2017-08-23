@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import weatherIcon from '../helperFunctions/weatherIcon.js';
-import { getCurrentWeather } from '../helperFunctions/getWeather.js';
+import { getCurrentWeather, getForecastWeather } from '../helperFunctions/getWeather.js';
 
 /* TODO GET API KEY FROM http://openweathermap.org/appid & STORE IN personalConfig.js TODO */
 import config from '../.././backend/config/personalConfig.js';
@@ -12,7 +12,6 @@ class Weather extends React.Component {
     super();
     this.state = {
       interval: () => '',
-      forecast: {},
 
       /* TODO FIND CITY ID FROM backend/config/city.list.json TODO */
       /* eg: this id is for Las Vegas, NV */
@@ -35,6 +34,7 @@ class Weather extends React.Component {
         self.getWeather(this.state.cityId, WEATHER_API)
       }, 60000 * 2)
     });
+
   }
 
   componentWillUnmount() {
