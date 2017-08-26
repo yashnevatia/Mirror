@@ -530,10 +530,11 @@ ol {
   /*padding: 0;*/
   width: 30vw;
   height: 350px;
-
   /*margin-left: 5vw;*/
 }
-
+#alarmContainer {
+  
+}
 .widget {
   border: 0.5px dotted white;
   border-radius: 0.5em;
