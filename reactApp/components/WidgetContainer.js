@@ -9,33 +9,41 @@ import Weather from './Weather';
 import Radio from './Radio';
 import News from './News';
 import Uber from './Uber';
-// import ToDo from './ToDo';
-import Spotify from './Spotify'
+import ToDo from './Reminder';
 import Response from './responseDiv';
+
 
 class WidgetContainer extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-        hasResponse: true,
-        currentResponse: '',
-        socket: props.socket,
+      hasResponse: true,
+      currentResponse: this.props.currentResponse || '',
+      socket: props.socket,
+
+      // BUG next line is for testing ON MAC ONLY BUG
+      isListening: false
     };
   }
 
   componentDidMount() {
     // START SOCKET LISTENERS
     const self = this;
+
     this.state.socket.on('connect', () => {
       console.log("connected container");
       self.state.socket.emit('join', 'W_CONTAINER');
-
     });
 
     this.state.socket.on('invalid_request', () => {
       console.log('WC in invalid request')
       this.setState({currentResponse: "I'm sorry, I did not understand that"});
+    });
+
+    this.state.socket.on('custom_msg', ({ resp }) => {
+      console.log('WC in custom message')
+      this.setState({ currentResponse: resp });
     });
 
     this.state.socket.on('stt_continuing', respObj => {
@@ -50,41 +58,40 @@ class WidgetContainer extends React.Component {
       const self = this;
 
       this.setState({currentResponse: respObj.response});
-      const timeout = (respObj.category === "news article") ? 6000 : 1000;
+      const timeout = (respObj.category === "news article") ? 6000 : 3000;
       setTimeout(() => {
         console.log('WC in timeout of stt finished');
         self.setState({currentResponse: ''})
       }, timeout)
     });
+    // shows listening style
+    this.state.socket.on('listening', isListening => {
+      console.log('chaning is listening to be', isListening);
+      self.setState({isListening});
+    })
     // END SOCKET LISTENERS
   }
 
-
-  // FUNCTION FOR WIDGET START STT LISTNENING
-  startListening (widgetName) {
-    this.state.socket.emit('stt', widgetName.toUpperCase());
-  }
-
-
-	getWidget(widget) {
+  getWidget(widget) {
+  	console.log('**********************************************************************************');
+    console.log(widget)
 
     switch (widget){
     	case 'radio':
-    		return <Radio socket={this.state.socket} listen={this.startListening} />;
+    		return <Radio key={widget} socket={this.state.socket}  />;
     	case 'news':
-    		return <News socket={this.state.socket} listen={this.startListening} />;
+    		return <News key={widget} socket={this.state.socket}  />;
     	case 'uber':
-    		return <Uber socket={this.state.socket} listen={this.startListening} />;
+    		return <Uber key={widget} socket={this.state.socket} />;
     	case 'reminders':
-    		return <ToDo socket={this.state.socket} listen={this.startListening} />
+    		return <ToDo key={widget} socket={this.state.socket}  />
     	default:
-    		return <div></div>;
+    		return <div key={'empty'} ></div>;
     }
-
-	}
+  }
 
   render () {
-	  console.log("ACTIVE", this.props.isActive, this.props.widgets);
+    console.log('isActive', this.props.isActive, 'isListening', this.state.isListening)
     return(
       <div className="outerDiv" id="q">
 
@@ -94,19 +101,27 @@ class WidgetContainer extends React.Component {
              transitionEnter = {false} transitionLeave = {false}>
              <Time timeState={this.props.isActive}/>
              <Weather weatherState={this.props.isActive}/>
+             {this.props.isActive && this.state.isListening &&
+               <div id="ellipsis">
+                 <h5 id="one"> •</h5>
+               </div>
+             }
            </ReactCSSTransitionGroup>
+
         </div>
         <div className={this.props.isActive ? 'responseDiv' : 'widgetsStandby'}>
-            { this.state.hasResponse && <div className="rDiv"><Response display={this.state.currentResponse} /></div> }
+          { this.state.hasResponse && <Response display={this.state.currentResponse || this.props.currentResponse} /> }
         </div>
 
-        <div style={{ animation: 'bounce' }} className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
+        <div className={this.props.isActive ? 'widgetsActive' : 'widgetsStandby'}>
           {this.props.widgets.map((widget) => {
-  				return this.getWidget(widget);
-  		})}
-
+            return this.getWidget(widget);
+          })}
+          {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
+          <button onClick={() => this.props.listen('UBER')}> listen again </button>
+          {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
         </div>
-	    </div>
+      </div>
     );
   }
 }

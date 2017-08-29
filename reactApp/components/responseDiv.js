@@ -13,9 +13,8 @@ class Response extends React.Component {
   }
 
   render() {
-    console.log('rendered with ', this.props.display);
     return (
-    <div className="response">
+    <div className="response typewriter">
       <p>> Iris: </p>
       <p> {this.props.display} </p>
      </div>

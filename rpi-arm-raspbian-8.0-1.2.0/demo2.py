@@ -1,7 +1,7 @@
 import snowboydecoder
 import sys
 import signal
-print("corey")
+
 
 # Demo code for listening two hotwords at the same time
 
@@ -38,22 +38,35 @@ def uber():
 def cancel():
     print("cancel")
 
-def spotify():
-    print("spotify")
+def outfits():
+    print("outfits")
 
-modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/asif/"
+def picture():
+    print("picture")
+
+def reminders():
+    print("reminders")
+
+def uber():
+    print("uber")
+
+
+modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda2/"
 
 models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
-          modelpath + "news.pmdl", modelpath + "radio.pmdl",
-          modelpath + "reminders.pmdl", modelpath + "uber.pmdl", modelpath + "cancel.pmdl", modelpath + "spotify.pmdl"]
+          modelpath + "cancel.pmdl",
+          modelpath + "news.pmdl", modelpath + "reminders.pmdl",
+          modelpath + "uber.pmdl", modelpath + "outfits.pmdl",
+          modelpath + "picture.pmdl"]
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
-callbacks = [wakeup, sleep, news, radio, todo, uber, cancel, spotify]
-print('Listening... Press Ctrl+C to exit')
+
+callbacks = [wakeup, sleep, cancel, news, reminders, uber, outfits, picture]
+
 
 # main loop
 # make sure you have the same numbers of callbacks and models

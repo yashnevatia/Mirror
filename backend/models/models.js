@@ -7,11 +7,19 @@ const reminderSchema = mongoose.Schema({
     type: String,
     required: true
   }
-  //documents is array of objects with (docId, docName, isShared (whether it is a shared doc or not))
 });
 
+const imageModelSchema = mongoose.Schema({
+  link: String,
+  description: String,
+  min: Number,
+  max: Number
+})
+
 var Reminder = mongoose.model('Reminder', reminderSchema);
+var ImageModel = mongoose.model('ImageModel', imageModelSchema);
 
 module.exports = {
   Reminder: Reminder,
+  ImageModel: ImageModel
 };

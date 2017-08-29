@@ -9,21 +9,25 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      isActive: false,
-      widgets: []
-    }
-    this.isMirrorActive = this.isMirrorActive.bind(this);
-  }
+      // BUG : FOR TESTING ON MAC, UNCOMMENT THESE LINES : BUG
+      isActive: true,
+      widgets: ['uber', 'reminders', 'news'],
 
-  isMirrorActive() {
-     // function passed down to voice component to determine if
-     // mirror is standby or active
-    return;
+      // BUG : FOR TESTING ON MAC, COMMENT OUT THE BELOW TWO LINES : BUG
+      // isActive: false,
+	    // widgets: [],
+
+      initialResponses: {
+        radio: 'Would you like to play, pause or search for songs?',
+        news: 'Which news source would you like to view?',
+        uber: "Prompt 'call me an Uber' to order a ride!",
+        reminders: '',
+      }
+    }
   }
 
   componentDidMount(){
-
-    var self =this;
+    const self =this;
 
     console.log("this app was mounted.");
 
@@ -56,17 +60,39 @@ class Container extends React.Component {
     })
 
     socket.on('widget', function(widgetName){
-      console.log("widget", widgetName);
-      var temp = self.state.widgets.slice();
-      if(temp.length === 3)temp.pop();
-      if(temp.indexOf(widgetName)=== -1){
-        temp.unshift(widgetName);
-        self.setState({
-          widgets: temp
-        })
-      }
-    });
+      console.log("widget", widgetName, 'called');
+      // if widget is not already active, bring it to top of array
+      if (widgetName !== self.state.widgets[0]) {
+        console.log('bringing widget to top place')
+        var temp = self.state.widgets.slice();
+        if(temp.length === 3)temp.pop();
+        if(temp.indexOf(widgetName) === -1){
+          temp.unshift(widgetName);
+          console.log('new widget order', temp);
+          self.setState({
+            widgets: temp
+          })
+        }
+        // show initial prompt for widget
+        self.setState({currentResponse: self.state.initialResponses[widgetName.toLowerCase()]})
 
+      // else if widget active, set current response to be empty
+      } else {
+        console.log('not bringing widget to top', widgetName, self.state.widgets);
+        self.setState({currentResponse: null})
+      }
+
+      // START GOOGLE SPEECH AFTER HOTWORD CALLED:
+      console.log('widget should startlistening');
+      socket.emit('stt', widgetName.toUpperCase());
+      //self.startListening(widgetName.toUpperCase())
+    });
+  }
+
+  // FUNCTION FOR WIDGET START STT LISTNENING
+  startListening (widgetName) {
+    console.log('client emitting start listening');
+    socket.emit('stt', widgetName.toUpperCase());
   }
 
   render () {
@@ -76,12 +102,12 @@ class Container extends React.Component {
         widgets={this.state.widgets}
         className="card2"
         socket={socket}
+        listen={this.startListening}
+        currentResponse={this.state.currentResponse}
       />
     );
   }
-
 }
-
 
 ReactDOM.render(
   <Container />,
