@@ -12,6 +12,7 @@ import Uber from './Uber';
 import ToDo from './Reminder';
 import Response from './responseDiv';
 import Forecast from './Forecast';
+import Alarm from './Alarm';
 
 
 class WidgetContainer extends React.Component {
@@ -61,6 +62,26 @@ class WidgetContainer extends React.Component {
     this.state.socket.on('custom_msg', ({ resp }) => {
       console.log('WC in custom message')
       this.setState({ currentResponse: resp });
+
+      // clear response after 5 sec
+      setTimeout(() => {
+        this.setState({ currentResponse: '' });
+      }, 1000*6)
+    });
+
+    // have Iris tell user alarm is ringing
+    this.state.socket.on('alarm_ring', ({ task, alarm }) => {
+      console.log('WC in alarm ring')
+      this.setState({ currentResponse: 'ALARM ALARM ALARM' });
+      // remind user of task
+      setTimeout(() => {
+        const response = task ? 'Time to '+task : 'Time to leave!';
+        this.setState({ currentResponse: response });
+      }, 2000);
+      // clear response after 5 sec
+      setTimeout(() => {
+        this.setState({ currentResponse: '' });
+      }, 1000*5)
     });
 
     // update Iris response with new info from continued STT cycle
@@ -86,7 +107,7 @@ class WidgetContainer extends React.Component {
 
     // show listening animation when GSpeech listening to user
     this.state.socket.on('listening', isListening => {
-      console.log('chaning is listening to be', isListening);
+      console.log('changing isListening to be', isListening);
       self.setState({isListening});
     })
     // END SOCKET LISTENERS
@@ -106,6 +127,8 @@ class WidgetContainer extends React.Component {
     		return <ToDo key={widget} socket={this.state.socket}  />;
       case 'forecast':
     		return <Forecast key={widget} socket={this.state.socket}  />
+      case 'alarm':
+    		return <Alarm key={widget} socket={this.state.socket}  />
     	default:
     		return <div key={'empty'} ></div>;
     }

@@ -533,16 +533,21 @@ ol {
   /*margin-left: 5vw;*/
 }
 #alarmContainer {
-  
+  color: white;
 }
 .widget {
   border: 0.5px dotted white;
   border-radius: 0.5em;
   padding: 1vw;
+
+  color: white;
 }
 .flex_center {
   /*display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;*/
+}
+.white {
+  color: white;
 }

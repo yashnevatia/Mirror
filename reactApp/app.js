@@ -10,7 +10,7 @@ class Container extends React.Component {
     super();
     this.state = {
       isActive: true,
-      widgets: ['forecast', 'news'/*, 'uber', 'reminders'*/],
+      widgets: [/*'forecast',*/ 'alarm', /*'news'/*, 'uber', 'reminders'*/],
 
       // isActive: false,
 	    // widgets: [],

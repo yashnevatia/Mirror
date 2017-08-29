@@ -163,10 +163,16 @@ module.exports = function (io) {
       io.to('W_CONTAINER').emit('invalid_request');
     });
 
-    socket.on('custom_msg', (msg) => {
+    socket.on('custom_msg', msg => {
       console.log('SERVER in custom message');
       io.to('W_CONTAINER').emit('custom_msg', msg);
-    })
+    });
+
+    socket.on('alarm_ring', alarmObj => {
+      console.log('SERVER in alarm ring', alarmObj);
+      io.to('W_CONTAINER').emit('alarm_ring', alarmObj);
+    });
+
   });
 
 }

@@ -12,7 +12,7 @@ class Time extends React.Component {
     };
   }
   componentDidMount() {
-  //update time
+    // update time
     this.setState({ interval: setInterval(() => {
       const min = (new Date).getMinutes();
       const minutes = (min < 10) ? '0'+min : min;
