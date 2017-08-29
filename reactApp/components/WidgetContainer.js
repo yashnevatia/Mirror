@@ -21,6 +21,8 @@ class WidgetContainer extends React.Component {
       hasResponse: true,
       currentResponse: this.props.currentResponse || '',
       socket: props.socket,
+
+      // BUG next line is for testing ON MAC ONLY BUG
       isListening: false
     };
   }
