@@ -52,7 +52,7 @@ Snowboy does not use the internet and is super easy to use.
 To add a new feature (widget), simply create a pull request and we will look into it. 
 
 ## Authors 
-[Amanda Hansen](https://github.com/ajoann), [Yashavrdhan Nevatia](https://github.com/yashnevatia), [Sophia Grace](https://github.com/sophiagrace), [Asif Bhatti](https://github.com/asif521), [Jens Honack](https://github.com/jenshnck)
+[Amanda Hansen](https://github.com/ajoann), [Yashvardhan Nevatia](https://github.com/yashnevatia), [Sophia Grace](https://github.com/sophiagrace), [Asif Bhatti](https://github.com/asif521), [Jens Honack](https://github.com/jenshnck)
 
 ## License 
 
