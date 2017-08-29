@@ -29,8 +29,8 @@ npm install
 ```
 - [Google Speech setup](#google-speech-setup)
 - [snowboy.kitt.ai setup](#snowboy-setup) 
-- Twillio setup
-- Uber Setup 
+- [Twillio setup](#twillio-setup)
+- [Uber Setup](#uber-setup)
  
 ## Configuration
 
@@ -44,12 +44,15 @@ Snowboy does not use the internet and is super easy to use.
 * Setup your pi according to their documentation -> http://docs.kitt.ai/snowboy/
 * Create modals online and place them in the correct folder. 
 
+### Twillio Setup 
+### Uber Setup
+
+
 ## Contribution
 To add a new feature (widget), simply create a pull request and we will look into it. 
 
 ## Authors 
-[Amanda Hansen](https://github.com/ajoann), [Yashavrdhan Nevatia](https://github.com/yashnevatia), [Sophia Grace](https://github.com/sophiagrace), 
-[Asif Bhatti](https://github.com/asif521), [Jens Honack](https://github.com/jenshnck)
+[Amanda Hansen](https://github.com/ajoann), [Yashavrdhan Nevatia](https://github.com/yashnevatia), [Sophia Grace](https://github.com/sophiagrace), [Asif Bhatti](https://github.com/asif521), [Jens Honack](https://github.com/jenshnck)
 
 ## License 
 
