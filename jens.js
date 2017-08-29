@@ -156,8 +156,8 @@ function storeToken(token) {
          console.log('RESPONSE: ', stuff.embedLink);
        }
      });
-      
+
      }
    });
-  
+
  }
