@@ -118,7 +118,7 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
           {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
-          <button onClick={() => this.props.listen('UBER')}> listen again </button>
+          <button onClick={() => this.props.listen('NEWS')}> listen again </button>
           {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
         </div>
       </div>
