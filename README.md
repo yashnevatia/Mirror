@@ -29,6 +29,9 @@ npm install
 ```
 - [Google Speech setup](#google-speech-setup)
 - [snowboy.kitt.ai setup](#snowboy-setup) 
+
+## Widgets
+Time, Weather, News dont require any setup. 
 - [Twillio setup](#twillio-setup)
 - [Uber Setup](#uber-setup)
  
