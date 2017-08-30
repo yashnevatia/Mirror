@@ -15,7 +15,9 @@ class Weather extends React.Component {
 
       /* TODO FIND CITY ID FROM city.list.json FROM http://bulk.openweathermap.org/sample/ TODO */
       /* eg: this id is for Las Vegas, NV */
-      cityId: '5506956'
+      // cityId: '5506956'
+      /* eg: this id is for New Haven, CT */
+      cityId: '4839373'
 
     };
     // bind function to get weather to Weather component

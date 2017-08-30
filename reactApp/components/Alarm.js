@@ -16,10 +16,13 @@ class Alarm extends React.Component {
 
       task: 'go outside!',
       countdown: '',
-      alarm: new Date((new Date()).getTime() + 1000*60*0.15)
+      alarm: new Date((new Date()).getTime() + 1000*60*0.15),
+
+      showAlarm: false
     };
 
     this.updateTimes = this.updateTimes.bind(this);
+    this.flashAlarm = this.flashAlarm.bind(this);
 
     console.log('alarm rendered');
   }
@@ -107,14 +110,30 @@ class Alarm extends React.Component {
       console.log('ALARM ALARM ALARM GOES OFF');
       const alarmObj = {
         task: self.state.task,
-        alarm: self.state.alarm
+        alarm: self.state.alarm,
       }
 
       self.state.socket.emit('alarm_ring', alarmObj)
 
+      // // make screen flash white for alarm
+      // self.setState({showAlarm: true});
+
       // clear state with alarm data
       clearInterval(self.state.interval);
       self.setState({alarm: {}, task: '', countdown: ''})
+
+      // // clear white alarm flash after half a second
+      // setTimeout(() => {
+      //   self.setState({showAlarm: false});
+      // }, 500)
+
+      self.flashAlarm()
+      .then (() => {
+        console.log('AFTER flash alarm')
+      })
+      .catch ( err => {
+        console.log('error flashing alarm', err);
+      })
 
     } else {
       console.log('ALARM still active');
@@ -125,16 +144,32 @@ class Alarm extends React.Component {
 
   }
 
+  flashAlarm () {
+    const self = this;
+    return new Promise((resolve, reject) => {
+      // make screen flash white for alarm
+      self.setState({showAlarm: true});
+
+      // clear white alarm flash after half a second
+      setTimeout(() => {
+        self.setState({showAlarm: false});
+      }, 500);
+
+      // repeat process
+
+    });
+  }
+
   getTimeString (time, showSecs) {
     // check that time is valid Date input
     if (!time) {
-      console.log('invalid time');
+      console.log('invalid time {A}');
       return null;
     }
     try {
       time.getDate()
     } catch (err) {
-      console.log('invalid time');
+      console.log('invalid time {B}');
       return null;
     }
 
@@ -150,6 +185,8 @@ class Alarm extends React.Component {
 
   render () {
 
+    console.log('****** white alarm flash', this.state.showAlarm);
+
     return (
       <div id="alarmContainer" className="right widget">
         <h2 className='right uberOptions white'> Alarm </h2>
@@ -164,6 +201,8 @@ class Alarm extends React.Component {
           countdown: {this.state.countdown}
           {/* time until alarm goes off: {this.getTimeString(this.state.countdown, false)} */}
         </div>
+
+        {this.state.showAlarm && <div id="alarm_flash"> </div>}
 
       </div>
     )
