@@ -37,6 +37,7 @@
     "node-record-lpcm16": "^0.3.0",
     "node-uber": "^1.0.0",
     "nodemon": "^1.11.0",
+    "particle-api-js": "^6.6.2",
     "radium": "^0.19.4",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",

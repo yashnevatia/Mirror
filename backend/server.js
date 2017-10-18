@@ -16,7 +16,6 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
-
 // START SOCKET SERVER STUFF
 const server            = require('http').Server(app);
 const io                = require('socket.io')(server);
@@ -24,9 +23,13 @@ const socketConfig = require ('./sockets.js');
 socketConfig(io);
 // END SOCKET SERVER STUFF
 
-
 // WIDGET Routes
 app.use('/', routes);
+
+// amanda edits 9/27
+const config = require('./config');
+console.log('~~ particle username ~~ ', config.USERNAME);
+console.log('~~ particle password ~~ ', config.PASSWORD);
 
 
 server.listen(3000, function() {

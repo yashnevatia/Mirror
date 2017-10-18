@@ -12,6 +12,8 @@ import Uber from './Uber';
 import ToDo from './Reminder';
 import Response from './responseDiv';
 
+import Lights from './Lights';
+
 
 class WidgetContainer extends React.Component {
 
@@ -84,7 +86,9 @@ class WidgetContainer extends React.Component {
     	case 'uber':
     		return <Uber key={widget} socket={this.state.socket} />;
     	case 'reminders':
-    		return <ToDo key={widget} socket={this.state.socket}  />
+    		return <ToDo key={widget} socket={this.state.socket}  />;
+      case 'lights':
+        return <Lights key={widget} socket={this.state.socket} />;
     	default:
     		return <div key={'empty'} ></div>;
     }

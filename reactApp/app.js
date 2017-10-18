@@ -11,7 +11,7 @@ class Container extends React.Component {
     this.state = {
       // BUG : FOR TESTING ON MAC, UNCOMMENT THESE LINES : BUG
       isActive: true,
-      widgets: ['uber', 'reminders', 'news'],
+      widgets: ['lights', 'reminders', 'news'],
 
       // BUG : FOR TESTING ON MAC, COMMENT OUT THE BELOW TWO LINES : BUG
       // isActive: false,

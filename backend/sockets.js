@@ -139,7 +139,14 @@ module.exports = function (io) {
         socket.room = widgetName;
         socket.join(socket.room, ()=>{
           console.log('WIDGET joined ', socket.room);
-        })
+        });
+
+        if (socket.room == 'LIGHTS') {
+          io.to('LIGHTS').emit('config', {
+            username: process.env.PARTICLE_USERNAME,
+            password: process.env.PARTICLE_PASSWORD
+          });
+        }
       }
     });
 
