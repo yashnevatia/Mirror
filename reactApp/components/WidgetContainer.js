@@ -80,15 +80,15 @@ class WidgetContainer extends React.Component {
 
     switch (widget){
     	case 'radio':
-    		return <Radio key={widget} socket={this.state.socket}  />;
+    		return <Radio key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse}  />;
     	case 'news':
-    		return <News key={widget} socket={this.state.socket}  />;
+    		return <News key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
     	case 'uber':
-    		return <Uber key={widget} socket={this.state.socket} />;
+    		return <Uber key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
     	case 'reminders':
-    		return <ToDo key={widget} socket={this.state.socket}  />;
+    		return <ToDo key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
       case 'lights':
-        return <Lights key={widget} socket={this.state.socket} />;
+        return <Lights key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
     	default:
     		return <div key={'empty'} ></div>;
     }
@@ -122,7 +122,7 @@ class WidgetContainer extends React.Component {
             return this.getWidget(widget);
           })}
           {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
-          <button onClick={() => this.props.listen('NEWS')}> listen again </button>
+          {/* <button onClick={() => this.props.listen('NEWS')}> listen again </button> */}
           {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
         </div>
       </div>

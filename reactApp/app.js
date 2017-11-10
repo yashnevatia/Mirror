@@ -95,6 +95,18 @@ class Container extends React.Component {
     socket.emit('stt', widgetName.toUpperCase());
   }
 
+  // FUNCTION TO CHANGE CHANGE WIDGET MESSAGE
+  changeWidgetReponse (widgetName, message) {
+    if (this.state.initialResponses[widgetName]) {
+      console.log('YES, THERE IS A WIDGET WITH THIS NAME IN RESPONSES');
+      let newObj;
+      newObj[widgetName] = message;
+      Object.assign(initialResponses, newObj);
+      this.setState(initialResponses);
+      console.log('state changed so that ', initialResponses);
+    }
+  }
+
   render () {
     console.log('sending socket', socket);
     return (
@@ -104,6 +116,7 @@ class Container extends React.Component {
         socket={socket}
         listen={this.startListening}
         currentResponse={this.state.currentResponse}
+        changeWidgetReponse={this.state.changeWidgetReponse}
       />
     );
   }
