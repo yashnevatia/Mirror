@@ -25,6 +25,8 @@ function streamingMicRecognize (/*encoding, sampleRateHertz, languageCode*/) {
 
     // The sample rate of the audio file in hertz, e.g. 16000
     const sampleRateHertz = 16000;
+    // const sampleRateHertz = 44100;
+
 
     // The BCP-47 language code to use, e.g. 'en-US'
     const languageCode = 'en-US';
@@ -62,19 +64,33 @@ function streamingMicRecognize (/*encoding, sampleRateHertz, languageCode*/) {
         reject('error - no return script');
       });
 
-    // Start recording and send the microphone input to the Speech API
-    console.log('start listening');
+    // // Start recording and send the microphone input to the Speech API
+    // console.log('start listening');
+    // record
+    //   .start({
+    //     sampleRateHertz: sampleRateHertz,
+    //     threshold: 0,
+    //     thresholdEnd: 0.01,
+    //     verbose: false,
+    //     recordProgram: 'rec', // Try also "arecord" or "sox"
+    //     silence: '0.3'
+    //   })
+    //   .on('error', console.error)
+    //   .pipe(recognizeStream);
+
     record
-      .start({
-        sampleRateHertz: sampleRateHertz,
-        threshold: 0,
-        thresholdEnd: 0.01,
-        verbose: false,
-        recordProgram: 'rec', // Try also "arecord" or "sox"
-        silence: '0.5'
-      })
-      .on('error', console.error)
-      .pipe(recognizeStream);
+    .start({
+      sampleRateHertz: sampleRateHertz,
+      threshold: 0,
+      thresholdEnd: 0.01,
+
+      // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
+      verbose: false,
+      recordProgram: 'rec', // Try also "arecord" or "sox"
+      silence: '0.3'
+    })
+    .on('error', console.error)
+    .pipe(recognizeStream);
 
     console.log('Listening, press Ctrl+C to stop.');
   }); // end promise

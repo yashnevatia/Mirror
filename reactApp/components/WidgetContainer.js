@@ -21,6 +21,8 @@ class WidgetContainer extends React.Component {
       hasResponse: true,
       currentResponse: this.props.currentResponse || '',
       socket: props.socket,
+
+      // BUG next line is for testing ON MAC ONLY BUG
       isListening: false
     };
   }
@@ -115,9 +117,9 @@ class WidgetContainer extends React.Component {
           {this.props.widgets.map((widget) => {
             return this.getWidget(widget);
           })}
-          {/* BUG button for testing only BUG */}
-          {/* <button onClick={() => this.props.listen('REMINDERS')}> listen again </button> */}
-          {/* BUG button for testing only BUG */}
+          {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
+          <button onClick={() => this.props.listen('NEWS')}> listen again </button>
+          {/* BUG button for testing ON MAC only -- INSERT WIDGET NAME TO LISTEN TO BUG */}
         </div>
       </div>
     );

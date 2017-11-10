@@ -8,10 +8,12 @@ var refresh = require('spotify-refresh');
 var {imageProcessor} = require('./imageProcessor');
 var {suggestion} = require('./suggestion');
 /* ***** HOTWORD -- LOCAL CODE ***** */
+
+// BUG USE FILE PATH FOR COMPUTER ON WHICH YOU'RE RUNNING CODE BUG
 // the following will change for different computers.
-const myFilePath = '/home/pi/Public/'; // PI
+// const myFilePath = '/home/pi/Public/'; // PI
 // const myFilePath = '/Users/JFH/horizons/'; // JENS
-// const myFilePath = '/Users/amandahansen/' // AMANDA
+const myFilePath = '/Users/amandahansen/' // AMANDA
 
 const fp1 = myFilePath +'Mirror/rpi-arm-raspbian-8.0-1.2.0/demo2.py';
 const fp2 = myFilePath + 'Mirror/rpi-arm-raspbian-8.0-1.2.0';

@@ -18,6 +18,10 @@ function localGetCommand(widgetName) {
     })
     .catch( err => {
       console.log('ERROR in processing human: ', err);
+      return { notFinished: false,
+        category: '',
+        params: {},
+        response: 'ERROR from process human' }
     });
 }
 
