@@ -14,8 +14,8 @@ class Container extends React.Component {
       // widgets: ['lights', 'reminders', 'news'],
 
       // BUG : FOR TESTING ON MAC, COMMENT OUT THE BELOW TWO LINES : BUG
-      // isActive: false,
-	    // widgets: [],
+      isActive: false,
+	    widgets: [],
 
       initialResponses: {
         radio: 'Would you like to play, pause or search for songs?',
