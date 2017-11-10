@@ -18,10 +18,18 @@ export default class Lights extends React.Component {
       particleToken: '',
       automatedLights: false,
       automatedLightsCheck: 0,
-      intensity: '0'
+      intensity: 10000,
+
+      maxIntensity: Number.MIN_SAFE_INTEGER,
+      minIntensity: Number.MAX_SAFE_INTEGER
     };
 
-    console.log('lights rendered,', USERNAME, PASSWORD);
+    console.log('lights rendered,', USERNAME);
+    this.getMinMaxIntensity = this.getMinMaxIntensity.bind(this);
+    this.getAdjustedLightVal = this.getAdjustedLightVal.bind(this);
+    this.intensityAlgorithm = this.intensityAlgorithm.bind(this);
+    this.loopLights = this.loopLights.bind(this);
+    this.dimLights = this.dimLights.bind(this);
   }
 
   componentDidMount () {
@@ -45,51 +53,83 @@ export default class Lights extends React.Component {
 
       // particle auth
       particle.login({username: USERNAME, password: PASSWORD})
-        .then(data => {
-          console.log('API call completed on promise resolve: ', data.body.access_token);
+      .then(data => {
+        console.log('API call completed on promise resolve: ', data.body.access_token);
 
-          var token = data.body.access_token; // from result of particle.login
-          self.setState({particleToken: token});
+        var token = data.body.access_token; // from result of particle.login
+        self.setState({particleToken: token});
 
-          return particle.listDevices({auth: token})
+        return particle.listDevices({auth: token})
+      })
+      .then(devices => {
+        console.log('Devices: ', devices);
+
+        devices.body.map((dev, i) => {
+          console.log('dev ', i, ': ', dev);
+
+        if (dev.name.toLowerCase() === 'lil_pj' /*|| dev.name.toLowerCase() === 'happy'*/) {
+          self.setState({particleID: dev.id});
+          console.log('found pj!', dev);
+
+          return particle.claimDevice({ deviceId: self.state.particleID, auth: self.state.particleToken });
+        }
+        });
+      })
+
+      .then(resp => {
+        console.log('YO ',resp);
+        if (resp == 'here') {
+          console.log('did not do because lil pj not found', resp);
+          return;
+        }
+        console.log('device claim data:', resp);
+        console.log('LIL PJ HAS BEEN CLAIMED');
+
+        //   // return particle.callFunction({ deviceId: self.state.particleID, name: 'led', argument: 'off', auth: self.state.particleToken });
+        // })
+        // .then(data => {
+        //   console.log('final result:', data);
+
+        self.turnOffLights();
+
+        // .then(result => {
+        //   console.log('called func turn on lights, ', result);
+        // })
+
+
         })
-        .then(devices => {
-          console.log('Devices: ', devices);
 
-          devices.body.map((dev, i) => {
-            console.log('dev ', i, ': ', dev);
+        // BUG - TESTING PURPOSES ONLY BUG
+        .then( () => {
+          console.log('after turn off lights -- going to automate');
+          self.automateLights(this.getMinMaxIntensity);
 
-            if (dev.name.toLowerCase() === 'lil_pj' /*|| dev.name.toLowerCase() === 'happy'*/) {
-              self.setState({particleID: dev.id});
-              console.log('found pj!', dev);
-
-              particle.claimDevice({ deviceId: self.state.particleID, auth: self.state.particleToken })
-              .then(resp => {
-                console.log('YO ',resp);
-                if (resp == 'here') {
-                  console.log('did not do because lil pj not found', resp);
-                  return;
-                }
-                console.log('device claim data:', resp);
-                console.log('LIL PJ HAS BEEN CLAIMED');
-
-              //   // return particle.callFunction({ deviceId: self.state.particleID, name: 'led', argument: 'off', auth: self.state.particleToken });
-              // })
-              // .then(data => {
-              //   console.log('final result:', data);
-
-              self.turnOffLights()
-              // .then(result => {
-              //   console.log('called func turn on lights, ', result);
-              // })
-
-
-              console.log('after turn on lights');
-              })
-            }
+        })
+        .then( () => {
+          return new Promise((res, rej) => {
+            setTimeout(() => {
+              clearInterval(self.state.automatedLightsCheck);
+              console.log('turned off automation');
+              res(1);
+            }, 30 * 1000);
           });
+
         })
 
+        .then( (val) => {
+          console.log('ROUND 2 after turn off lights -- going to automate');
+          self.automateLights();
+
+        })
+        .then( () => {
+          setTimeout(() => {
+            clearInterval(self.state.automatedLightsCheck);
+            console.log('turned off automation');
+          }, 30 * 1000);
+        })
+
+
+        // BUG - END TESTING
         .catch(err => {
           console.log("ERROR", err);
         });
@@ -182,6 +222,7 @@ export default class Lights extends React.Component {
   // particle code to turn on lights to specific intensity
   turnOnLightsToValue (intensity) {
     const self = this;
+    intensity = intensity + "";
 
     particle.callFunction({ deviceId: self.state.particleID, name: 'ledtovalue', argument: intensity, auth: self.state.particleToken })
       .then(data => {
@@ -208,9 +249,9 @@ export default class Lights extends React.Component {
   }
 
   intensityAlgorithm (intensity) {
-    if (intensity > 1900.00) {
+    if (intensity > this.state.maxIntensity - 100) {
       intensity = 0;
-    } else if (intensity > 1400.00) {
+    } else if (intensity > this.state.maxIntensity - 200) {
       intensity = 25;
     } else {
       intensity = 55;
@@ -248,6 +289,8 @@ export default class Lights extends React.Component {
     start = parseInt(start);
     end = parseInt(end);
 
+    console.log('reached dim lights');
+
     const temp = setInterval(() => {
       console.log('in temp interval', start, end);
       if (Math.abs(end-start) < 5) {
@@ -265,34 +308,108 @@ export default class Lights extends React.Component {
 
   }
 
-  automateLights() {
+  // function that sets interval to automate lights of photon
+  // interval is saved to state as automatedLightsCheck - so that it can be cancelled elsewhere
+  automateLights(fn) {
     const self = this;
 
-    self.setState({automatedLights: true});
-    const lightCheck = setInterval(() => {
-      self.setState({automatedLightsCheck: lightCheck});
+    let minIntensity = Number.MAX_SAFE_INTEGER;
+    let maxIntensity = -1;
 
-      self.getParticleLightSensor()
-      .then(resp => {
+    let err;
+    if (fn) {
+      err = self.loopLights(self.getMinMaxIntensity);
+    } else {
+      err = self.loopLights(self.getAdjustedLightVal);
+    }
+    if (err == -1) {
+      console.log("error in looping lights");
+    }
 
-        let intensity = resp;
-        console.log('intensity:', intensity);
+    // self.setState({automatedLights: true});
+    // const lightCheck = setInterval(() => {
+    //   self.setState({automatedLightsCheck: lightCheck});
+    //
+    //   self.getParticleLightSensor()
+    //   .then(resp => {
 
-        intensity = self.intensityAlgorithm(intensity);
-        console.log('received intensity:', intensity);
+        // let intensity = resp;
+        // console.log('intensity:', intensity);
 
-        if (intensity !== self.state.intensity) {
-          // dimLights
-          clearInterval(lightCheck);
-          self.dimLights(self.state.intensity, intensity);
-        }
+        // if (intensity < minIntensity) {
+        //   minIntensity = intensity;
+        //   console.log("~~~new min: ", minIntensity);
+        // } else if (intensity > maxIntensity) {
+        //   maxIntensity = intensity;
+        //   console.log("~~~new max: ", maxIntensity);
+        // }
+
+        // intensity = self.intensityAlgorithm(intensity);
+        // console.log('received intensity:', intensity);
+        //
+        // if (intensity !== self.state.intensity) {
+        //   // dimLights
+        //   clearInterval(lightCheck);
+        //   self.dimLights(self.state.intensity, intensity);
+        // }
         // self.turnOnLightsToValue(intensity);
 
+      // })
+    //   .catch(err => {
+    //     console.log("err :( ", err);
+    //   })
+    // }, 800);
+  }
+
+  getMinMaxIntensity(resp) {
+    let intensity = resp;
+    console.log('intensity:', intensity);
+    console.log('max intensity:', this.state.maxIntensity);
+    console.log('min intensity:', this.state.minIntensity);
+
+
+    if (intensity < this.state.minIntensity) {
+      this.setState({minIntensity: intensity});
+      console.log("~~~new min: ", minIntensity);
+    } else if (intensity > this.state.maxIntensity) {
+      this.setState({maxIntensity: intensity});
+      console.log("~~~new max: ", maxIntensity);
+    }
+  }
+
+  getAdjustedLightVal(intensity) {
+    console.log('intensity:', intensity);
+    intensity = this.intensityAlgorithm(intensity);
+    let this_intensity = intensity;
+    console.log('received intensity:', intensity, this.state.intensity, intensity !== this.state.intensity);
+    // this.setState({intensity: intensity});
+    // this.turnOnLightsToValue(intensity + "");
+    if (intensity !== this.state.intensity) {
+      this.turnOnLightsToValue(intensity);
+
+    //   // dimLights
+    //   clearInterval(lightCheck);
+    //   this.dimLights(this.state.intensity, intensity);
+    }
+
+    this.setState({ intensity: this_intensity });
+    console.log("state intensity:", this.state.intensity);
+  }
+
+  loopLights(callback) {
+    this.setState({automatedLights: true});
+    const lightCheck = setInterval(() => {
+      this.setState({automatedLightsCheck: lightCheck});
+
+      this.getParticleLightSensor()
+      .then(resp => {
+        callback = callback.bind(this);
+        callback(resp);
       })
       .catch(err => {
-        console.log("err :( ", err);
-      })
-    }, 800);
+        return -1;
+      });
+    }, 1000);
   }
 
   render () {

@@ -81,7 +81,7 @@ class WidgetContainer extends React.Component {
     switch (widget){
     	case 'radio':
     		return <Radio key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse}  />;
-    	case 'news':
+    	case 'stories':
     		return <News key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
     	case 'uber':
     		return <Uber key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;

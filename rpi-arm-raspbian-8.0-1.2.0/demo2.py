@@ -23,8 +23,8 @@ def wakeup():
 def sleep():
     print("sleep")
 
-def news():
-    print("news")
+# def news():
+#     print("news")
 
 def radio():
     print("radio")
@@ -50,14 +50,22 @@ def reminders():
 def uber():
     print("uber")
 
+def stories():
+    print("uber")
+
+def lights():
+    print("uber")
+
 
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda2/"
 
-models = [modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
+models = [ modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
           modelpath + "cancel.pmdl",
-          modelpath + "news.pmdl", modelpath + "reminders.pmdl",
+          # modelpath + "news.pmdl",
+          modelpath + "reminders.pmdl",
           modelpath + "uber.pmdl", modelpath + "outfits.pmdl",
-          modelpath + "picture.pmdl"]
+          modelpath + "picture.pmdl",
+          modelpath + "lights.pmdl", modelpath + "stories.pmdl" ]
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
@@ -65,7 +73,8 @@ signal.signal(signal.SIGINT, signal_handler)
 sensitivity = [0.5]*len(models)
 detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
 
-callbacks = [wakeup, sleep, cancel, news, reminders, uber, outfits, picture]
+# callbacks = [wakeup, sleep, cancel, news, reminders, uber, outfits, picture]
+callbacks = [wakeup, sleep, cancel, reminders, uber, outfits, picture, lights, stories]
 
 
 # main loop
