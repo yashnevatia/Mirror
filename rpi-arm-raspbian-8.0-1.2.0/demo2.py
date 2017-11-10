@@ -47,14 +47,14 @@ def picture():
 def reminders():
     print("reminders")
 
-def uber():
-    print("uber")
+# def uber():
+#     print("uber")
 
 def stories():
-    print("uber")
+    print("stories")
 
 def lights():
-    print("uber")
+    print("lights")
 
 
 modelpath = "/home/pi/Public/Mirror/rpi-arm-raspbian-8.0-1.2.0/resources/amanda2/"
@@ -63,7 +63,8 @@ models = [ modelpath + "wakeup.pmdl", modelpath + "sleep.pmdl",
           modelpath + "cancel.pmdl",
           # modelpath + "news.pmdl",
           modelpath + "reminders.pmdl",
-          modelpath + "uber.pmdl", modelpath + "outfits.pmdl",
+          # modelpath + "uber.pmdl",
+          modelpath + "outfits.pmdl",
           modelpath + "picture.pmdl",
           modelpath + "lights.pmdl", modelpath + "stories.pmdl" ]
 
