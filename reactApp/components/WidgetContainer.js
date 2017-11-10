@@ -83,8 +83,8 @@ class WidgetContainer extends React.Component {
     		return <Radio key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse}  />;
     	case 'stories':
     		return <News key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
-    	case 'uber':
-    		return <Uber key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
+    	// case 'uber':
+    	// 	return <Uber key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
     	case 'reminders':
     		return <ToDo key={widget} socket={this.state.socket} changeWidgetReponse={this.props.changeWidgetReponse} />;
       case 'lights':
