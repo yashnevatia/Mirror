@@ -9,13 +9,13 @@ class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      // BUG : FOR TESTING ON MAC, UNCOMMENT THESE LINES : BUG
-      isActive: true,
-      widgets: ['uber', 'reminders', 'news'],
+      // // BUG : FOR TESTING ON MAC, UNCOMMENT THESE LINES : BUG
+      // isActive: true,
+      // widgets: ['uber', 'reminders', 'news'],
 
       // BUG : FOR TESTING ON MAC, COMMENT OUT THE BELOW TWO LINES : BUG
-      // isActive: false,
-	    // widgets: [],
+      isActive: false,
+	    widgets: [],
 
       initialResponses: {
         radio: 'Would you like to play, pause or search for songs?',
